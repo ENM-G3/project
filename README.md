@@ -12,10 +12,10 @@ In deze organisatie kan je alle files en repositories vinden die te maken hebben
 
 
 ## 1.1. Ons team
-- Bram Bossuyt: 
-- Alec Gheeraert: 
-- Felix Platteau: 
-- Jonas Faber: 
+- Bram Bossuyt: Backend api
+- Alec Gheeraert: Frontend visualisatie
+- Felix Platteau: Backend api
+- Jonas Faber: Frontend visualisatie
 
 ## 1.2. Project omschrijving
 ### 1.2.1. Doel 
