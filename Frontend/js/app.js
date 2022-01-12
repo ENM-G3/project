@@ -1,3 +1,5 @@
+import { signalR } from "./lib/signalr.min";
+
 export default class App {
 
     constructor() {
@@ -5,6 +7,7 @@ export default class App {
     }
 
     async init() {
+        this.connection = new signalR.HubConnectionBuilder().withUrl("/influx")
         console.log("App has been initialized!");
     }
 
