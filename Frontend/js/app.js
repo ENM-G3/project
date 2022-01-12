@@ -1,3 +1,5 @@
+import { signalR } from "./lib/signalr.min";
+
 export default class App {
 
     constructor() {
