@@ -37,7 +37,7 @@ class InfluxDatabase:
         results = []
         for table in tables:
             for record in table.records:
-                results.append({"field": record.get_field(), "value": record.get_value(), "record": record.get_time()})
+                results.append({"Place": record.get_measurement(), "Type": record.get_field(), "Value": record.get_value(), "Time": record.get_time()})
 
         return results
 
