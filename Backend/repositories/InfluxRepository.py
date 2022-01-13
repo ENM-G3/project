@@ -144,8 +144,8 @@ class InfluxRepository:
 
 
 
-### TESTING ###
-if __name__ == '__main__':
+# ### TESTING ###
+# if __name__ == '__main__':
 
-    for i in InfluxRepository.read_all_net_month():
-        print(i)
+#     for i in InfluxRepository.read_all_net_year():
+#         print(i)
