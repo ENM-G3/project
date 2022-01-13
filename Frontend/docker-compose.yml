@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  web:
+    container_name: ENM_Groep3_Frontend
+    build: .
+    restart: unless-stopped
+    ports:
+      - 80:80
+
+
+
+networks:
+  default:
+    name: websites
