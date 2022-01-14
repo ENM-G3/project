@@ -27,10 +27,11 @@ def hello():
     return "Server is running."
 
 
-@app.route(endpoint + '/Test', methods=['GET'])
-def get_history():
+@app.route(endpoint + '/<device>/<timespan>', methods=['GET'])
+def get_history(device, timespan):
     if request.method == 'GET':
-        return jsonify(data=InfluxRepository.read_all_net_day()), 200
+        function = "InfluxRepository.read_all_" + device + "_" + timespan + "()"
+        return jsonify(data=eval(function)), 200
 
 # SOCKET IO
 
