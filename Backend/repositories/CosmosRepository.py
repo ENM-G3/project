@@ -50,4 +50,48 @@ class CosmosRepository:
         result = CosmosDatabase.create_item(vraag)
 
         return result
+
+    @staticmethod
+    def get_all_items():
+        items = CosmosDatabase.read_items()
+        return items
+
+    @staticmethod
+    def get_item_by_id(id):
+        sql = 'SELECT * FROM c WHERE c.id=@id'
+        params = [{"name": "@id", 'value': id}]
+        items = CosmosDatabase.query_items(sql, params)
+
+        return items
+
+    @staticmethod
+    def get_all_weetjes():
+        typeweetje = 'weetje'
+
+        sql = 'SELECT * FROM c WHERE c.type=@type'
+        params = [{"name": "@type", 'value': typeweetje}]
+        items = CosmosDatabase.query_items(sql, params)
+
+        return items
+
+    @staticmethod
+    def get_all_vergelijkingen():
+        typeweetje = 'vergelijking'
+
+        sql = 'SELECT * FROM c WHERE c.type=@type'
+        params = [{"name": "@type", 'value': typeweetje}]
+        items = CosmosDatabase.query_items(sql, params)
+
+        return items
+
+    @staticmethod
+    def get_all_meerkeuzes():
+        typeweetje = 'meerkeuze'
+
+        sql = 'SELECT * FROM c WHERE c.type=@type'
+        params = [{"name": "@type", 'value': typeweetje}]
+        items = CosmosDatabase.query_items(sql, params)
+
+        return items
+    
     
