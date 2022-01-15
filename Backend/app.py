@@ -28,11 +28,27 @@ def hello():
     return "Server is running."
 
 
-@app.route(endpoint + '/<device>/<timespan>', methods=['GET'])
-def get_history(device, timespan):
+@app.route(endpoint + '/history/<measurement>/<timespan>', methods=['GET'])
+def get_history(measurement, timespan):
     if request.method == 'GET':
-        function = "InfluxRepository.read_all_" + device + "_" + timespan + "()"
-        return jsonify(data=eval(function)), 200
+        data = InfluxRepository.read_data(measurement, timespan)
+        return jsonify(data=data), 200
+
+
+@app.route(endpoint + '/history/<measurement>/<timespan>/<device>', methods=['GET'])
+def get_history_device(measurement, timespan, device):
+    if request.method == 'GET':
+        data = InfluxRepository.read_data_from_device(
+            measurement, timespan, device)
+        return jsonify(data=data), 200
+
+
+# @app.route(endpoint + '/<device>/<timespan>', methods=['GET'])
+# def get_history(device, timespan):
+#     if request.method == 'GET':
+#         function = "InfluxRepository.read_all_" + device + "_" + timespan + "()"
+#         return jsonify(data=eval(function)), 200
+
 
 @app.route(endpoint + '/TEST', methods=['GET'])
 def get_data():
