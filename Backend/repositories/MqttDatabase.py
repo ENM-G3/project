@@ -1,4 +1,5 @@
 import configparser
+from dataclasses import dataclass
 from datetime import datetime
 
 from influxdb_client import InfluxDBClient, Point, WritePrecision
@@ -6,6 +7,7 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 
 import paho.mqtt.client as mqtt
 import json
+import time
 
 class MqttDatabase:
     @staticmethod
@@ -48,15 +50,16 @@ class MqttDatabase:
         print("Connected with result code "+str(rc))
         mqttclient.subscribe("servicelocation/477d2645-2919-44c3-acf7-cad592ce7cdc/realtime")
 
-
+    data = ''
     # The callback for when a PUBLISH message is received from the server.
     def on_message(mqttclient, userdata, msg):
         payload = str(msg.payload.decode("utf-8"))
         res = json.loads(payload)
-        print(res)     
+        global data
+        data = res 
     
     @staticmethod
-    def _open_mqtt_connection():
+    def open_mqtt_connection():
         # open connection with mqtt
         mqttclient = mqtt.Client()
         mqttclient.on_connect = MqttDatabase.on_connect
@@ -64,7 +67,11 @@ class MqttDatabase:
 
         mqttclient.connect("howest-energy-monitoring.westeurope.cloudapp.azure.com", 1883, 60)
 
-        mqttclient.loop_forever()
+        mqttclient.loop_start()
+        time.sleep(2)
+        print(data)
+        return data
+        mqttclient.loop_stop()
 
 
 # TESTING

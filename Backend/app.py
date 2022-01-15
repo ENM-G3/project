@@ -1,4 +1,5 @@
 from repositories.InfluxRepository import InfluxRepository
+from repositories.MqttDatabase import MqttDatabase
 from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, send, emit
 from flask_cors import CORS
@@ -32,6 +33,11 @@ def get_history(device, timespan):
     if request.method == 'GET':
         function = "InfluxRepository.read_all_" + device + "_" + timespan + "()"
         return jsonify(data=eval(function)), 200
+
+@app.route(endpoint + '/TEST', methods=['GET'])
+def get_data():
+    if request.method == 'GET':
+        return MqttDatabase.open_mqtt_connection(), 200
 
 # SOCKET IO
 
