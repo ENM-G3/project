@@ -42,11 +42,11 @@ class InfluxDatabase:
         return results
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    config = configparser.ConfigParser()
-    config.read('Backend\config.ini')
-    bucket = config['influx']['bucket']
+#     config = configparser.ConfigParser()
+#     config.read('Backend\config.ini')
+#     bucket = config['influx']['bucket']
 
-    for i in InfluxDatabase.get_data(f'from(bucket: \"{bucket}\") |> range(start: -1h)'):
-        print(i)
+#     for i in InfluxDatabase.get_data(f'from(bucket: \"{bucket}\") |> range(start: -1h)'):
+#         print(i)
