@@ -43,6 +43,14 @@ def get_history_device(measurement, timespan, device):
         return jsonify(data=data), 200
 
 
+# example http://localhost:5000/api/v1/watthour/Duiktank/1w/TotaalNet/1d
+@app.route(endpoint + '/watthour/<measurement>/<timespan>/<device>/<pertime>', methods=['GET'])
+def get_watthour_device(measurement, timespan, device, pertime):
+    if request.method == 'GET':
+        data = InfluxRepository.read_watthour_from_device(
+            measurement, timespan, device, pertime)
+        return jsonify(data=data), 200
+
 # @app.route(endpoint + '/<device>/<timespan>', methods=['GET'])
 # def get_history(device, timespan):
 #     if request.method == 'GET':
@@ -50,7 +58,7 @@ def get_history_device(measurement, timespan, device):
 #         return jsonify(data=eval(function)), 200
 
 
-@app.route(endpoint + '/TEST', methods=['GET'])
+@ app.route(endpoint + '/TEST', methods=['GET'])
 def get_data():
     if request.method == 'GET':
         return MqttDatabase.open_mqtt_connection(), 200
@@ -58,7 +66,7 @@ def get_data():
 # SOCKET IO
 
 
-@socketio.on('connect')
+@ socketio.on('connect')
 def connect():
     print('A new client connects')
 
