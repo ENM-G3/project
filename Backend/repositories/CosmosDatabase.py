@@ -54,6 +54,7 @@ class CosmosDatabase:
         result = container.delete_item(item=id, partition_key=id)
         return result
 
+
 if __name__ == '__main__':
     guid1 = str(uuid.uuid4())
     Weetje = {
@@ -69,7 +70,7 @@ if __name__ == '__main__':
         'name': 'GSM opladen',
         'amount': 10,
         'unit': 'KWh',
-        'time': 365
+        'time': 365 * 24 * 60 * 60
     }
 
     guid3 = str(uuid.uuid4())
