@@ -87,7 +87,6 @@ class CosmosRepository:
 
     @staticmethod
     def delete_item(id):
-
         if len(get_item_by_id(id) > 0):
             CosmosDatabase.delete_item(id)
             return True

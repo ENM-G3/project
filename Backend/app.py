@@ -53,12 +53,6 @@ def get_watthour_device(measurement, timespan, device, pertime):
         return jsonify(data=data), 200
 
 
-# @app.route(endpoint + '/<device>/<timespan>', methods=['GET'])
-# def get_history(device, timespan):
-#     if request.method == 'GET':
-#         function = "InfluxRepository.read_all_" + device + "_" + timespan + "()"
-#         return jsonify(data=eval(function)), 200
-
 @app.route(endpoint + '/facts/<typeweetje>', methods=['GET', 'POST'])
 def weetjes(typeweetje):
     # type: weetje, vergelijking, meerkeuze
