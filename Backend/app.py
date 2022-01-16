@@ -60,7 +60,7 @@ def get_watthour_device(measurement, timespan, device, pertime):
 #         return jsonify(data=eval(function)), 200
 
 @app.route(endpoint + '/facts/<typeweetje>', methods=['GET', 'POST'])
-def get_weetjes(typeweetje):
+def weetjes(typeweetje):
     # type: weetje, vergelijking, meerkeuze
     if request.method == 'GET':
         data = CosmosRepository.get_all_weetjes_van_type(typeweetje)
@@ -83,6 +83,18 @@ def get_weetjes(typeweetje):
             return jsonify(result=result), 201
 
 
+@app.route(endpoint + '/fact/<id>', methods=['GET', 'PUT', 'DELETE'])
+def weetje(id):
+    if request.method == 'GET':
+        data = CosmosRepository.get_item_by_id(id)
+        return jsonify(data=data), 200
+
+    if request.method == 'PUT':
+        pass
+
+    if request.method == 'DELETE':
+        result = CosmosRepository.delete_item(id)
+        return jsonify(result=result), 201
 
 
 @ app.route(endpoint + '/TEST', methods=['GET'])
