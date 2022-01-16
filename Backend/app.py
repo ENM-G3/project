@@ -1,5 +1,6 @@
 from repositories.InfluxRepository import InfluxRepository
 from repositories.MqttDatabase import MqttDatabase
+from repositories.CosmosRepository import CosmosRepository
 from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, send, emit
 from flask_cors import CORS
@@ -57,6 +58,31 @@ def get_watthour_device(measurement, timespan, device, pertime):
 #     if request.method == 'GET':
 #         function = "InfluxRepository.read_all_" + device + "_" + timespan + "()"
 #         return jsonify(data=eval(function)), 200
+
+@app.route(endpoint + '/facts/<typeweetje>', methods=['GET', 'POST'])
+def get_weetjes(typeweetje):
+    # type: weetje, vergelijking, meerkeuze
+    if request.method == 'GET':
+        data = CosmosRepository.get_all_weetjes_van_type(typeweetje)
+        return jsonify(data=data), 200
+
+    elif request.method == 'POST':
+        data = DataRepository.json_or_formdata(request)
+        if typeweetje == 'weetje':
+            result = CosmosRepository.create_weetje(data['fact'])
+            return jsonify(result=result), 201
+
+        elif typeweetje == 'vergelijking':
+            result = CosmosRepository.create_vergelijking(
+                data['name'], data['amount'], data['unit'], data['time'])
+            return jsonify(result=result), 201
+
+        elif typeweetje == 'meerkeuze':
+            result = CosmosRepository.create_meerkeuze(
+                data['question'], data['options'], data['answer'])
+            return jsonify(result=result), 201
+
+
 
 
 @ app.route(endpoint + '/TEST', methods=['GET'])
