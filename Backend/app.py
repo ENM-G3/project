@@ -90,7 +90,9 @@ def weetje(id):
         return jsonify(data=data), 200
 
     if request.method == 'PUT':
-        pass
+        data = DataRepository.json_or_formdata(request)
+        result = CosmosRepository.replace_item(data)
+        return jsonify(result=result), 201
 
     if request.method == 'DELETE':
         result = CosmosRepository.delete_item(id)
