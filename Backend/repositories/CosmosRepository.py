@@ -81,6 +81,11 @@ class CosmosRepository:
         return items
 
     @staticmethod
+    def replace_item(newitem):
+        result = CosmosDatabase.replace_item(newitem)
+        return result
+
+    @staticmethod
     def delete_item(id):
 
         if len(get_item_by_id(id) > 0):

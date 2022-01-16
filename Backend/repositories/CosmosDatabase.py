@@ -49,6 +49,12 @@ class CosmosDatabase:
         return items
 
     @staticmethod
+    def replace_item(newitem):
+        container = CosmosDatabase.__open_connection()
+        result = container.replace_item(newitem['id'], newitem)
+        return result
+
+    @staticmethod
     def delete_item(id):
         container = CosmosDatabase.__open_connection()
         result = container.delete_item(item=id, partition_key=id)
@@ -97,6 +103,19 @@ if __name__ == '__main__':
     params = [{"name": "@type", 'value': typeweetje}]
     items = CosmosDatabase.query_items(sql, params)
     print(items)
+
+    Question = {
+        'id': guid3,
+        'type': 'meerkeuze',
+        'question': 'Is dit replaced?',
+        'options': {'A': 'Nee', 'B': 'Ja', 'C': 'Misschien'},
+        'answer': 'B'
+    }
+    print(CosmosDatabase.replace_item(Question))
+    print('\nAll items 2:')
+    items = CosmosDatabase.read_items()
+    for item in items:
+        print(item)
 
     CosmosDatabase.delete_item(guid1)
     CosmosDatabase.delete_item(guid2)
