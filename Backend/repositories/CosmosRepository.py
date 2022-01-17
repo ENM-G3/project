@@ -17,7 +17,7 @@ class CosmosRepository:
 
         guid = str(uuid.uuid4())
         weetje = {
-            'id': guid1,
+            'id': guid,
             'type': 'weetje',
             'fact': fact
         }
@@ -31,7 +31,7 @@ class CosmosRepository:
 
         guid = str(uuid.uuid4())
         vergelijking = {
-            'id': guid1,
+            'id': guid,
             'type': 'vergelijking',
             'name': name,
             'amount': amount,
@@ -48,7 +48,7 @@ class CosmosRepository:
 
         guid = str(uuid.uuid4())
         vraag = {
-            'id': guid1,
+            'id': guid,
             'type': 'meerkeuze',
             'question': question,
             'options': options,
