@@ -61,7 +61,7 @@ def weetjes(typeweetje):
         return jsonify(data=data), 200
 
     elif request.method == 'POST':
-        data = DataRepository.json_or_formdata(request)
+        data = CosmosRepository.json_or_formdata(request)
         if typeweetje == 'weetje':
             result = CosmosRepository.create_weetje(data['fact'])
             return jsonify(result=result), 201
@@ -84,7 +84,7 @@ def weetje(id):
         return jsonify(data=data), 200
 
     if request.method == 'PUT':
-        data = DataRepository.json_or_formdata(request)
+        data = CosmosRepository.json_or_formdata(request)
         result = CosmosRepository.replace_item(data)
         return jsonify(result=result), 201
 
