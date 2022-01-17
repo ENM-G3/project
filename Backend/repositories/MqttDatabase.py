@@ -72,25 +72,19 @@ class MqttDatabase:
 
         payload = str(msg.payload.decode("utf8"))
         payload = json.loads(payload)
-        newJson = []
         for i in payload["channelPowers"]:
-            newDict = {}
             device, location, power = '', '', ''
-
             for key, value in i.items():
                 if key == "publishIndex":
-                    newDict[key] = config["smappeePublishIndex"][str(value)]
                     device = config["smappeePublishIndex"][str(value)]
                 if key == "serviceLocationId":
-                    newDict[key] = config["smappeeLocationId"][str(value)]
                     location = config["smappeeLocationId"][str(value)]
                 if key == "power":
-                    newDict[key] = value
                     power = value
 
+            MqttDatabase.__write_db_data(device, location, power)
 
-            MqttDatabase.__write_db_data(device, location, power)    
-            newJson.append(newDict)
+        mqttclient.loop_stop()
     
     @staticmethod
     def open_mqtt_connection():
@@ -102,8 +96,6 @@ class MqttDatabase:
         mqttclient.connect("howest-energy-monitoring.westeurope.cloudapp.azure.com", 1883, 60)
 
         mqttclient.loop_start()
-        time.sleep(5)
-        mqttclient.loop_stop()
 
 
 # TESTING

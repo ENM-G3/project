@@ -8,6 +8,7 @@ from repositories.CosmosRepository import CosmosRepository
 from repositories.MqttDatabase import MqttDatabase
 from repositories.InfluxRepository import InfluxRepository
 import sys
+import datetime
 
 config = configparser.ConfigParser()
 config.read(f'{sys.path[0]}\config.ini')
@@ -18,12 +19,29 @@ app.config['SECRET_KEY'] = config['app']['key']
 socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app)
 
+# threading
+def thread_function():
+    MqttDatabase.open_mqtt_connection()
+
+def thread_timer():
+    print('--- threading ---')
+    now = datetime.datetime.now()
+    delta = datetime.timedelta(minutes=5)
+    print(now)
+    print(now + (now.min - now) % delta)
+    print((now.min - now) % delta)
+    print(((now.min - now) % delta).total_seconds())
+
+    threading.Timer(((now.min - now) % delta).total_seconds(), thread_function).start()
+    threading.Timer(((now.min - now) % delta).total_seconds(), thread_timer).start()
+
+thread = threading.Timer(0, thread_timer)
+thread.start()
+
 
 # Custom endpoint
 endpoint = '/api/v1'
 # API ENDPOINTS
-
-
 @app.route('/')
 def hello():
     return "Server is running."
@@ -55,7 +73,7 @@ def get_watthour_device(measurement, timespan, device, pertime):
 
 @app.route(endpoint + '/facts/<typeweetje>', methods=['GET', 'POST'])
 def weetjes(typeweetje):
-    # type: weetje, vergelijking, meerkeuze
+    # type weetje, vergelijking, meerkeuze
     if request.method == 'GET':
         data = CosmosRepository.get_all_weetjes_van_type(typeweetje)
         return jsonify(data=data), 200
@@ -102,8 +120,6 @@ def get_data():
         return jsonify(data=MqttDatabase.get_db_data(f'from(bucket: \"{bucket}\") |> range(start: -1mo) ')), 200
 
 # SOCKET IO
-
-
 @ socketio.on('connect')
 def connect():
     print('A new client connects')
