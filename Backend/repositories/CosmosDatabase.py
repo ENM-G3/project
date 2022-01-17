@@ -1,6 +1,7 @@
 import configparser
 import datetime
 import uuid
+import sys
 
 import azure.cosmos.documents as documents
 import azure.cosmos.cosmos_client as cosmos_client
@@ -8,7 +9,7 @@ import azure.cosmos.exceptions as exceptions
 from azure.cosmos.partition_key import PartitionKey
 
 config = configparser.ConfigParser()
-config.read('Backend\config.ini')
+config.read(f'{sys.path[0]}\config.ini')
 
 HOST = config['cosmos']['url']
 MASTER_KEY = config['cosmos']['key']

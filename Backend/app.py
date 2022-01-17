@@ -1,16 +1,16 @@
-from repositories.InfluxRepository import InfluxRepository
-from repositories.MqttDatabase import MqttDatabase
-from repositories.CosmosRepository import CosmosRepository
-from flask import Flask, jsonify, request
-from flask_socketio import SocketIO, send, emit
-from flask_cors import CORS
-import time
-import threading
 import configparser
-
+import threading
+import time
+from flask_cors import CORS
+from flask_socketio import SocketIO, send, emit
+from flask import Flask, jsonify, request
+from repositories.CosmosRepository import CosmosRepository
+from repositories.MqttDatabase import MqttDatabase
+from repositories.InfluxRepository import InfluxRepository
+import sys
 
 config = configparser.ConfigParser()
-config.read('Backend\config.ini')
+config.read(f'{sys.path[0]}\config.ini')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = config['app']['key']

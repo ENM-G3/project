@@ -8,13 +8,14 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 import paho.mqtt.client as mqtt
 import json
 import time
+import sys
 
 class MqttDatabase:
     @staticmethod
     def __get_config():
         # Get config from the ini file
         config = configparser.ConfigParser()
-        config.read('Backend\config.ini')
+        config.read(f'{sys.path[0]}\config.ini')
         return config
 
     @staticmethod

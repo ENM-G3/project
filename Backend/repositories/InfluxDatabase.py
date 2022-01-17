@@ -1,5 +1,6 @@
 import configparser
 from datetime import datetime
+import sys
 
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
@@ -11,7 +12,7 @@ class InfluxDatabase:
     def __get_config():
         # Get config from the ini file
         config = configparser.ConfigParser()
-        config.read('Backend\config.ini')
+        config.read(f'{sys.path[0]}\config.ini')
         return config
 
     @staticmethod
@@ -45,7 +46,7 @@ class InfluxDatabase:
 # if __name__ == '__main__':
 
 #     config = configparser.ConfigParser()
-#     config.read('Backend\config.ini')
+#     config.read(f'{sys.path[0]}\config.ini')
 #     bucket = config['influx']['bucket']
 
 #     for i in InfluxDatabase.get_data(f'from(bucket: \"{bucket}\") |> range(start: -1h)'):
