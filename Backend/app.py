@@ -11,7 +11,7 @@ import sys
 import datetime
 
 config = configparser.ConfigParser()
-config.read(f'{sys.path[0]}\config.ini')
+config.read(f'{sys.path[0]}/config.ini')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = config['app']['key']
@@ -20,8 +20,11 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app)
 
 # threading
+
+
 def thread_function():
     MqttDatabase.open_mqtt_connection()
+
 
 def thread_timer():
     print('--- threading ---')
@@ -32,8 +35,11 @@ def thread_timer():
     # print((now.min - now) % delta)
     # print(((now.min - now) % delta).total_seconds())
 
-    threading.Timer(((now.min - now) % delta).total_seconds(), thread_function).start()
-    threading.Timer(((now.min - now) % delta).total_seconds(), thread_timer).start()
+    threading.Timer(((now.min - now) % delta).total_seconds(),
+                    thread_function).start()
+    threading.Timer(((now.min - now) % delta).total_seconds(),
+                    thread_timer).start()
+
 
 thread = threading.Timer(0, thread_timer)
 thread.start()
@@ -42,6 +48,8 @@ thread.start()
 # Custom endpoint
 endpoint = '/api/v1'
 # API ENDPOINTS
+
+
 @app.route('/')
 def hello():
     return "Server is running."
@@ -120,6 +128,8 @@ def get_data():
         return jsonify(data=MqttDatabase.get_db_data(f'from(bucket: \"{bucket}\") |> range(start: -1mo) ')), 200
 
 # SOCKET IO
+
+
 @ socketio.on('connect')
 def connect():
     print('A new client connects')
