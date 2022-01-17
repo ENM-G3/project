@@ -27,7 +27,7 @@ class CosmosRepository:
         return result
 
     @staticmethod
-    def create_vergelijking(name, amount, unit, time):
+    def create_vergelijking(name, amount, time):
 
         guid = str(uuid.uuid4())
         vergelijking = {
@@ -35,7 +35,6 @@ class CosmosRepository:
             'type': 'vergelijking',
             'name': name,
             'amount': amount,
-            'unit': unit,
             'time': time
         }
 
@@ -87,7 +86,7 @@ class CosmosRepository:
 
     @staticmethod
     def delete_item(id):
-        if len(get_item_by_id(id) > 0):
+        if len(CosmosRepository.get_item_by_id(id)) > 0:
             CosmosDatabase.delete_item(id)
             return True
 

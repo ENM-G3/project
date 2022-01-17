@@ -76,7 +76,6 @@ if __name__ == '__main__':
         'type': 'vergelijking',
         'name': 'GSM opladen',
         'amount': 10,
-        'unit': 'KWh',
         'time': 365 * 24 * 60 * 60
     }
 
