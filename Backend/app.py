@@ -96,7 +96,10 @@ def weetje(id):
 @ app.route(endpoint + '/TEST', methods=['GET'])
 def get_data():
     if request.method == 'GET':
-        return MqttDatabase.open_mqtt_connection(), 200
+        config = configparser.ConfigParser()
+        config.read('Backend\config.ini')
+        bucket = config['mqtt']['bucket']
+        return jsonify(data=MqttDatabase.get_db_data(f'from(bucket: \"{bucket}\") |> range(start: -1mo) ')), 200
 
 # SOCKET IO
 
