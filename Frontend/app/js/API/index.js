@@ -1,6 +1,9 @@
 import Data from '../util/Data.js';
+import Facts from './facts.js';
 
 export default class API {
+
+    _facts = new Facts();
 
     constructor(app) {
         this.app = app;
@@ -12,6 +15,10 @@ export default class API {
 
     get host(){
         return this._host;
+    }
+
+    get facts() {
+        return this._facts;
     }
 
     set host(h) {
