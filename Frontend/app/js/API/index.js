@@ -8,7 +8,8 @@ export default class API {
     constructor(app) {
         this.app = app;
 
-        this._host = "";
+        this._host = "http://localhost:5001/";
+        
 
         Object.assign(this, Data);
     }
