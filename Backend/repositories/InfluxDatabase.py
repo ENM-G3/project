@@ -12,7 +12,7 @@ class InfluxDatabase:
     def __get_config():
         # Get config from the ini file
         config = configparser.ConfigParser()
-        config.read(f'{sys.path[0]}\config.ini')
+        config.read(f'{sys.path[0]}/config.ini')
         return config
 
     @staticmethod

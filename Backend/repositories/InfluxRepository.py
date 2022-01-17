@@ -4,7 +4,7 @@ import sys
 
 ### GET BUCKET FROM CONFIG ###
 config = configparser.ConfigParser()
-config.read(f'{sys.path[0]}\config.ini')
+config.read(f'{sys.path[0]}/config.ini')
 bucket = config['influx']['bucket']
 
 
