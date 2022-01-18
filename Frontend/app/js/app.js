@@ -2,6 +2,7 @@ import * as SocketIO from './lib/socket.io.min.js';
 import * as AC from './lib/apexcharts.min.js';
 import Socket from './SOCKET/index.js';
 import API from './API/index.js';
+import Timer from './timer.js';
 
 
 export default class App {
@@ -9,6 +10,7 @@ export default class App {
     //_socketio = io(this.hostname);
     //_socket = new Socket(this);
     _api = new API(this);
+    _timer = new Timer();
 
     constructor() {
         this.init();

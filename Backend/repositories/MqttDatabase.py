@@ -55,7 +55,7 @@ class MqttDatabase:
 
         write_api = dbclient.write_api(write_options=SYNCHRONOUS)
 
-        data = f"{location},meter={device} power={value}"
+        data = f"{location},meter=Smappee {device}={value}"
         write_api.write(bucket, org, data)
 
     # The callback for when the client receives a CONNACK response from the server.
@@ -83,7 +83,7 @@ class MqttDatabase:
                 if key == "power":
                     power = value
 
-            MqttDatabase.__write_db_data(device, location, power)
+            MqttDatabase.__write_db_data(location, device, power)
 
         mqttclient.loop_stop()
 
