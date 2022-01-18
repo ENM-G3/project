@@ -79,6 +79,14 @@ def get_watthour_device(measurement, timespan, device, pertime):
         return jsonify(data=data), 200
 
 
+@app.route(endpoint + '/daynight/<measurement>/<timespan>/<device>', methods=['GET'])
+def get_daynight_device(measurement, timespan, device):
+    if request.method == 'GET':
+        data = InfluxRepository.read_day_night_from_device(
+            measurement, timespan, device)
+        return jsonify(data=data), 200
+
+
 @app.route(endpoint + '/facts/<typeweetje>', methods=['GET', 'POST'])
 def weetjes(typeweetje):
     # type weetje, vergelijking, meerkeuze
