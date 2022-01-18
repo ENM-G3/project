@@ -76,7 +76,7 @@ class MqttDatabase:
         for i in payload["channelPowers"]:
             device, location, power = '', '', ''
             for key, value in i.items():
-                if key == "publishIndex":
+                if key == "formula":
                     device = config["smappeePublishIndex"][str(value)]
                 if key == "serviceLocationId":
                     location = config["smappeeLocationId"][str(value)]
