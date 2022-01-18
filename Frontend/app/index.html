@@ -5,15 +5,68 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
+    <link rel="stylesheet" href="style/normalize.css">
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/apexcharts.css">
 
-    <link rel="stylesheet" href="./style/normalize.css">
-    <link rel="stylesheet" href="./style/main.css">
-    <link rel="stylesheet" href="./style/apexcharts.css">
     <script src="./js/index.js" type="module"></script>
 </head>
-<body>
-    test
+<body class="container">
+    <div class="section section-1">
+        <img class="img-map" src="img/site_map.jpg">
+    </div>
+    <div class="section-2">section 2</div>
+    <div class="section-3">section 3</div>
+    <div class="section-4">section 4</div>
+    <div class="section-vertical">
+        <div class="vertical vertical-1">
+            <img class="vertical-img" src="img/svg/windmill.svg">
+            <h2 class="vertical-h2">Wist je dat</h2>
+            <p class="vertical-p">In 3 tot 6 maanden produceert een windturbine net zoveel energie als de bouw heeft gekost.</p>
+        </div>
+        <div class="vertical-line"></div>
+        <div class="vertical vertical-2">
+            <img class="vertical-img" src="img/svg/sun.svg">
+            <h2 class="vertical-h2">Wist je dat</h2>
+            <p class="vertical-p">De zon levert 10.000 keer zoveel energie als de totale behoefte wereldwijd</p>
+        </div>
+    </div>
 
-    <div id="test"></div>
+    <!-- 
+        Progress bar
+            Set css progress answer show indictation
+            --global-progress-show set percentage
+
+            Set css progress animation duration
+            --global-progress-duration set seconds
+
+            Set css to next progress bar
+            var parent = document.getElementById('progress-2')
+            var done = parent.getElementById('progress-done')
+            done.classList.add('progress-done-animation')
+     -->
+    <div class="progress">
+        <div class="progress-1" id="progress-1">
+            <div class="progress-base"></div>
+            <div class="progress-done"></div>
+            <div class="progress-show">?</div>
+        </div>
+        <div class="progress-2">
+            <div class="progress-base"></div>
+            <div class="progress-done"></div>
+            <div class="progress-show">?</div>
+        </div>
+        <div class="progress-3">
+            <div class="progress-base"></div>
+            <div class="progress-done progress-done-animation"></div>
+            <div class="progress-show">?</div>
+        </div>
+        <div class="progress-4">
+            <div class="progress-base"></div>
+            <div class="progress-done"></div>
+            <div class="progress-show">?</div>
+        </div>
+    </div>
 </body>
 </html>
