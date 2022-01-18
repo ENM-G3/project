@@ -3,12 +3,12 @@ import Facts from './facts.js';
 
 export default class API {
 
-    _facts = new Facts();
+    _facts = new Facts(this);
 
     constructor(app) {
         this.app = app;
 
-        this._host = "http://localhost:5001/";
+        this._host = "http://localhost:5001/api/v1";
         
 
         Object.assign(this, Data);

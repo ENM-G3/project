@@ -18,39 +18,51 @@ export default class Facts {
     }
 
     async getByType(type) {
+        let url = `${this.base}/${type}`;
         // Type can be 'weetje', 'vergelijking' or 'meerkeuze'
-        if (type in this.types){
+        if (this.types.includes(type)){
+            const res = await this.api.get(url);
+            if (res.ok) {
+                return (await res.json());
+            }
 
+            const errorBody = await res.json();
+            return errorBody;
+        } else {
+            return "Invalid type";
+        }
+    }
+
+    async postByType(type, factObj) {
+
+        // FIXME: fix this function once i know properly what i need to return and send. 
+
+        let url = `${this.base}/${type}`;
+        // Type can be 'weetje', 'vergelijking' or 'meerkeuze'
+        if (this.types.includes(type)){
+            const res = await this.api.post(url, factObj);
+
+            if (res.ok) {
+                return (await res.json());
+            }
+
+            const errorBody = await res.json();
+            return errorBody;
+        } else {
+            return "Invalid type";
         }
     }
 
     async getById(id) {
+        let url = `${this.api.host}/fact/${id}`;
 
-        let url = this.base + `/${id}`;
-        console.log(url);
-
-        // this.api.get komt uit de ./js/util/Data.js file
         const res = await this.api.get(url);
 
-
-        // Als de request ok returned returnen we de data als een object.
         if (res.ok) {
             return (await res.json());
         }
 
-        // Alles hier is al het een error is.
         const errorBody = await res.json();
-
-        // En deze error returnen
-        return `${res.status} - ${errorBody.status}`;
+        return errorBody;
     }
-
-    async post(body) {
-        // Handle post
-    }
-
-    async put(body) {
-        // Handle put
-    }
-
 }

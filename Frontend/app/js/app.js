@@ -29,7 +29,8 @@ export default class App {
 
         // hier komen de listeners, structuur nog uit te zoeken
         console.log("App has been initialized!");
-        console.log(await (await this.api.get(this.api.host)).text());
+        console.log();
+        console.log(await this.api.facts.getByType("weetje"));
         
     }
 
