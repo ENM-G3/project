@@ -1,14 +1,23 @@
 
 
+
 export default class Timer {
-    constructor() {
-        this.interval = 5;
+    constructor(app) {
+        this.app = app;
+        this.interval = 20;
         this.slider = document.querySelector(".slider");
         this.slides = document.querySelectorAll(".slide");
         this.num_items = this.slides.length;
 
+
+
+        this.init();
+    }
+
+    async init() {
+        await this.getSlides();
+
         this.current = 1;
-        console.log(this.slider);
         this.slides.forEach((element, index) => {
             console.log(element);
             element.style.order = index + 1;
@@ -20,8 +29,6 @@ export default class Timer {
     }
 
     changeOrder() {
-
-        
 
         if (this.current == this.num_items) {
             this.current = 1;
@@ -86,6 +93,48 @@ export default class Timer {
             document.querySelector(`#progress-${this.current} .progress-done`).classList.remove("progress-done-animation");
         } 
     }
+
+    async getTemplate() {
+        let div = document.createElement('div');
+        div.classList.add('slide');
+
+        return div;
+    }
+
+    async getSlide1() {
+        let temp = await this.getTemplate();
+        temp.id = 'slide1';
+
+        let section1 = document.createElement('section');
+        section1.id = 'section1';
+        section1.classList.add('testGraph');
+
+        let section2 = document.createElement('section');
+        section2.id = 'section2';
+        section2.classList.add('daynightDuiktank1wTotaalNet');
+
+        
+
+
+
+        temp.appendChild(section1);
+        temp.appendChild(section2);
+
+
+
+        return temp;
+    }
+
+    async getSlides() {
+        let slide1 = await this.getSlide1();
+
+        document.querySelector(".slider").appendChild(slide1);
+
+
+        let chart = await this.app.graphs.getDayNightChart();
+        chart.render();
+    }
+
 
 
 }
