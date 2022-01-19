@@ -109,15 +109,14 @@ export default class Timer {
         let section1 = document.createElement('section');
         section1.id = 'section1';
         section1.classList.add('testGraph');
-        section1.classList.add('grid-top-left');
+        section1.classList.add('grid-top');
 
         let section2 = document.createElement('section');
         section2.id = 'section2';
         section2.classList.add('daynightDuiktank1wTotaalNet');
-        section2.classList.add('grid-top-right');
 
         temp.appendChild(section1);
-        temp.appendChild(section2);
+        //temp.appendChild(section2);
 
 
 
@@ -132,8 +131,8 @@ export default class Timer {
         let chart1 = await this.app.charts.getWatthourAverage("Duiktank", "1w", "TotaalNet", "1d");
         chart1.render();
 
-        let chart = await this.app.charts.getDayNightChart('Duiktank', '1mo', 'TotaalNet');
-        chart.render();
+        // let chart = await this.app.charts.getDayNightChart('Duiktank', '1mo', 'TotaalNet');
+        // chart.render();
     }
 
 

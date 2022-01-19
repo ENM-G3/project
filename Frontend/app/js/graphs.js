@@ -17,18 +17,18 @@ export default class Graphs {
             }
         }
 
-        let options = {
+        var options = {
             series: [daynight[0]._value, daynight[1]._value],
             labels: [daynight[0].dayString, daynight[1].dayString],
             chart: {
                 type: 'donut',
-                toolbar: false,
+                width: '100%',
                 animations: {
-                    enabled: false,
-                },
+                    enabled: false
+                }
             },
-            responsive: []
-        };
+
+          };
 
         let chart = new ApexCharts(document.querySelector('.daynightDuiktank1wTotaalNet'), options);
         return chart;
@@ -47,16 +47,16 @@ export default class Graphs {
 
         let options = {
             chart: {
-              type: 'line',
-              zoom: {
-                enabled: false
-              },
-              toolbar: {
-                show: false,
-              },
-              animations: {
-                enabled: false
-              }
+                type: 'area',
+                zoom: {
+                    enabled: false
+                },
+                toolbar: {
+                    show: false,
+                },
+                animations: {
+                    enabled: false
+                }
             },
             dataLabels: {
                 enabled: false
@@ -66,7 +66,7 @@ export default class Graphs {
               data
             }],
             yaxis: {
-              opposite: true,
+              opposite: false,
             }
         };
 
