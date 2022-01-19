@@ -139,7 +139,7 @@ def TEST1():
 @ app.route(endpoint + '/TEST2', methods=['GET'])
 def TEST2():
     if request.method == 'GET':
-        MqttDatabase.open_mqtt_connection_realtime()
+        MqttDatabase.open_mqtt_connection_realtime(socketio)
 
 # SOCKET IO
 

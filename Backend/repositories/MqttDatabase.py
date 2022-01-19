@@ -1,6 +1,7 @@
 import configparser
 from dataclasses import dataclass
 from datetime import datetime
+from .InfluxRepository import InfluxRepository
 
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
@@ -114,10 +115,15 @@ class MqttDatabase:
 
             smappee_dicts[location] += power
 
+        duiktank = InfluxRepository.read_last_data_from_device(
+            'Duiktank', 'TotaalNet')[0]
+
+        smappee_dicts[duiktank["_measurement"]] = duiktank["_value"]
+
         # Broadcast realtime data
         socketio.emit('B2F_realtime', {'data': smappee_dicts})
 
-        print(smappee_dicts)
+        # print(smappee_dicts)
 
     @staticmethod
     def __on_message_realtime(mqttclient, userdata, msg):
@@ -160,7 +166,9 @@ class MqttDatabase:
         mqttclient.loop_start()
 
     @staticmethod
-    def open_mqtt_connection_realtime():
+    def open_mqtt_connection_realtime(socket):
+        global socketio
+        socketio = socket
         # open connection with mqtt
         mqttclient = mqtt.Client()
         mqttclient.on_connect = MqttDatabase.__on_connect
