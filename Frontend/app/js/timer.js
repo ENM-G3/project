@@ -4,7 +4,7 @@
 export default class Timer {
     constructor(app) {
         this.app = app;
-        this.interval = 2;
+        this.interval = 5;
 
         this.order = [1, 2];
 
@@ -12,6 +12,7 @@ export default class Timer {
     }
 
     async init() {
+        document.documentElement.style.setProperty('--global-progress-duration', `${this.interval}s`);
         await this.getSlides();
 
         this.slider = document.querySelector(".slider");
@@ -26,7 +27,7 @@ export default class Timer {
 
         this.addEvents();
 
-        //this.slideIndicator();
+        this.slideIndicator();
         setInterval(this.gotoNext.bind(this), this.interval * 1000);
     }
 
@@ -37,36 +38,48 @@ export default class Timer {
             this.slides[i].style.order = this.order[i];
         }
 
-
-        //this.slideIndicator();
-
         document.querySelector(".slider").classList.remove('slider-transition');
 		document.querySelector(".slider").style.transform = 'translateX(0)';
+        if (this.order[0] == 1) {
+            let el = document.querySelector(`#progress-1 .progress-done`);
+            el.style.animation = 'none';
+            el.offsetHeight; /* trigger reflow */
+            el.style.animation = null; 
+        }
+        this.slideIndicator();
 
     }
 
     addEvents() {
-        document.querySelector(".slider").addEventListener('transitionend', this.changeOrder.bind(this));
+        //document.querySelector(".slider").addEventListener('transitionend', this.changeOrder.bind(this));
     }
 
     gotoNext () {
+
         this.order.push(this.order[0]);
         this.order.shift();
+
+        if (this.order[0] == 1) {
+            this.removeAnimations();
+        }
 
 		document.querySelector(".slider").classList.add('slider-transition');
 		document.querySelector(".slider").style.transform = 'translateX(-100%)';
 
-        //this.changeOrder();
+        this.changeOrder();
     }
 
     slideIndicator() {
-        document.querySelector(`#progress-${this.current} .progress-done`).classList.add("progress-done-animation");
+        document.querySelector(`#progress-${this.order[0]} .progress-done`).classList.add("progress-done-animation");
     }
 
     removeAnimations() {
-        for (let i = 1; i <= this.num_items; i++) {
-            document.querySelector(`#progress-${this.current} .progress-done`).classList.remove("progress-done-animation");
-        } 
+
+        for (const order of this.order) {
+            console.log(`Removed animation ${order}`);
+            document.querySelector(`#progress-${order} .progress-done`).classList.remove("progress-done-animation");
+        }
+       
     }
 
     async getTemplate() {
