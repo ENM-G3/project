@@ -135,6 +135,7 @@ def TEST1():
         bucket = config['mqtt']['bucket']
         return jsonify(data=MqttDatabase.get_db_data(f'from(bucket: \"{bucket}\") |> range(start: -1mo) ')), 200
 
+
 @ app.route(endpoint + '/TEST2', methods=['GET'])
 def TEST2():
     if request.method == 'GET':

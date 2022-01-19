@@ -13,6 +13,7 @@ import sys
 
 
 class MqttDatabase:
+
     @staticmethod
     def __get_config():
         # Get config from the ini file
@@ -89,6 +90,36 @@ class MqttDatabase:
         mqttclient.loop_stop()
 
     @staticmethod
+    def __on_message_realtime2(mqttclient, userdata, msg):
+        config = MqttDatabase.__get_config()
+
+        payload = str(msg.payload.decode("utf8"))
+        payload = json.loads(payload)
+
+        smappee_dicts = {}
+        smappee_totals = {}
+
+        for i in payload["channelPowers"]:
+            location, power = '', ''
+            for key, value in i.items():
+                if key == "serviceLocationId":
+                    location = config["smappeeLocationId"][str(value)]
+                if key == "apparentPower":
+                    power = value
+
+            # print(i)
+
+            if location not in smappee_dicts.keys():
+                smappee_dicts[location] = 0
+
+            smappee_dicts[location] += power
+
+        # Broadcast realtime data
+        socketio.emit('B2F_realtime', {'data': smappee_dicts})
+
+        print(smappee_dicts)
+
+    @staticmethod
     def __on_message_realtime(mqttclient, userdata, msg):
         config = MqttDatabase.__get_config()
 
@@ -116,8 +147,6 @@ class MqttDatabase:
                     else:
                         print("new power")
 
-
-
     @staticmethod
     def open_mqtt_connection_and_write_to_db():
         # open connection with mqtt
@@ -135,7 +164,7 @@ class MqttDatabase:
         # open connection with mqtt
         mqttclient = mqtt.Client()
         mqttclient.on_connect = MqttDatabase.__on_connect
-        mqttclient.on_message = MqttDatabase.__on_message_realtime
+        mqttclient.on_message = MqttDatabase.__on_message_realtime2
         mqttclient.on_disconnect = MqttDatabase.open_mqtt_connection_realtime
 
         mqttclient.connect(
