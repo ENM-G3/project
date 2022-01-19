@@ -38,8 +38,6 @@ export default class Timer {
             this.slides[i].style.order = this.order[i];
         }
 
-        document.querySelector(".slider").classList.remove('slider-transition');
-		document.querySelector(".slider").style.transform = 'translateX(0)';
         if (this.order[0] == 1) {
             let el = document.querySelector(`#progress-1 .progress-done`);
             el.style.animation = 'none';
@@ -55,16 +53,12 @@ export default class Timer {
     }
 
     gotoNext () {
-
         this.order.push(this.order[0]);
         this.order.shift();
 
         if (this.order[0] == 1) {
             this.removeAnimations();
         }
-
-		document.querySelector(".slider").classList.add('slider-transition');
-		document.querySelector(".slider").style.transform = 'translateX(-100%)';
 
         this.changeOrder();
     }

@@ -8,7 +8,9 @@
     --global-progress-show: 80%;
     --global-progress-duration: 5s;
 
-    --global-section-shadow: 0px 5px 8px -2px rgba(133, 77, 77, 0.4);
+    --global-section-shadow: 0px 3px 8px -2px rgba(133, 77, 77, 0.2);
+
+    --global-background-gradient: linear-gradient(190deg, rgba(255,255,255,1) 0%, rgba(232,253,232,1) 100%);
 
 
 }
@@ -22,9 +24,11 @@
 html, body {
     scroll-behavior: smooth;
     background-color: var(--global-color-alpha);
+    background: var(--global-background-gradient);
     color: var(--global-color-alpha--);
     font-family: Arial, Helvetica, sans-serif;
     height: 100%;
+
 }
 
 /* Container & section positions */
@@ -116,6 +120,7 @@ html, body {
 section {
     padding: 4px;
     border-radius: 4px;
+    background-color: var(--global-color-alpha);
     box-shadow: var(--global-section-shadow);
 
     min-height: 100% !important;
@@ -144,6 +149,7 @@ section {
     margin: 0 6px;
 
     position: relative;
+    box-shadow: var(--global-section-shadow);
 }
 
 .progress-base {
@@ -152,7 +158,7 @@ section {
     width: 100%;
     height: 100%;
 
-    background-color: var(--global-color-alpha-);
+    background-color: var(--global-color-alpha);
 }
 .progress-done {
     position: absolute;
