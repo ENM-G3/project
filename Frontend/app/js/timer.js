@@ -4,42 +4,41 @@
 export default class Timer {
     constructor(app) {
         this.app = app;
-        this.interval = 30;
+        this.interval = 2;
+
+        this.order = [1, 2];
+
+        this.init();
+    }
+
+    async init() {
+        await this.getSlides();
 
         this.slider = document.querySelector(".slider");
         this.slides = document.querySelectorAll(".slide");
 
         this.num_items = this.slides.length;
 
-        this.init();
-
-        this.order = [1, 2, 3, 4];
-    }
-
-    async init() {
-        await this.getSlides();
-
-        this.current = 1;
+        
         this.slides.forEach((element, index) => {
-            console.log(element);
-            element.style.order = index + 1;
+            element.style.order = this.order[index];
         });
+
         this.addEvents();
 
-        this.slideIndicator();
-        setInterval(this.gotoNext, this.interval * 1000);
+        //this.slideIndicator();
+        setInterval(this.gotoNext.bind(this), this.interval * 1000);
     }
 
     changeOrder() {
-        this.current++;
-        this.order.push(this.order[0]);
-        this.order.pop(0);
+        console.log('change');
 
         for (let i = 0; i < this.num_items; i++) {
             this.slides[i].style.order = this.order[i];
         }
 
-        this.slideIndicator();
+
+        //this.slideIndicator();
 
         document.querySelector(".slider").classList.remove('slider-transition');
 		document.querySelector(".slider").style.transform = 'translateX(0)';
@@ -47,14 +46,17 @@ export default class Timer {
     }
 
     addEvents() {
-        document.querySelector(".slider").addEventListener('transitionend', () => {
-			this.changeOrder();
-		});
+        document.querySelector(".slider").addEventListener('transitionend', this.changeOrder.bind(this));
     }
 
     gotoNext () {
+        this.order.push(this.order[0]);
+        this.order.shift();
+
 		document.querySelector(".slider").classList.add('slider-transition');
 		document.querySelector(".slider").style.transform = 'translateX(-100%)';
+
+        //this.changeOrder();
     }
 
     slideIndicator() {
@@ -118,8 +120,6 @@ export default class Timer {
 
         section1.id = 'section1';
         section1.classList.add('grid-top-left');
-
-
 
         temp.appendChild(section1);
 
