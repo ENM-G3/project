@@ -4,6 +4,7 @@ from datetime import datetime
 
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
+from flask_socketio import SocketIO, send, emit
 
 import paho.mqtt.client as mqtt
 import json
@@ -68,7 +69,7 @@ class MqttDatabase:
 
     # The callback for when a PUBLISH message is received from the server.
     @staticmethod
-    def __on_message(mqttclient, userdata, msg):
+    def __on_message_db(mqttclient, userdata, msg):
         config = MqttDatabase.__get_config()
 
         payload = str(msg.payload.decode("utf8"))
@@ -88,26 +89,56 @@ class MqttDatabase:
         mqttclient.loop_stop()
 
     @staticmethod
-    def open_mqtt_connection():
+    def __on_message_realtime(mqttclient, userdata, msg):
+        config = MqttDatabase.__get_config()
+
+        payload = str(msg.payload.decode("utf8"))
+        payload = json.loads(payload)
+        previous_device = ''
+        previous_location = ''
+        device, location, power = '', '', ''
+        for i in payload["channelPowers"]:
+            for key, value in i.items():
+                print(key, value)
+                if key == "formula":
+                    device = config["smappeePublishIndex"][str(value)][:-3]
+                    if device == previous_device:
+                        print("same device")
+                    else:
+                        previous_device = device
+                        print("new device")
+
+                if key == "power":
+                    power = value
+                    print(device, previous_device)
+                    if device == previous_device:
+                        print("add to power")
+                    else:
+                        print("new power")
+
+
+
+    @staticmethod
+    def open_mqtt_connection_and_write_to_db():
         # open connection with mqtt
         mqttclient = mqtt.Client()
         mqttclient.on_connect = MqttDatabase.__on_connect
-        mqttclient.on_message = MqttDatabase.__on_message
+        mqttclient.on_message = MqttDatabase.__on_message_db
 
         mqttclient.connect(
             "howest-energy-monitoring.westeurope.cloudapp.azure.com", 1883, 60)
 
         mqttclient.loop_start()
 
+    @staticmethod
+    def open_mqtt_connection_realtime():
+        # open connection with mqtt
+        mqttclient = mqtt.Client()
+        mqttclient.on_connect = MqttDatabase.__on_connect
+        mqttclient.on_message = MqttDatabase.__on_message_realtime
+        mqttclient.on_disconnect = MqttDatabase.open_mqtt_connection_realtime
 
-# TESTING
-# if __name__ == '__main__':
+        mqttclient.connect(
+            "howest-energy-monitoring.westeurope.cloudapp.azure.com", 1883, 60)
 
-#     MqttDatabase.open_mqtt_connection()
-
-#     config = configparser.ConfigParser()
-#     config.read('Backend\config.ini')
-#     bucket = config['mqtt']['bucket']
-
-#     for i in MqttDatabase.get_db_data(f'from(bucket: \"{bucket}\") |> range(start: -1mo) '):
-#         print(i)
+        mqttclient.loop_forever()
