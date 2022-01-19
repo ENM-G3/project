@@ -4,12 +4,12 @@
 export default class Timer {
     constructor(app) {
         this.app = app;
-        this.interval = 2;
+        this.interval = 30;
+
         this.slider = document.querySelector(".slider");
         this.slides = document.querySelectorAll(".slide");
+
         this.num_items = this.slides.length;
-
-
 
         this.init();
     }
@@ -109,14 +109,12 @@ export default class Timer {
         let section1 = document.createElement('section');
         section1.id = 'section1';
         section1.classList.add('testGraph');
+        section1.classList.add('grid-top-left');
 
         let section2 = document.createElement('section');
         section2.id = 'section2';
         section2.classList.add('daynightDuiktank1wTotaalNet');
-
-        
-
-
+        section2.classList.add('grid-top-right');
 
         temp.appendChild(section1);
         temp.appendChild(section2);

@@ -27,17 +27,7 @@ export default class Graphs {
                     enabled: false,
                 },
             },
-            responsive: [{
-                breakpoint: 480,
-                options: {
-                chart: {
-                    width: 100
-                },
-                legend: {
-                    position: 'bottom'
-                }
-                }
-            }]
+            responsive: []
         };
 
         let chart = new ApexCharts(document.querySelector('.daynightDuiktank1wTotaalNet'), options);
