@@ -49,7 +49,7 @@ class MqttDatabase:
         return results
 
     @staticmethod
-    def __write_db_data(location, device, value):
+    def __write_db_data(smappee_dicts):
         config = MqttDatabase.__get_config()
         bucket = config['mqtt']['bucket']
         org = config['mqtt']['org']
@@ -58,8 +58,9 @@ class MqttDatabase:
 
         write_api = dbclient.write_api(write_options=SYNCHRONOUS)
 
-        data = f"{location},meter=Smappee {device}={value}"
-        write_api.write(bucket, org, data)
+        for key, value in smappee_dicts.items():
+            data = f"{key},meter=Smappee TotaalNet={value}"
+            write_api.write(bucket, org, data)
 
     # The callback for when the client receives a CONNACK response from the server.
 
@@ -76,29 +77,43 @@ class MqttDatabase:
 
         payload = str(msg.payload.decode("utf8"))
         payload = json.loads(payload)
+
+        smappee_dicts = {}
+
         for i in payload["channelPowers"]:
-            device, location, power = '', '', ''
+            location, power = '', ''
             for key, value in i.items():
-                if key == "formula":
-                    device = config["smappeePublishIndex"][str(value)]
                 if key == "serviceLocationId":
                     location = config["smappeeLocationId"][str(value)]
-                if key == "power":
+                if key == "apparentPower":
                     power = value
 
-            MqttDatabase.__write_db_data(location, device, power)
+            # print(i)
+
+            if location not in smappee_dicts.keys():
+                smappee_dicts[location] = 0
+
+            smappee_dicts[location] += power
+
+        duiktank = InfluxRepository.read_last_data_from_device(
+            'Duiktank', 'TotaalNet')[0]
+
+        smappee_dicts[duiktank["_measurement"]] = duiktank["_value"]
+
+        # print(smappee_dicts)                
+
+        MqttDatabase.__write_db_data(smappee_dicts)
 
         mqttclient.loop_stop()
 
     @staticmethod
-    def __on_message_realtime2(mqttclient, userdata, msg):
+    def __on_message_realtime(mqttclient, userdata, msg):
         config = MqttDatabase.__get_config()
 
         payload = str(msg.payload.decode("utf8"))
         payload = json.loads(payload)
 
         smappee_dicts = {}
-        smappee_totals = {}
 
         for i in payload["channelPowers"]:
             location, power = '', ''
@@ -126,34 +141,6 @@ class MqttDatabase:
         # print(smappee_dicts)
 
     @staticmethod
-    def __on_message_realtime(mqttclient, userdata, msg):
-        config = MqttDatabase.__get_config()
-
-        payload = str(msg.payload.decode("utf8"))
-        payload = json.loads(payload)
-        previous_device = ''
-        previous_location = ''
-        device, location, power = '', '', ''
-        for i in payload["channelPowers"]:
-            for key, value in i.items():
-                print(key, value)
-                if key == "formula":
-                    device = config["smappeePublishIndex"][str(value)][:-3]
-                    if device == previous_device:
-                        print("same device")
-                    else:
-                        previous_device = device
-                        print("new device")
-
-                if key == "power":
-                    power = value
-                    print(device, previous_device)
-                    if device == previous_device:
-                        print("add to power")
-                    else:
-                        print("new power")
-
-    @staticmethod
     def open_mqtt_connection_and_write_to_db():
         # open connection with mqtt
         mqttclient = mqtt.Client()
@@ -172,7 +159,7 @@ class MqttDatabase:
         # open connection with mqtt
         mqttclient = mqtt.Client()
         mqttclient.on_connect = MqttDatabase.__on_connect
-        mqttclient.on_message = MqttDatabase.__on_message_realtime2
+        mqttclient.on_message = MqttDatabase.__on_message_realtime
         mqttclient.on_disconnect = MqttDatabase.open_mqtt_connection_realtime
 
         mqttclient.connect(

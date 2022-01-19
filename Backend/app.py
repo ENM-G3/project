@@ -20,6 +20,8 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app)
 
 # threading
+def socketio_run():
+    socketio.run(app, debug=False, host='0.0.0.0')
 
 
 def thread_function():
@@ -27,9 +29,8 @@ def thread_function():
 
 
 def thread_timer():
-    print('--- threading ---')
     now = datetime.datetime.now()
-    delta = datetime.timedelta(minutes=5)
+    delta = datetime.timedelta(seconds=5)
     # print(now)
     # print(now + (now.min - now) % delta)
     # print((now.min - now) % delta)
@@ -41,8 +42,12 @@ def thread_timer():
                     thread_timer).start()
 
 
-# thread = threading.Timer(0, thread_timer)
-# thread.start()
+thread1 = threading.Timer(0, socketio_run)
+thread2 = threading.Timer(0, thread_timer)
+thread3 = threading.Timer(0, MqttDatabase.open_mqtt_connection_realtime, args=(socketio,))
+thread1.start()
+thread2.start()
+thread3.start()
 
 
 # Custom endpoint
@@ -135,12 +140,6 @@ def TEST1():
         bucket = config['mqtt']['bucket']
         return jsonify(data=MqttDatabase.get_db_data(f'from(bucket: \"{bucket}\") |> range(start: -1mo) ')), 200
 
-
-@ app.route(endpoint + '/TEST2', methods=['GET'])
-def TEST2():
-    if request.method == 'GET':
-        MqttDatabase.open_mqtt_connection_realtime(socketio)
-
 # SOCKET IO
 
 
@@ -150,5 +149,5 @@ def connect():
 
 
 # RUN
-if __name__ == '__main__':
-    socketio.run(app, debug=False, host='0.0.0.0')  # default port is 5000
+# if __name__ == '__main__':
+#     socketio.run(app, debug=False, host='0.0.0.0')  # default port is 5000
