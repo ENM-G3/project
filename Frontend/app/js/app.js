@@ -32,7 +32,7 @@ export default class App {
         return this._api;
     }
 
-    get graphs() {
+    get charts() {
       return this._graph;
     }
 
@@ -40,51 +40,6 @@ export default class App {
 
         // hier komen de listeners, structuur nog uit te zoeken
         console.log("App has been initialized!");
-        let watthours = await this.api.history.get("Duiktank", "1w", "TotaalNet", "1d");
-        console.log(watthours);
-
-        let data = [], labels = [];
-
-        for (const hour of watthours.data) {
-            data.push(Math.round(hour._value / 1000));
-
-            let date = new Date(hour._time);
-            let hours = date.getHours();
-            let minutes = date.getMinutes();
-
-            if (hours < 10) {
-              hours = `0${hours}`;
-            }
-
-            if (minutes < 10) {
-              minutes = `0${minutes}`;
-            }
-
-            labels.push(`${hours}:${minutes}`);
-        }
-
-        let myChart = new ApexCharts(document.querySelector(".testGraph"), {
-            chart: {
-              type: 'area',
-              zoom: {
-                enabled: false
-              },
-              toolbar: {
-                show: false,
-              }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            labels,
-            series: [{
-              data
-            }],
-            yaxis: {
-              opposite: true,
-            }
-          })
-          myChart.render();
         
     }
 

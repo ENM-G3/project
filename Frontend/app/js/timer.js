@@ -4,7 +4,7 @@
 export default class Timer {
     constructor(app) {
         this.app = app;
-        this.interval = 20;
+        this.interval = 2;
         this.slider = document.querySelector(".slider");
         this.slides = document.querySelectorAll(".slide");
         this.num_items = this.slides.length;
@@ -41,35 +41,36 @@ export default class Timer {
         let order = 1;
         let orderList = [];
 
+        console.log(this.current);
+
         for(let i = 1; i < (this.num_items + 1); i++) {
-            orderList.push(this.slides[i - 1].style.order);
+            orderList.push(this.slides[i].style.order);
 		}
-        console.log(orderList);
 
-        // for(let i = this.current; i <= this.num_items; i++) {
-        //     if (i == this.num_items) {
-        //         this.slides[i - 1].style.order = order;
-        //         order++;
-        //     } else {
-        //         this.slides[i].style.order = order;
-        //         order++;
-        //     }
-        //     console.log(i);
-        //     try {
+        for(let i = this.current; i <= this.num_items; i++) {
+            if (i == this.num_items) {
+                this.slides[i - 1].style.order = order;
+                order++;
+            } else {
+                this.slides[i].style.order = order;
+                order++;
+            }
+            console.log(i);
+            try {
 
-        //     } catch(e) {
-        //         console.log(e, i)
-        //     }
+            } catch(e) {
+                console.log(e, i)
+            }
 
-		// }
+		}
 
-        // for (let i = 1; i < this.current; i++) {
-        //     this.slides[i].style.order = order;
-        //     order++;
-        // }
+        for (let i = 1; i < this.current; i++) {
+            this.slides[i].style.order = order;
+            order++;
+        }
 
-        // document.querySelector(".slider").classList.remove('slider-transition');
-		// document.querySelector(".slider").style.transform = 'translateX(0)';
+        document.querySelector(".slider").classList.remove('slider-transition');
+		document.querySelector(".slider").style.transform = 'translateX(0)';
 
     }
 
@@ -130,8 +131,10 @@ export default class Timer {
 
         document.querySelector(".slider").appendChild(slide1);
 
+        let chart1 = await this.app.charts.getWatthourAverage("Duiktank", "1w", "TotaalNet", "1d");
+        chart1.render();
 
-        let chart = await this.app.graphs.getDayNightChart();
+        let chart = await this.app.charts.getDayNightChart('Duiktank', '1mo', 'TotaalNet');
         chart.render();
     }
 
