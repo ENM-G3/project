@@ -12,6 +12,8 @@ export default class Timer {
         this.num_items = this.slides.length;
 
         this.init();
+
+        this.order = [1, 2, 3, 4];
     }
 
     async init() {
@@ -29,45 +31,15 @@ export default class Timer {
     }
 
     changeOrder() {
+        this.current++;
+        this.order.push(this.order[0]);
+        this.order.pop(0);
 
-        if (this.current == this.num_items) {
-            this.current = 1;
-            this.removeAnimations();
-        } else {
-            this.current++;
+        for (let i = 0; i < this.num_items; i++) {
+            this.slides[i].style.order = this.order[i];
         }
+
         this.slideIndicator();
-
-        let order = 1;
-        let orderList = [];
-
-        console.log(this.current);
-
-        for(let i = 1; i < (this.num_items + 1); i++) {
-            orderList.push(this.slides[i].style.order);
-		}
-
-        for(let i = this.current; i <= this.num_items; i++) {
-            if (i == this.num_items) {
-                this.slides[i - 1].style.order = order;
-                order++;
-            } else {
-                this.slides[i].style.order = order;
-                order++;
-            }
-            console.log(i);
-            try {
-
-            } catch(e) {
-                console.log(e, i)
-            }
-
-		}
-
-        for (let i = 1; i < this.current; i++) {
-            this.slides[i].style.order = order;
-            order++;
-        }
 
         document.querySelector(".slider").classList.remove('slider-transition');
 		document.querySelector(".slider").style.transform = 'translateX(0)';
@@ -107,32 +79,65 @@ export default class Timer {
         temp.id = 'slide1';
 
         let section1 = document.createElement('section');
+
         section1.id = 'section1';
+
         section1.classList.add('testGraph');
-        section1.classList.add('grid-top');
+        section1.classList.add('grid-top-left');
 
         let section2 = document.createElement('section');
         section2.id = 'section2';
         section2.classList.add('daynightDuiktank1wTotaalNet');
+        section2.classList.add('grid-bottom-left');
+
+        let section3 = document.createElement('section');
+        section3.id = 'section3';
+        section3.classList.add('grid-bottom-right');
+
+        let section5 = document.createElement('section');
+        section5.id = 'section5';
+        section5.classList.add('grid-vertical');
+
 
         temp.appendChild(section1);
-        //temp.appendChild(section2);
+        temp.appendChild(section2);
+        temp.appendChild(section3);
+
+        temp.appendChild(section5);
 
 
 
         return temp;
     }
 
+    async getSlide2() {
+        let temp = await this.getTemplate();
+        temp.id = 'slide2';
+
+        let section1 = document.createElement('section');
+
+        section1.id = 'section1';
+        section1.classList.add('grid-top-left');
+
+
+
+        temp.appendChild(section1);
+
+        return temp;
+    }
+
     async getSlides() {
         let slide1 = await this.getSlide1();
+        let slide2 = await this.getSlide2();
 
         document.querySelector(".slider").appendChild(slide1);
+        document.querySelector(".slider").appendChild(slide2);
 
         let chart1 = await this.app.charts.getWatthourAverage("Duiktank", "1w", "TotaalNet", "1d");
         chart1.render();
 
-        // let chart = await this.app.charts.getDayNightChart('Duiktank', '1mo', 'TotaalNet');
-        // chart.render();
+        let chart = await this.app.charts.getDayNightChart('Duiktank', '1mo', 'TotaalNet');
+        chart.render();
     }
 
 

@@ -4,6 +4,8 @@ export default class Graphs {
 
     constructor (app) {
         this.app = app;
+
+        this.days = ['Zon', 'Ma', 'Di', 'Woe', 'Don', 'Vrij', 'Zat'];
     }
 
     async getDayNightChart(measurement, timespan, device) {
@@ -22,7 +24,6 @@ export default class Graphs {
             labels: [daynight[0].dayString, daynight[1].dayString],
             chart: {
                 type: 'donut',
-                width: '100%',
                 animations: {
                     enabled: false
                 }
@@ -42,7 +43,15 @@ export default class Graphs {
 
         for (const hour of watthours.data) {
             data.push(Math.round(hour._value / 1000));
-            labels.push(hour._time);
+            let date = new Date(hour._time);
+            let month;
+            if(date.getMonth() < 9) {
+                month = `0${date.getMonth() + 1}`;
+            } else {
+                month = `${date.getMonth() + 1}`;
+            }
+            let dateString = `${this.days[date.getDay()]} ${date.getDate()}/${month}`;
+            labels.push(dateString);
         }
 
         let options = {
