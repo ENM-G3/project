@@ -30,7 +30,7 @@ def thread_function():
 
 def thread_timer():
     now = datetime.datetime.now()
-    delta = datetime.timedelta(seconds=5)
+    delta = datetime.timedelta(minutes=5)
     # print(now)
     # print(now + (now.min - now) % delta)
     # print((now.min - now) % delta)
