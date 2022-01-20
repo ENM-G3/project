@@ -29,7 +29,7 @@ class CosmosDatabase:
                 id=CONTAINER_ID, partition_key=PartitionKey(path='/id', kind='Hash'))
             return container
         except Exception as error:
-            print("Error: Geen toegang tot database")
+            print("Error: Geen toegang tot cosmos database")
             return
 
     @staticmethod

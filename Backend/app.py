@@ -20,6 +20,8 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app)
 
 # threading
+
+
 def socketio_run():
     socketio.run(app, debug=False, host='0.0.0.0')
 
@@ -44,7 +46,8 @@ def thread_timer():
 
 thread1 = threading.Timer(0, socketio_run)
 thread2 = threading.Timer(0, thread_timer)
-thread3 = threading.Timer(0, MqttDatabase.open_mqtt_connection_realtime, args=(socketio,))
+thread3 = threading.Timer(
+    0, MqttDatabase.open_mqtt_connection_realtime, args=(socketio,))
 thread1.start()
 thread2.start()
 thread3.start()
