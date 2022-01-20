@@ -3,15 +3,18 @@ import Socket from './SOCKET/index.js';
 import API from './API/index.js';
 import Timer from './timer.js';
 import Graphs from './graphs.js';
+import Animation from './animation/index.js';
 
 
 export default class App {
     _hostname = "localhost:5001";
+
     _io = io(this._hostname);
     _socket = new Socket(this);
     _api = new API(this);
     _timer = new Timer(this);
     _graph = new Graphs(this);
+    _animation = new Animation(this);
 
     constructor() {
         this.init();
@@ -34,6 +37,14 @@ export default class App {
 
     get charts() {
       return this._graph;
+    }
+
+    get animation() {
+        return this._animation;
+    }
+
+    get timer() {
+        return this._timer;
     }
 
     async init() {
