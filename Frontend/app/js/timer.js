@@ -6,15 +6,16 @@ export default class Timer {
         this.app = app;
         this.interval = 2;
 
-        this.order = [1, 2, 3];
+        
 
         this.init();
-
+        this.order = [];
         
     }
 
     async init() {
         document.documentElement.style.setProperty('--global-progress-duration', `${this.interval}s`);
+        
         await this.getSlides();
 
         this.slider = document.querySelector(".slider");
@@ -22,6 +23,24 @@ export default class Timer {
 
         this.num_items = this.slides.length;
 
+        document.documentElement.style.setProperty('--global-slides-amount', this.num_items);
+
+        let progressContainer = document.querySelector('div.progress-container');
+
+        for (let i = 1; i <= this.num_items; i++) {
+            this.order.push(i);
+
+            let progress = `<div id="progress-${i}" class="progress">
+            <div id="progress-base" class="progress-base"></div>
+            <div id="progress-done" class="progress-done"></div>
+            <div id="progress-show"></div>
+            </div>`;
+
+            progressContainer.innerHTML += progress;
+            
+        }
+
+        this.current = 1;
         
         this.slides.forEach((element, index) => {
             element.style.order = this.order[index];
@@ -54,6 +73,13 @@ export default class Timer {
     }
 
     gotoNext () {
+
+        if (this.order.length == this.current) {
+            this.current = 1;
+        } else {
+            this.current++;
+        }
+
         this.order.unshift(this.order[this.order.length - 1]);
         this.order.pop();
 
@@ -65,9 +91,9 @@ export default class Timer {
     }
 
     slideIndicator() {
-        document.querySelector(`#progress-${this.order[2]} #progress-show`).classList.remove("progress-show");
+        //document.querySelector(`#progress-${this.order[2]} #progress-show`).classList.remove("progress-show");
         // document.querySelector(`#progress-${this.order[0]} #progress-show`).classList.add("progress-show");
-        document.querySelector(`#progress-${this.order[0]} #progress-done`).classList.add("progress-done-animation");
+        document.querySelector(`#progress-${this.current} #progress-done`).classList.add("progress-done-animation");
     }
 
     removeAnimations() {
