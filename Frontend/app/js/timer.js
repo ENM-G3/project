@@ -4,11 +4,13 @@
 export default class Timer {
     constructor(app) {
         this.app = app;
-        this.interval = 5;
+        this.interval = 2;
 
-        this.order = [1, 2];
+        this.order = [1, 2, 3];
 
         this.init();
+
+        
     }
 
     async init() {
@@ -32,7 +34,6 @@ export default class Timer {
     }
 
     changeOrder() {
-        console.log('change');
 
         for (let i = 0; i < this.num_items; i++) {
             this.slides[i].style.order = this.order[i];
@@ -53,8 +54,8 @@ export default class Timer {
     }
 
     gotoNext () {
-        this.order.push(this.order[0]);
-        this.order.shift();
+        this.order.unshift(this.order[this.order.length - 1]);
+        this.order.pop();
 
         if (this.order[0] == 1) {
             this.removeAnimations();
@@ -64,19 +65,18 @@ export default class Timer {
     }
 
     slideIndicator() {
-        document.querySelector(`#progress-${this.order[0]} .progress-done`).classList.add("progress-done-animation");
+        document.querySelector(`#progress-${this.order[2]} #progress-show`).classList.remove("progress-show");
+        // document.querySelector(`#progress-${this.order[0]} #progress-show`).classList.add("progress-show");
+        document.querySelector(`#progress-${this.order[0]} #progress-done`).classList.add("progress-done-animation");
     }
 
     removeAnimations() {
-
         for (const order of this.order) {
-            console.log(`Removed animation ${order}`);
-            document.querySelector(`#progress-${order} .progress-done`).classList.remove("progress-done-animation");
+            document.querySelector(`#progress-${order} #progress-done`).classList.remove("progress-done-animation");
         }
-       
     }
 
-    async getTemplate() {
+    getTemplate() {
         let div = document.createElement('div');
         div.classList.add('slide');
 
@@ -84,8 +84,27 @@ export default class Timer {
     }
 
     async getSlide1() {
-        let temp = await this.getTemplate();
+        let temp = this.getTemplate();
         temp.id = 'slide1';
+
+        let section1 = document.createElement('section');
+        section1.id = 'section1';
+        section1.classList.add('grid-top');
+
+        let section2 = document.createElement('section');
+        section2.id = 'section1';
+        section2.classList.add('grid-bottom');
+        section2.classList.add('realtime');
+
+        temp.appendChild(section1);
+        temp.appendChild(section2);
+
+        return temp;
+    }
+
+    async getSlide2() {
+        let temp = this.getTemplate();
+        temp.id = 'slide2';
 
         let section1 = document.createElement('section');
 
@@ -119,9 +138,9 @@ export default class Timer {
         return temp;
     }
 
-    async getSlide2() {
-        let temp = await this.getTemplate();
-        temp.id = 'slide2';
+    async getSlide3() {
+        let temp = this.getTemplate();
+        temp.id = 'slide3';
 
         let section1 = document.createElement('section');
 
@@ -136,15 +155,20 @@ export default class Timer {
     async getSlides() {
         let slide1 = await this.getSlide1();
         let slide2 = await this.getSlide2();
+        let slide3 = await this.getSlide3();
 
         document.querySelector(".slider").appendChild(slide1);
         document.querySelector(".slider").appendChild(slide2);
+        document.querySelector(".slider").appendChild(slide3);
 
         let chart1 = await this.app.charts.getWatthourAverage("Duiktank", "1w", "TotaalNet", "1d");
         chart1.render();
 
         let chart = await this.app.charts.getDayNightChart('Duiktank', '1mo', 'TotaalNet');
         chart.render();
+
+        this.app.charts.getRealtimeChart();
+        this.app.charts.realtimeChart.render();
     }
 
 

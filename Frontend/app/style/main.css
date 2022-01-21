@@ -7,12 +7,11 @@
 
     --global-progress-show: 80%;
     --global-progress-duration: 5s;
+    --global-slides-amount: 3;
 
     --global-section-shadow: 0px 3px 8px -2px rgba(133, 77, 77, 0.2);
 
     --global-background-gradient: linear-gradient(190deg, rgba(255,255,255,1) 0%, rgba(232,253,232,1) 100%);
-
-
 }
 
 * {
@@ -133,39 +132,32 @@ section {
 /* Progress bar */
 .progress-container {
     grid-row: 2 / 3;
-
     display: flex;
-    align-items: center;
-
-    margin: 0 20px;
+    padding: 0 30px;
 }
-
 .progress {
-    width: 100%;
-    height: 10px;
-    border-radius: 4px;
-    overflow: hidden;
-
-    margin: 0 6px;
-
+    width: calc(100% / var(--global-slides-amount));     /* Change depending on slides */
+    height: 50%;
+    margin: 0 1.25%;
     position: relative;
-    box-shadow: var(--global-section-shadow);
 }
-
 .progress-base {
     position: absolute;
-
     width: 100%;
-    height: 100%;
+    height: 50%;
+    top: 25%;
 
-    background-color: var(--global-color-alpha);
+    background-color: var(--global-color-alpha-);
+    border-radius: 20px;
 }
 .progress-done {
     position: absolute;
     width: 0%;
-    height: 100%;
+    height: 50%;
+    top: 25%;
 
     background-color: var(--global-color-charlie);
+    border-radius: 20px;
 }
 .progress-done-animation {
     animation-duration: var(--global-progress-duration);
@@ -176,11 +168,16 @@ section {
 .progress-show {
     position: absolute;
     right: calc(100% - var(--global-progress-show));
-    height: 100%;
+    height: 0%;
     width: 1%;
 
     background-color: var(--global-color-alpha---);
     border-radius: 20px;
+
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+    animation-name: progress-show;
+    animation-timing-function: linear;
 }
 @keyframes progress-done-fill {
     from {
@@ -188,5 +185,13 @@ section {
     }
     to {
         width: 100%;
+    }
+}
+@keyframes progress-show {
+    from {
+        height: 0%;
+    }
+    to {
+        height: 100%;
     }
 }

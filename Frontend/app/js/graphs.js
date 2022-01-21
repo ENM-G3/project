@@ -6,6 +6,11 @@ export default class Graphs {
         this.app = app;
 
         this.days = ['Zon', 'Ma', 'Di', 'Woe', 'Don', 'Vrij', 'Zat'];
+
+        
+    }
+
+    init() {
     }
 
     async getDayNightChart(measurement, timespan, device) {
@@ -80,6 +85,55 @@ export default class Graphs {
         };
 
         return new ApexCharts(document.querySelector(".testGraph"), options);
+    }
+
+    async getRealtimeChart() {
+        var options = {
+            series: [],
+            chart: {
+            width: 380,
+            type: 'donut',
+            animations: {
+                enabled: false
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200
+              },
+              legend: {
+                show: false
+              }
+            }
+          }],
+          legend: {
+            position: 'right',
+            offsetY: 0,
+            height: 230,
+          }
+          };
+  
+          this.realtimeChart = new ApexCharts(document.querySelector(".realtime"), options);
+    }
+
+    async updateRealtimeChart(data) {
+        let values = [], labels = [];
+
+        for (const key in data) {
+            labels.push(key);
+            values.push(data[key]);
+        }
+
+        
+        this.realtimeChart.updateOptions({
+            labels
+        });
+        this.realtimeChart.updateSeries(values);
     }
 
     
