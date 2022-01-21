@@ -32,7 +32,6 @@ export default class Timer {
     }
 
     changeOrder() {
-        console.log('change');
 
         for (let i = 0; i < this.num_items; i++) {
             this.slides[i].style.order = this.order[i];
@@ -68,12 +67,9 @@ export default class Timer {
     }
 
     removeAnimations() {
-
         for (const order of this.order) {
-            console.log(`Removed animation ${order}`);
             document.querySelector(`#progress-${order} .progress-done`).classList.remove("progress-done-animation");
         }
-       
     }
 
     getTemplate() {
