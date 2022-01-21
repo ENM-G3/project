@@ -7,6 +7,7 @@
 
     --global-progress-show: 80%;
     --global-progress-duration: 5s;
+    --global-slides-amount: 3;
 
     --global-section-shadow: 0px 3px 8px -2px rgba(133, 77, 77, 0.2);
 
@@ -129,65 +130,13 @@ section {
 /* Vertical section */
 /* Images */
 /* Progress bar */
-/* .progress-container {
-    grid-row: 2 / 3;
-
-    display: flex;
-    align-items: center;
-
-    margin: 0 20px;
-}
-
-.progress {
-    width: 100%;
-    height: 10px;
-    border-radius: 4px;
-    overflow: hidden;
-
-    margin: 0 6px;
-
-    position: relative;
-    box-shadow: var(--global-section-shadow);
-}
-
-.progress-base {
-    position: absolute;
-
-    width: 100%;
-    height: 100%;
-
-    background-color: var(--global-color-alpha);
-}
-.progress-done {
-    position: absolute;
-    width: 0%;
-    height: 100%;
-
-    background-color: var(--global-color-charlie);
-}
-.progress-done-animation {
-    animation-duration: var(--global-progress-duration);
-    animation-fill-mode: forwards;
-    animation-name: progress-done-fill;
-    animation-timing-function: linear;
-}
-.progress-show {
-    position: absolute;
-    right: calc(100% - var(--global-progress-show));
-    height: 100%;
-    width: 1%;
-
-    background-color: var(--global-color-alpha---);
-    border-radius: 20px;
-} */
-
 .progress-container {
     grid-row: 2 / 3;
     display: flex;
     padding: 0 30px;
 }
 .progress {
-    width: 33%;     /* Change depending on slides */
+    width: calc(100% / var(--global-slides-amount));     /* Change depending on slides */
     height: 50%;
     margin: 0 1.25%;
     position: relative;

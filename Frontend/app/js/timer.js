@@ -66,13 +66,12 @@ export default class Timer {
 
     slideIndicator() {
         document.querySelector(`#progress-${this.order[2]} #progress-show`).classList.remove("progress-show");
-        document.querySelector(`#progress-${this.order[0]} #progress-show`).classList.add("progress-show");
+        // document.querySelector(`#progress-${this.order[0]} #progress-show`).classList.add("progress-show");
         document.querySelector(`#progress-${this.order[0]} #progress-done`).classList.add("progress-done-animation");
     }
 
     removeAnimations() {
         for (const order of this.order) {
-            // document.querySelector(`#progress-${order} #progress-show`).classList.remove("progress-show");
             document.querySelector(`#progress-${order} #progress-done`).classList.remove("progress-done-animation");
         }
     }
