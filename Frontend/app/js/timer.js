@@ -26,7 +26,6 @@ export default class Timer {
         document.documentElement.style.setProperty('--global-slides-amount', this.num_items);
 
         let progressContainer = document.querySelector('div.progress-container');
-        console.log(progressContainer);
 
         for (let i = 1; i <= this.num_items; i++) {
             this.order.push(i);
