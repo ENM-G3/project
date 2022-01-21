@@ -17,6 +17,7 @@ config.read(f'{sys.path[0]}/config.ini')
 token = config['mqtt']['token']
 url = config['mqtt']['url']
 org = config['mqtt']['org']
+bucket = config['mqtt']['bucket']
 
 
 class MqttDatabase:
@@ -37,7 +38,7 @@ class MqttDatabase:
         dbclient = MqttDatabase.__open_db_connection()
 
         try:
-            tables = client.query_api().query(query, org=org)
+            tables = dbclient.query_api().query(query, org=org)
             results = []
             for table in tables:
                 for record in table.records:
