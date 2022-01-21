@@ -7,7 +7,7 @@ import Animation from './animation/index.js';
 
 
 export default class App {
-    _hostname = "localhost:5001";
+    _hostname = "localhost:5000";
 
     _io = io(this._hostname);
     _socket = new Socket(this);
