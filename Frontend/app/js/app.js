@@ -7,7 +7,7 @@ import Animation from './animation/index.js';
 
 
 export default class App {
-    _hostname = "localhost:5000";
+    _hostname = "localhost:5001";
 
     _io = io(this._hostname);
     _socket = new Socket(this);
@@ -40,6 +40,10 @@ export default class App {
 
     get animation() {
         return this._animation;
+    }
+
+    get hostname() {
+        return this._hostname;
     }
 
     get timer() {
