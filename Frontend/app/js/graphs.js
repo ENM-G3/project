@@ -91,20 +91,31 @@ export default class Graphs {
         var options = {
             series: [],
             chart: {
-                height: '100%',
-                type: 'donut',
-                animations: {
-                    enabled: false
-                }
-            },
-            dataLabels: {
+            width: 380,
+            type: 'donut',
+            animations: {
                 enabled: false
-            },
-            legend: {
-                position: 'right',
-                offsetY: 0,
-                height: 230,
             }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200
+              },
+              legend: {
+                show: false
+              }
+            }
+          }],
+          legend: {
+            position: 'right',
+            offsetY: 0,
+            height: 230,
+          }
           };
   
           this.realtimeChart = new ApexCharts(document.querySelector(".realtime"), options);

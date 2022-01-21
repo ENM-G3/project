@@ -5,10 +5,22 @@ export default class SOCKET {
     constructor(app) {
         this.app = app;
         this.socketio = this.app.socketio;
+        this.startElapsed();
 
         this.addHandlers();
+    }
 
-        this.realtime = {};
+    startElapsed() {
+        this.start = performance.now();
+    }
+
+    endElapsed() {
+        this.end = performance.now();
+
+        var timeDiff = this.end - this.start;
+
+        //timeDiff /= 1000;
+        console.log(`Time since last realtime: ${Math.round(timeDiff)}`);
     }
 
     addHandlers() {
@@ -16,7 +28,9 @@ export default class SOCKET {
     }
 
     handleRealtime(data) {
+        this.endElapsed();
         this.app.charts.updateRealtimeChart(data.data);
+        this.startElapsed();
     }
 
 

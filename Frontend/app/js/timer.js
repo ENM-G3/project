@@ -9,6 +9,8 @@ export default class Timer {
         this.order = [1, 2, 3];
 
         this.init();
+
+        
     }
 
     async init() {
