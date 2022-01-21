@@ -18,7 +18,6 @@ export default class App {
 
     constructor() {
         this.init();
-        console.log(io);
 
         Object.assign(this, ApexCharts);
     }
