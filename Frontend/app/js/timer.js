@@ -54,8 +54,8 @@ export default class Timer {
     }
 
     gotoNext () {
-        this.order.push(this.order[0]);
-        this.order.shift();
+        this.order.unshift(this.order[this.order.length - 1]);
+        this.order.pop();
 
         if (this.order[0] == 1) {
             this.removeAnimations();
@@ -159,8 +159,8 @@ export default class Timer {
         let slide3 = await this.getSlide3();
 
         document.querySelector(".slider").appendChild(slide1);
-        document.querySelector(".slider").appendChild(slide3);
         document.querySelector(".slider").appendChild(slide2);
+        document.querySelector(".slider").appendChild(slide3);
 
         let chart1 = await this.app.charts.getWatthourAverage("Duiktank", "1w", "TotaalNet", "1d");
         chart1.render();
