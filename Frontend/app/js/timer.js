@@ -9,7 +9,7 @@ export default class Timer {
         this.order = [1, 2, 3];
 
         this.init();
-
+        this.current = 1;
         
     }
 
@@ -54,6 +54,11 @@ export default class Timer {
     }
 
     gotoNext () {
+        if (this.order.length == this.current) {
+            this.current = 1;
+        } else {
+            this.current++;
+        }
         this.order.unshift(this.order[this.order.length - 1]);
         this.order.pop();
 
@@ -65,9 +70,9 @@ export default class Timer {
     }
 
     slideIndicator() {
-        document.querySelector(`#progress-${this.order[2]} #progress-show`).classList.remove("progress-show");
+        //document.querySelector(`#progress-${this.order[2]} #progress-show`).classList.remove("progress-show");
         // document.querySelector(`#progress-${this.order[0]} #progress-show`).classList.add("progress-show");
-        document.querySelector(`#progress-${this.order[0]} #progress-done`).classList.add("progress-done-animation");
+        document.querySelector(`#progress-${this.current} #progress-done`).classList.add("progress-done-animation");
     }
 
     removeAnimations() {
