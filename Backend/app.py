@@ -105,17 +105,18 @@ def weetjes(typeweetje):
     elif request.method == 'POST':
         data = CosmosRepository.json_or_formdata(request)
         if typeweetje == 'weetje':
-            result = CosmosRepository.create_weetje(data['fact'])
+            result = CosmosRepository.create_weetje(
+                data['fact'], data['location'])
             return jsonify(result=result), 201
 
         elif typeweetje == 'vergelijking':
             result = CosmosRepository.create_vergelijking(
-                data['name'], data['amount'], data['time'])
+                data['name'], data['amount'], data['time'], data['location'])
             return jsonify(result=result), 201
 
         elif typeweetje == 'meerkeuze':
             result = CosmosRepository.create_meerkeuze(
-                data['question'], data['options'], data['answer'])
+                data['question'], data['options'], data['answer'], data['location'])
             return jsonify(result=result), 201
 
 
