@@ -7,12 +7,12 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 
 config = configparser.ConfigParser()
 config.read(f'{sys.path[0]}/config.ini')
-token = config['influx']['token']
-url = config['influx']['url']
-org = config['influx']['org']
+token = config['duiktank']['token']
+url = config['duiktank']['url']
+org = config['duiktank']['org']
 
 
-class InfluxDatabase:
+class DuiktankDatabase:
 
     @staticmethod
     def __open_connection():
@@ -39,17 +39,6 @@ class InfluxDatabase:
             results = None
         finally:
             return results
-
-    @staticmethod
-    def write_data(data):
-
-        dbclient = MqttDatabase.__open_db_connection()
-
-        try:
-            write_api = dbclient.write_api(write_options=SYNCHRONOUS)
-            write_api.write(bucket, org, data)
-        except Exception as error:
-            return
 
 
 # if __name__ == '__main__':

@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask_socketio import SocketIO, send, emit
 from flask import Flask, jsonify, request
 from repositories.CosmosRepository import CosmosRepository
-from repositories.MqttDatabase import MqttDatabase
+from repositories.Mqtt import Mqtt
 from repositories.InfluxRepository import InfluxRepository
 import sys
 import datetime
@@ -31,7 +31,7 @@ def socketio_run():
 
 
 def thread_function():
-    MqttDatabase.open_mqtt_connection_and_write_to_db()
+    Mqtt.open_mqtt_connection_and_write_to_db()
 
 
 def thread_timer():
@@ -51,7 +51,7 @@ def thread_timer():
 thread1 = threading.Timer(0, socketio_run)
 thread2 = threading.Timer(0, thread_timer)
 thread3 = threading.Timer(
-    0, MqttDatabase.open_mqtt_connection_realtime, args=(socketio,))
+    0, Mqtt.open_mqtt_connection_realtime, args=(socketio,))
 thread1.start()
 thread2.start()
 thread3.start()
@@ -140,13 +140,13 @@ def weetje(id):
         return jsonify(result=result), 201
 
 
-@ app.route(endpoint + '/TEST1', methods=['GET'])
-def TEST1():
-    if request.method == 'GET':
-        config = configparser.ConfigParser()
-        config.read('Backend\config.ini')
-        bucket = config['mqtt']['bucket']
-        return jsonify(data=MqttDatabase.get_db_data(f'from(bucket: \"{bucket}\") |> range(start: -1mo) ')), 200
+# @ app.route(endpoint + '/TEST1', methods=['GET'])
+# def TEST1():
+#     if request.method == 'GET':
+#         config = configparser.ConfigParser()
+#         config.read('Backend\config.ini')
+#         bucket = config['mqtt']['bucket']
+#         return jsonify(data=Mqtt.get_db_data(f'from(bucket: \"{bucket}\") |> range(start: -1mo) ')), 200
 
 # SOCKET IO
 

@@ -1,5 +1,6 @@
 import configparser
 from .InfluxDatabase import InfluxDatabase
+from .DuiktankDatabase import DuiktankDatabase
 import sys
 
 ### GET BUCKET FROM CONFIG ###
@@ -25,7 +26,10 @@ class InfluxRepository:
     @staticmethod
     def read_last_data_from_device(measurement, device):
         query = f'from(bucket: \"{bucket}\") |> range(start: -1h) |> last() |> filter(fn: (r) => r._measurement == "{measurement}") |> filter(fn: (r) => r._field == "{device}")'
-        results = InfluxDatabase.get_data(query)
+        if measurement == 'Duiktank':
+            results = DuiktankDatabase.get_data(query)
+        else:
+            results = InfluxDatabase.get_data(query)
         return results
 
     @staticmethod
@@ -40,6 +44,12 @@ class InfluxRepository:
         query = f'import "date" from(bucket: \"{bucket}\") |> range(start: -{time}) |> filter(fn: (r) => r._measurement == "{measurement}") |> filter(fn: (r) => r._field == "{device}") |> map(fn: (r) => ({{r with day: if date.hour(t: r._time) >= 7 and date.hour(t: r._time) < 22 then true else false}})) |> group(columns: ["day"]) |> mean()'
         results = InfluxDatabase.get_data(query)
         return results
+
+    @staticmethod
+    def write_mqtt_data(dict_data):
+        for key, value in dict_data.items():
+            data = f"{key},meter=Smappee TotaalNet={value}"
+            InfluxDatabase.write_data(data)
 
 # ### TESTING ###
 # if __name__ == '__main__':
