@@ -41,6 +41,7 @@ export default class Timer {
         }
 
         this.current = 1;
+        this.last = this.num_items;
         
         this.slides.forEach((element, index) => {
             element.style.order = this.order[index];
@@ -49,7 +50,7 @@ export default class Timer {
         this.addEvents();
 
         this.slideIndicator();
-        setInterval(this.gotoNext.bind(this), this.interval * 1000);
+        // setInterval(this.gotoNext.bind(this), this.interval * 1000);
     }
 
     changeOrder() {
@@ -79,6 +80,11 @@ export default class Timer {
         } else {
             this.current++;
         }
+        if (this.current == 2) {
+            this.last = 1;
+        } else {
+            this.last++;
+        }
 
         this.order.unshift(this.order[this.order.length - 1]);
         this.order.pop();
@@ -91,8 +97,7 @@ export default class Timer {
     }
 
     slideIndicator() {
-        //document.querySelector(`#progress-${this.order[2]} #progress-show`).classList.remove("progress-show");
-        // document.querySelector(`#progress-${this.order[0]} #progress-show`).classList.add("progress-show");
+        document.querySelector(`#progress-${this.last} #progress-show`).classList.remove("progress-show");
         document.querySelector(`#progress-${this.current} #progress-done`).classList.add("progress-done-animation");
     }
 
@@ -100,6 +105,10 @@ export default class Timer {
         for (const order of this.order) {
             document.querySelector(`#progress-${order} #progress-done`).classList.remove("progress-done-animation");
         }
+    }
+
+    isQuestion() {
+        document.querySelector(`#progress-${this.current} #progress-show`).classList.add("progress-show");
     }
 
     getTemplate() {
