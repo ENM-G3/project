@@ -27,7 +27,7 @@ class DuiktankDatabase:
     @staticmethod
     def get_data(query):
         # Get data from query (example query below)
-        client = InfluxDatabase.__open_connection()
+        client = DuiktankDatabase.__open_connection()
 
         try:
             tables = client.query_api().query(query, org=org)
