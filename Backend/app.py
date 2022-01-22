@@ -23,7 +23,11 @@ CORS(app)
 
 
 def socketio_run():
-    socketio.run(app, debug=False, host='0.0.0.0')
+    if config.has_option('app', 'port'):
+        port = config['app']['port']
+    else:
+        port = 5000
+    socketio.run(app, debug=False, host='0.0.0.0', port=port)
 
 
 def thread_function():
