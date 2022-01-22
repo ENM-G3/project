@@ -10,6 +10,7 @@ config.read(f'{sys.path[0]}/config.ini')
 token = config['influx']['token']
 url = config['influx']['url']
 org = config['influx']['org']
+bucket = config['influx']['bucket']
 
 
 class InfluxDatabase:
@@ -42,13 +43,12 @@ class InfluxDatabase:
 
     @staticmethod
     def write_data(data):
-
-        dbclient = MqttDatabase.__open_db_connection()
-
+        client = InfluxDatabase.__open_connection()
         try:
-            write_api = dbclient.write_api(write_options=SYNCHRONOUS)
+            write_api = client.write_api(write_options=SYNCHRONOUS)
             write_api.write(bucket, org, data)
         except Exception as error:
+            print(error)
             return
 
 

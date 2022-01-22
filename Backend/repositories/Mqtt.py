@@ -58,9 +58,9 @@ class Mqtt:
 
             smappee_dicts[duiktank["_measurement"]] = duiktank["_value"]
 
-            # print(smappee_dicts)
-
             InfluxRepository.write_mqtt_data(smappee_dicts)
+
+            print(smappee_dicts)
 
             mqttclient.loop_stop()
         except Exception as error:
