@@ -50,7 +50,7 @@ export default class Timer {
         this.addEvents();
 
         this.slideIndicator();
-        // setInterval(this.gotoNext.bind(this), this.interval * 1000);
+        setInterval(this.gotoNext.bind(this), this.interval * 1000);
     }
 
     changeOrder() {
