@@ -6,7 +6,7 @@ from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 config = configparser.ConfigParser()
-config.read(f'{sys.path[0]}/config.ini')
+config.read(f'{sys.path[0]}/config/config.ini')
 token = config['duiktank']['token']
 url = config['duiktank']['url']
 org = config['duiktank']['org']
@@ -40,4 +40,3 @@ class DuiktankDatabase:
             results = None
         finally:
             return results
-

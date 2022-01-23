@@ -11,7 +11,7 @@ import time
 import sys
 
 config = configparser.ConfigParser()
-config.read(f'{sys.path[0]}/config.ini')
+config.read(f'{sys.path[0]}/config/config.ini')
 
 
 class Mqtt:
