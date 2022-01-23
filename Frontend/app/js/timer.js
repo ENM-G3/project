@@ -226,6 +226,7 @@ export default class Timer {
 // END
 // TODO: Get amount of options
         let options_amount = 3;
+        document.documentElement.style.setProperty('--global-questions-options', options_amount);
 // END
         let question_options = document.createElement('div');
         question_options.classList.add('question-options');
