@@ -3,8 +3,6 @@ from dataclasses import dataclass
 from datetime import datetime
 from .InfluxRepository import InfluxRepository
 
-from influxdb_client import InfluxDBClient, Point, WritePrecision
-from influxdb_client.client.write_api import SYNCHRONOUS
 from flask_socketio import SocketIO, send, emit
 
 import paho.mqtt.client as mqtt
@@ -13,54 +11,10 @@ import time
 import sys
 
 config = configparser.ConfigParser()
-config.read(f'{sys.path[0]}/config.ini')
-token = config['mqtt']['token']
-url = config['mqtt']['url']
-org = config['mqtt']['org']
-bucket = config['mqtt']['bucket']
+config.read(f'{sys.path[0]}/config/config.ini')
 
 
-class MqttDatabase:
-
-    @staticmethod
-    def __open_db_connection():
-        # Open connection with influx
-        try:
-            dbclient = InfluxDBClient(url=url, token=token)
-            return dbclient
-        except Exception as error:
-            print("Error: Geen toegang tot influx database")
-            return
-
-    @staticmethod
-    def get_db_data(query):
-
-        dbclient = MqttDatabase.__open_db_connection()
-
-        try:
-            tables = dbclient.query_api().query(query, org=org)
-            results = []
-            for table in tables:
-                for record in table.records:
-                    results.append(record.values)
-        except Exception as error:
-            results = None
-        finally:
-            return results
-
-    @staticmethod
-    def __write_db_data(smappee_dicts):
-
-        dbclient = MqttDatabase.__open_db_connection()
-
-        try:
-            write_api = dbclient.write_api(write_options=SYNCHRONOUS)
-
-            for key, value in smappee_dicts.items():
-                data = f"{key},meter=Smappee TotaalNet={value}"
-                write_api.write(bucket, org, data)
-        except Exception as error:
-            return
+class Mqtt:
 
     # The callback for when the client receives a CONNACK response from the server.
 
@@ -85,7 +39,7 @@ class MqttDatabase:
                 for key, value in i.items():
                     if key == "serviceLocationId":
                         location = config["smappeeLocationId"][str(value)]
-                    if key == "apparentPower":
+                    if key == "totalPower":
                         power = value
 
                 # print(i)
@@ -100,9 +54,9 @@ class MqttDatabase:
 
             smappee_dicts[duiktank["_measurement"]] = duiktank["_value"]
 
-            # print(smappee_dicts)
+            InfluxRepository.write_mqtt_data(smappee_dicts)
 
-            MqttDatabase.__write_db_data(smappee_dicts)
+            print(smappee_dicts)
 
             mqttclient.loop_stop()
         except Exception as error:
@@ -122,7 +76,7 @@ class MqttDatabase:
                 for key, value in i.items():
                     if key == "serviceLocationId":
                         location = config["smappeeLocationId"][str(value)]
-                    if key == "apparentPower":
+                    if key == "totalPower":
                         power = value
 
                 # print(i)
@@ -148,8 +102,8 @@ class MqttDatabase:
     def open_mqtt_connection_and_write_to_db():
         # open connection with mqtt
         mqttclient = mqtt.Client()
-        mqttclient.on_connect = MqttDatabase.__on_connect
-        mqttclient.on_message = MqttDatabase.__on_message_db
+        mqttclient.on_connect = Mqtt.__on_connect
+        mqttclient.on_message = Mqtt.__on_message_db
 
         mqttclient.connect(
             "howest-energy-monitoring.westeurope.cloudapp.azure.com", 1883, 60)
@@ -162,9 +116,9 @@ class MqttDatabase:
         socketio = socket
         # open connection with mqtt
         mqttclient = mqtt.Client()
-        mqttclient.on_connect = MqttDatabase.__on_connect
-        mqttclient.on_message = MqttDatabase.__on_message_realtime
-        mqttclient.on_disconnect = MqttDatabase.open_mqtt_connection_realtime
+        mqttclient.on_connect = Mqtt.__on_connect
+        mqttclient.on_message = Mqtt.__on_message_realtime
+        mqttclient.on_disconnect = Mqtt.open_mqtt_connection_realtime
 
         mqttclient.connect(
             "howest-energy-monitoring.westeurope.cloudapp.azure.com", 1883, 60)
