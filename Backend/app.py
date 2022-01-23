@@ -139,23 +139,9 @@ def weetje(id):
         result = CosmosRepository.delete_item(id)
         return jsonify(result=result), 201
 
-
-# @ app.route(endpoint + '/TEST1', methods=['GET'])
-# def TEST1():
-#     if request.method == 'GET':
-#         config = configparser.ConfigParser()
-#         config.read('Backend\config.ini')
-#         bucket = config['mqtt']['bucket']
-#         return jsonify(data=Mqtt.get_db_data(f'from(bucket: \"{bucket}\") |> range(start: -1mo) ')), 200
-
 # SOCKET IO
 
 
 @ socketio.on('connect')
 def connect():
     print('A new client connects')
-
-
-# RUN
-# if __name__ == '__main__':
-#     socketio.run(app, debug=False, host='0.0.0.0')  # default port is 5000
