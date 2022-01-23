@@ -11,7 +11,7 @@ import sys
 import datetime
 
 config = configparser.ConfigParser()
-config.read(f'{sys.path[0]}/config.ini')
+config.read(f'{sys.path[0]}/config/config.ini')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = config['app']['key']
