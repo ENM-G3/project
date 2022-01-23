@@ -174,7 +174,7 @@ section {
 .option {
     display: flex;
     align-items: center;
-    height: calc(80% / 3);      /* Amount of options */ 
+    height: calc(80% / var(--global-questions-options));
     width: 100%;
     background-color: var(--global-color-alpha-);
     border-radius: 5px;
