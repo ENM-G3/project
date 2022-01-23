@@ -39,7 +39,7 @@ class Mqtt:
                 for key, value in i.items():
                     if key == "serviceLocationId":
                         location = config["smappeeLocationId"][str(value)]
-                    if key == "totalPower":
+                    if key == "apparentPower":
                         power = value
 
                 # print(i)
@@ -56,10 +56,11 @@ class Mqtt:
 
             InfluxRepository.write_mqtt_data(smappee_dicts)
 
-            print(smappee_dicts)
+            # print(smappee_dicts)
 
             mqttclient.loop_stop()
         except Exception as error:
+            print(error)
             return
 
     @staticmethod
@@ -76,7 +77,7 @@ class Mqtt:
                 for key, value in i.items():
                     if key == "serviceLocationId":
                         location = config["smappeeLocationId"][str(value)]
-                    if key == "totalPower":
+                    if key == "apparentPower":
                         power = value
 
                 # print(i)
@@ -96,6 +97,7 @@ class Mqtt:
 
             # print(smappee_dicts)
         except Exception as error:
+            print(error)
             return
 
     @staticmethod
