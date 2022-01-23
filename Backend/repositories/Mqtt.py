@@ -12,10 +12,6 @@ import sys
 
 config = configparser.ConfigParser()
 config.read(f'{sys.path[0]}/config.ini')
-# token = config['mqtt']['token']
-# url = config['mqtt']['url']
-# org = config['mqtt']['org']
-# bucket = config['mqtt']['bucket']
 
 
 class Mqtt:
@@ -43,7 +39,7 @@ class Mqtt:
                 for key, value in i.items():
                     if key == "serviceLocationId":
                         location = config["smappeeLocationId"][str(value)]
-                    if key == "apparentPower":
+                    if key == "totalPower":
                         power = value
 
                 # print(i)
@@ -80,7 +76,7 @@ class Mqtt:
                 for key, value in i.items():
                     if key == "serviceLocationId":
                         location = config["smappeeLocationId"][str(value)]
-                    if key == "apparentPower":
+                    if key == "totalPower":
                         power = value
 
                 # print(i)

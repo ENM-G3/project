@@ -50,9 +50,3 @@ class InfluxRepository:
         for key, value in dict_data.items():
             data = f"{key},meter=Smappee TotaalNet={value}"
             InfluxDatabase.write_data(data)
-
-# ### TESTING ###
-# if __name__ == '__main__':
-
-#     for i in InfluxRepository.read_all_net_year():
-#         print(i)

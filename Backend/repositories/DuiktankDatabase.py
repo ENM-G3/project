@@ -36,16 +36,8 @@ class DuiktankDatabase:
                 for record in table.records:
                     results.append(record.values)
         except Exception as error:
+            print(error)
             results = None
         finally:
             return results
 
-
-# if __name__ == '__main__':
-
-#     config = configparser.ConfigParser()
-#     config.read(f'{sys.path[0]}\config.ini')
-#     bucket = config['influx']['bucket']
-
-#     for i in InfluxDatabase.get_data(f'from(bucket: \"{bucket}\") |> range(start: -1h)'):
-#         print(i)
