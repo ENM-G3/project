@@ -8,6 +8,10 @@ export default class Facts {
         this.api = api;
 
         this.types = ["weetje", "vergelijking", "meerkeuze"];
+        
+        this.weetjes = [];
+        this.vergelijkingen = [];
+        this.meerkeuze = [];
     }
 
     get base() {
@@ -15,6 +19,12 @@ export default class Facts {
             Hier zet je de api endpoint (this.api.host + "/whatever/endpoint/je/wilt")
         */
         return this.api.host + "/facts";
+    }
+
+    async init() {
+        this.weetjes = (await this.getByType('weetje')).data;
+        this.vergelijkingen = (await this.getByType('vergelijking')).data;
+        this.meerkeuze = (await this.getByType('meerkeuze')).data;
     }
 
     async getByType(type) {

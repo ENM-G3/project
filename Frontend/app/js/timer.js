@@ -8,10 +8,11 @@ export default class Timer {
 
         
 
-        this.init();
+        
         this.order = [];
         
     }
+
 
     async init() {
         document.documentElement.style.setProperty('--global-progress-duration', `${this.interval}s`);
@@ -50,13 +51,18 @@ export default class Timer {
         this.addEvents();
 
         this.slideIndicator();
-        setInterval(this.gotoNext.bind(this), this.interval * 1000);
+        //setInterval(this.gotoNext.bind(this), this.interval * 1000);
     }
 
     changeOrder() {
 
         for (let i = 0; i < this.num_items; i++) {
             this.slides[i].style.order = this.order[i];
+            if (this.slides[i].style.order != 1) {
+                this.slides[i].classList.add('hidden-slide');
+            } else {
+                this.slides[i].classList.remove('hidden-slide');
+            }
         }
 
         if (this.order[0] == 1) {
@@ -74,7 +80,7 @@ export default class Timer {
     }
 
     gotoNext () {
-
+        
         if (this.order.length == this.current) {
             this.current = 1;
         } else {
@@ -94,6 +100,7 @@ export default class Timer {
         }
 
         this.changeOrder();
+        this.app.randomFacts();
     }
 
     slideIndicator() {
@@ -127,12 +134,17 @@ export default class Timer {
         section1.classList.add('grid-top');
 
         let section2 = document.createElement('section');
-        section2.id = 'section1';
+        section2.id = 'section2';
         section2.classList.add('grid-bottom');
-        section2.classList.add('realtime');
+
+        let section3 = document.createElement('section');
+        section3.id = 'section3';
+        section3.classList.add('grid-top-right');
+        section3.classList.add('realtime');
 
         temp.appendChild(section1);
         temp.appendChild(section2);
+        temp.appendChild(section3);
 
         return temp;
     }
@@ -145,17 +157,17 @@ export default class Timer {
 
         section1.id = 'section1';
 
-        section1.classList.add('testGraph');
         section1.classList.add('grid-top-left');
 
         let section2 = document.createElement('section');
         section2.id = 'section2';
-        section2.classList.add('daynightDuiktank1wTotaalNet');
-        section2.classList.add('grid-bottom-left');
+        section2.classList.add('grid-bottom');
+        section2.classList.add('testGraph');
 
         let section3 = document.createElement('section');
         section3.id = 'section3';
-        section3.classList.add('grid-bottom-right');
+        section3.classList.add('grid-top-right');
+        section3.classList.add('daynightDuiktank1wTotaalNet');
 
         let section5 = document.createElement('section');
         section5.id = 'section5';
@@ -177,15 +189,11 @@ export default class Timer {
         let temp = this.getTemplate();
         temp.id = 'slide3';
 
-        let section1 = document.createElement('section');
-
-        section1.id = 'section1';
-        section1.classList.add('grid-top-left');
 
         let question = await this.addQuestion();
-        section1.appendChild(question);
 
-        temp.appendChild(section1);
+
+        temp.appendChild(question);
 
         return temp;
     }
@@ -195,11 +203,11 @@ export default class Timer {
         let slide2 = await this.getSlide2();
         let slide3 = await this.getSlide3();
 
-        document.querySelector(".slider").appendChild(slide1);
-        document.querySelector(".slider").appendChild(slide2);
         document.querySelector(".slider").appendChild(slide3);
+        document.querySelector(".slider").appendChild(slide2);
+        document.querySelector(".slider").appendChild(slide1);
 
-        let chart1 = await this.app.charts.getWatthourAverage("Duiktank", "1w", "TotaalNet", "1d");
+        let chart1 = await this.app.charts.getWatthourAverage("Duiktank", "1d", "TotaalNet", "1h");
         chart1.render();
 
         let chart = await this.app.charts.getDayNightChart('Duiktank', '1mo', 'TotaalNet');
@@ -211,7 +219,11 @@ export default class Timer {
 
 
     async addQuestion() {
-        let section_question = document.createElement('div');
+        let q = await this.app.randomQuestion();
+
+        let section_question = document.createElement('section');
+        section_question.id = 'section1';
+        section_question.classList.add('grid-top-left');
         section_question.classList.add('section-question');
 
         let question_icon = document.createElement('img');
@@ -219,33 +231,46 @@ export default class Timer {
         let question_header = document.createElement('h2');
         question_header.classList.add('question-header');
         question_header.innerText = 'Vraag!';
-// TODO: Add question text
+
         let question_text = document.createElement('p');
         question_text.classList.add('question-text');
-        question_text.innerText = 'Question';
-// END
-// TODO: Get amount of options
-        let options_amount = 3;
+        question_text.innerText = q.question;
+
+        let count = 0;
+        for (const option in q.options) {
+            count++;
+        }
+        
+        let options_amount = count;
         document.documentElement.style.setProperty('--global-questions-options', options_amount);
-// END
         let question_options = document.createElement('div');
         question_options.classList.add('question-options');
 
-        for (let i = 1; i <= options_amount; i++) {
-// TODO: Depending if option is correct or incorrect
-            let option = document.createElement('div');
-            option.classList.add('option');
-            // option.classList.add('correct');
-            // option.classList.add('incorrect');
-// END
+        
+        let correct = q.answer;
+
+
+        for (const option in q.options) {
+            if (q.options[option] == true) q.options[option] = 'Waar'; else if (q.options[option] == false) q.options[option] = 'Niet waar';
+
+            let o = document.createElement('div');
+            o.classList.add('option');
+
+            if (option == correct) {
+                o.classList.add('correct');
+            } else {
+                o.classList.add('incorrect');
+            }
+
             let img = document.createElement('img');
-// TODO: Get options from influx
+
             let p = document.createElement('p');
-            p.innerText = 'Option';
-// END
-            option.appendChild(img);
-            option.appendChild(p);
-            question_options.appendChild(option);
+            p.innerText = q.options[option];
+
+            o.appendChild(img);
+            o.appendChild(p);
+            question_options.appendChild(o);
+
         }
         
         section_question.appendChild(question_icon);

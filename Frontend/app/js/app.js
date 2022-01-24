@@ -4,6 +4,7 @@ import API from './API/index.js';
 import Timer from './timer.js';
 import Graphs from './graphs.js';
 import Animation from './animation/index.js';
+import Randomizer from './random.js';
 
 
 export default class App {
@@ -16,10 +17,12 @@ export default class App {
     _graph = new Graphs(this);
     _animation = new Animation(this);
 
-    constructor() {
-        this.init();
+    _random = new Randomizer();
 
+    constructor() {
         Object.assign(this, ApexCharts);
+
+        this.init();
     }
 
     get socketio() {
@@ -50,12 +53,38 @@ export default class App {
         return this._timer;
     }
 
+    get random() {
+        return this._random;
+    }
+
+    set random(value) {
+        this._random = value;
+    }
+
     async init() {
 
         // hier komen de listeners, structuur nog uit te zoeken
-        console.log("App has been initialized!");
-        
+        await this.api.facts.init();
+
+        this.timer.init();
+
+        this.randomFacts();
     }
+
+    randomFacts () {
+        let r = this.random.getRandomNumberWithLast(this.api.facts.weetjes.length);
+        document.querySelector("#weetje1").innerHTML = this.api.facts.weetjes[r].fact;
+
+        let r2 = this.random.getRandomNumberWithLast(this.api.facts.weetjes.length);
+        document.querySelector("#weetje2").innerHTML = this.api.facts.weetjes[r2].fact;
+    }
+
+    randomQuestion() {
+        let r = this.random.getRandomNumber(this.api.facts.meerkeuze.length);
+        return this.api.facts.meerkeuze[r];
+    }
+
+
 
     domReady(e) {
         this.body = document.body;
