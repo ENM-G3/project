@@ -167,8 +167,6 @@ section {
 /* Images */
 /* Question */
 .section-question {
-    height: 100%;
-    width: 100%;
     display: grid;
     grid-template-columns: 10% 15% 2% 1fr 10%;
     grid-template-rows: 5% 1fr 2% 1fr 5% 4fr 5%;

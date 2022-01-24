@@ -51,7 +51,7 @@ export default class Timer {
         this.addEvents();
 
         this.slideIndicator();
-        setInterval(this.gotoNext.bind(this), this.interval * 1000);
+        //setInterval(this.gotoNext.bind(this), this.interval * 1000);
     }
 
     changeOrder() {
@@ -189,15 +189,11 @@ export default class Timer {
         let temp = this.getTemplate();
         temp.id = 'slide3';
 
-        let section1 = document.createElement('section');
-
-        section1.id = 'section1';
-        section1.classList.add('grid-top-left');
 
         let question = await this.addQuestion();
-        section1.appendChild(question);
 
-        temp.appendChild(section1);
+
+        temp.appendChild(question);
 
         return temp;
     }
@@ -207,9 +203,9 @@ export default class Timer {
         let slide2 = await this.getSlide2();
         let slide3 = await this.getSlide3();
 
-        document.querySelector(".slider").appendChild(slide1);
-        document.querySelector(".slider").appendChild(slide2);
         document.querySelector(".slider").appendChild(slide3);
+        document.querySelector(".slider").appendChild(slide2);
+        document.querySelector(".slider").appendChild(slide1);
 
         let chart1 = await this.app.charts.getWatthourAverage("Duiktank", "1d", "TotaalNet", "1h");
         chart1.render();
@@ -226,6 +222,8 @@ export default class Timer {
         let q = await this.app.randomQuestion();
 
         let section_question = document.createElement('section');
+        section_question.id = 'section1';
+        section_question.classList.add('grid-top-left');
         section_question.classList.add('section-question');
 
         let question_icon = document.createElement('img');
@@ -243,7 +241,6 @@ export default class Timer {
             count++;
         }
         
-        console.log(q);
         let options_amount = count;
         document.documentElement.style.setProperty('--global-questions-options', options_amount);
         let question_options = document.createElement('div');
@@ -254,7 +251,7 @@ export default class Timer {
 
 
         for (const option in q.options) {
-            if (q.options[option] == true) q.options[option] = 'Waar'; else q.options[option] = 'Niet waar';
+            if (q.options[option] == true) q.options[option] = 'Waar'; else if (q.options[option] == false) q.options[option] = 'Niet waar';
 
             let o = document.createElement('div');
             o.classList.add('option');
@@ -269,7 +266,7 @@ export default class Timer {
 
             let p = document.createElement('p');
             p.innerText = q.options[option];
-            
+
             o.appendChild(img);
             o.appendChild(p);
             question_options.appendChild(o);
