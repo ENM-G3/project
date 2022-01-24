@@ -1,4 +1,4 @@
-
+import Data from './util/Data.js';
 
 
 export default class Timer {
@@ -10,7 +10,7 @@ export default class Timer {
 
         
         this.order = [];
-        
+        Object.assign(this, Data);
     }
 
 
@@ -51,6 +51,10 @@ export default class Timer {
         this.addEvents();
 
         this.slideIndicator();
+        this.startInterval();
+    }
+
+    startInterval() {
         setInterval(this.gotoNext.bind(this), this.interval * 1000);
     }
 
@@ -129,22 +133,8 @@ export default class Timer {
         let temp = this.getTemplate();
         temp.id = 'slide1';
 
-        let section1 = document.createElement('section');
-        section1.id = 'section1';
-        section1.classList.add('grid-top');
-
-        let section2 = document.createElement('section');
-        section2.id = 'section2';
-        section2.classList.add('grid-bottom');
-
-        let section3 = document.createElement('section');
-        section3.id = 'section3';
-        section3.classList.add('grid-top-right');
-        section3.classList.add('realtime');
-
-        temp.appendChild(section1);
-        temp.appendChild(section2);
-        temp.appendChild(section3);
+        let text = await (await this.get('./js/slides/slide1.html')).text();
+        temp.innerHTML = text;
 
         return temp;
     }
@@ -153,34 +143,8 @@ export default class Timer {
         let temp = this.getTemplate();
         temp.id = 'slide2';
 
-        let section1 = document.createElement('section');
-
-        section1.id = 'section1';
-
-        section1.classList.add('grid-top-left');
-
-        let section2 = document.createElement('section');
-        section2.id = 'section2';
-        section2.classList.add('grid-bottom');
-        section2.classList.add('testGraph');
-
-        let section3 = document.createElement('section');
-        section3.id = 'section3';
-        section3.classList.add('grid-top-right');
-        section3.classList.add('daynightDuiktank1wTotaalNet');
-
-        let section5 = document.createElement('section');
-        section5.id = 'section5';
-        section5.classList.add('grid-vertical');
-
-
-        temp.appendChild(section1);
-        temp.appendChild(section2);
-        temp.appendChild(section3);
-
-        temp.appendChild(section5);
-
-
+        let text = await (await this.get('./js/slides/slide2.html')).text();
+        temp.innerHTML = text;
 
         return temp;
     }
@@ -189,9 +153,10 @@ export default class Timer {
         let temp = this.getTemplate();
         temp.id = 'slide3';
 
+        let text = await (await this.get('./js/slides/slide3.html')).text();
+        temp.innerHTML = text;
 
-        let section1 = await this.addQuestion();
-        temp.appendChild(section1);
+        temp = await this.addQuestion(temp);
 
         return temp;
     }
@@ -201,8 +166,8 @@ export default class Timer {
         let slide2 = await this.getSlide2();
         let slide3 = await this.getSlide3();
 
-        document.querySelector(".slider").appendChild(slide1);
         document.querySelector(".slider").appendChild(slide2);
+        document.querySelector(".slider").appendChild(slide1);
         document.querySelector(".slider").appendChild(slide3);
 
         let chart1 = await this.app.charts.getWatthourAverage("Duiktank", "1d", "TotaalNet", "1h");
@@ -216,23 +181,11 @@ export default class Timer {
     }
 
 
-    async addQuestion() {
+    async addQuestion(template) {
         let q = await this.app.randomQuestion();
 
-        let section_question = document.createElement('section');
-        section_question.id = 'section1';
-        section_question.classList.add('grid-top-left');
-        section_question.classList.add('section-question');
+        template.querySelector('.question-text').innerText = q.question;
 
-        let question_icon = document.createElement('img');
-        question_icon.classList.add('question-icon');
-        let question_header = document.createElement('h2');
-        question_header.classList.add('question-header');
-        question_header.innerText = 'Vraag!';
-
-        let question_text = document.createElement('p');
-        question_text.classList.add('question-text');
-        question_text.innerText = q.question;
 
         let count = 0;
         for (const option in q.options) {
@@ -241,8 +194,8 @@ export default class Timer {
         
         let options_amount = count;
         document.documentElement.style.setProperty('--global-questions-options', options_amount);
-        let question_options = document.createElement('div');
-        question_options.classList.add('question-options');
+
+        let optionsContainer = template.querySelector('.question-options');
 
         
         let correct = q.answer;
@@ -267,15 +220,10 @@ export default class Timer {
 
             o.appendChild(img);
             o.appendChild(p);
-            question_options.appendChild(o);
+            optionsContainer.appendChild(o);
 
         }
-        
-        section_question.appendChild(question_icon);
-        section_question.appendChild(question_header);
-        section_question.appendChild(question_text);
-        section_question.appendChild(question_options);
 
-        return section_question;
+        return template;
     }
 }

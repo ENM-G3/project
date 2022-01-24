@@ -95,7 +95,7 @@ export default class Graphs {
                 }
             },
             dataLabels: {
-                enabled: true
+                enabled: false
             },
             labels,
             series: [{

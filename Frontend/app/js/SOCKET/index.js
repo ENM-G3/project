@@ -8,6 +8,8 @@ export default class SOCKET {
         this.startElapsed();
 
         this.addHandlers();
+
+        
     }
 
     startElapsed() {
@@ -20,7 +22,7 @@ export default class SOCKET {
         var timeDiff = this.end - this.start;
 
         //timeDiff /= 1000;
-        console.log(`Time since last realtime: ${Math.round(timeDiff)}`);
+        //console.log(`Time since last realtime: ${Math.round(timeDiff)}`);
     }
 
     addHandlers() {
@@ -28,10 +30,13 @@ export default class SOCKET {
     }
 
     handleRealtime(data) {
+        if (this.first == false) this.promise = new Promise().resolve('test');
+
         this.endElapsed();
         this.app.charts.updateRealtimeChart(data.data);
         this.startElapsed();
     }
+
 
 
 }
