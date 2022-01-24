@@ -4,7 +4,7 @@
 export default class Timer {
     constructor(app) {
         this.app = app;
-        this.interval = 2;
+        this.interval = 10;
 
         
 
@@ -57,6 +57,11 @@ export default class Timer {
 
         for (let i = 0; i < this.num_items; i++) {
             this.slides[i].style.order = this.order[i];
+            if (this.slides[i].style.order != 1) {
+                this.slides[i].classList.add('hidden-slide');
+            } else {
+                this.slides[i].classList.remove('hidden-slide');
+            }
         }
 
         if (this.order[0] == 1) {
@@ -74,7 +79,7 @@ export default class Timer {
     }
 
     gotoNext () {
-
+        
         if (this.order.length == this.current) {
             this.current = 1;
         } else {
@@ -94,6 +99,7 @@ export default class Timer {
         }
 
         this.changeOrder();
+        this.app.randomFacts();
     }
 
     slideIndicator() {

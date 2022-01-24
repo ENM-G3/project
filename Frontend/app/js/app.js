@@ -4,6 +4,7 @@ import API from './API/index.js';
 import Timer from './timer.js';
 import Graphs from './graphs.js';
 import Animation from './animation/index.js';
+import Randomizer from './random.js';
 
 
 export default class App {
@@ -15,6 +16,8 @@ export default class App {
     _timer = new Timer(this);
     _graph = new Graphs(this);
     _animation = new Animation(this);
+
+    _random = new Randomizer();
 
     constructor() {
         this.init();
@@ -50,11 +53,26 @@ export default class App {
         return this._timer;
     }
 
+    get random() {
+        return this._random;
+    }
+
     async init() {
 
         // hier komen de listeners, structuur nog uit te zoeken
         console.log("App has been initialized!");
+        await this.api.facts.init();
+
+        this.randomFacts();
         
+    }
+
+    randomFacts () {
+        let r = this.random.getRandomNumber(this.api.facts.weetjes.length);
+        document.querySelector("#weetje1").innerHTML = this.api.facts.weetjes[r].fact;
+
+        r = this.random.getRandomNumber(this.api.facts.weetjes.length);
+        document.querySelector("#weetje2").innerHTML = this.api.facts.weetjes[r].fact;
     }
 
     domReady(e) {
