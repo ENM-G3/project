@@ -64,11 +64,31 @@ export default class App {
     async init() {
 
         // hier komen de listeners, structuur nog uit te zoeken
-        await this.api.facts.init();
+        
 
-        this.timer.init();
+        
+
+        await this.waitForLoad();
+        this.removeLoader();
+        
 
         this.randomFacts();
+    }
+
+    async waitForLoad() {
+        try {
+            await this.api.facts.init();
+            await this.timer.init();
+            // now process r2
+            return true;     // this will be the resolved value of the returned promise
+        } catch(e) {
+            console.log(e);
+            throw e;      // let caller know the promise was rejected with this reason
+        }
+    }
+
+    removeLoader() {
+        document.querySelector('.spinning-loader').classList.add('spinning-loader--hidden');
     }
 
     randomFacts () {
