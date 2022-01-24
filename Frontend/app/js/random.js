@@ -6,16 +6,26 @@ export default class Randomizer {
     }
     
 
-    getRandomNumber (max) {    
+    getRandomNumberWithLast (max) {    
         let value;
 
-        value = Math.ceil(Math.random() * max);
+        value = Math.floor(Math.random() * max);
 
         while (this.last == value) {
-            value = Math.ceil(Math.random() * max);
+            value = Math.floor(Math.random() * max);
         }
 
         this.last = value;
         return value;
     }
+
+    getRandomNumber (max) {    
+        let value;
+
+        value = Math.floor(Math.random() * max);
+
+        return value;
+    }
+
+
 }

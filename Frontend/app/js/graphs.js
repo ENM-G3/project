@@ -28,11 +28,17 @@ export default class Graphs {
             series: [daynight[0]._value, daynight[1]._value],
             labels: [daynight[0].dayString, daynight[1].dayString],
             chart: {
+                height: '100%',
                 type: 'donut',
                 animations: {
                     enabled: false
-                }
+                },
             },
+            legend: {
+                position: 'bottom',
+                offsetY: 0,
+                height: '12%',
+            }
 
           };
 
@@ -49,14 +55,30 @@ export default class Graphs {
         for (const hour of watthours.data) {
             data.push(Math.round(hour._value / 1000));
             let date = new Date(hour._time);
+
+            let hours = date.getHours();
+            if (hours < 10) {
+                hours = `0${hours}`;
+            }
+
+            let minutes = date.getMinutes();
+            if (minutes < 10) {
+                minutes = `0${minutes}`;
+            }
+
+            let hourString = `${hours}:${minutes}`;
+
+            
             let month;
+
+
             if(date.getMonth() < 9) {
                 month = `0${date.getMonth() + 1}`;
             } else {
                 month = `${date.getMonth() + 1}`;
             }
             let dateString = `${this.days[date.getDay()]} ${date.getDate()}/${month}`;
-            labels.push(dateString);
+            labels.push(hourString);
         }
 
         let options = {
@@ -73,7 +95,7 @@ export default class Graphs {
                 }
             },
             dataLabels: {
-                enabled: false
+                enabled: true
             },
             labels,
             series: [{
@@ -81,6 +103,11 @@ export default class Graphs {
             }],
             yaxis: {
               opposite: false,
+            },
+            legend: {
+                position: 'bottom',
+                offsetY: 0,
+                height: '20%',
             }
         };
 
@@ -91,31 +118,23 @@ export default class Graphs {
         var options = {
             series: [],
             chart: {
-            width: 380,
-            type: 'donut',
-            animations: {
+                height: "100%",
+                type: 'donut',
+                animations: {
+                    enabled: false
+                },
+            },
+
+            dataLabels: {
                 enabled: false
+            },
+
+            legend: {
+                position: 'bottom',
+                offsetY: 0,
+                height: '10%',
             }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          responsive: [{
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 200
-              },
-              legend: {
-                show: false
-              }
-            }
-          }],
-          legend: {
-            position: 'right',
-            offsetY: 0,
-            height: 230,
-          }
+
           };
   
           this.realtimeChart = new ApexCharts(document.querySelector(".realtime"), options);

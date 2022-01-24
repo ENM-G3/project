@@ -74,7 +74,7 @@ html, body {
     
     display: grid;
     display: -ms-grid;
-    grid-template-columns:  1% 1fr 1fr 1fr 1%;
+    grid-template-columns:  1% 2fr 1fr 1fr 1%;
     
     grid-template-rows: 1% 1fr 1fr 1%;
     grid-gap: 10px;
@@ -95,24 +95,36 @@ html, body {
     grid-row: 2 / 4;
 }
 .grid-right {
-    grid-column: 3 / 4;
+    grid-column: 4 / 5;
     grid-row: 2 / 4;
+}
+.grid-center {
+    grid-column: 3 / 4;
+    grid-row: 1 / 4;
 }
 
 .grid-top-left {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
 }
-.grid-top-right {
+.grid-top-center {
     grid-column: 3 / 4;
+    grid-row: 2 / 3;
+}
+.grid-top-right {
+    grid-column: 4 / 5;
     grid-row: 2 / 3;
 }
 .grid-bottom-left {
     grid-column: 2 / 3;
     grid-row: 3 / 4;
 }
-.grid-bottom-right {
+.grid-bottom-center {
     grid-column: 3 / 4;
+    grid-row: 3 / 4;
+}
+.grid-bottom-right {
+    grid-column: 4 / 4;
     grid-row: 3 / 4;
     
 }
@@ -222,6 +234,7 @@ section {
 
 /* Progress bar */
 /* LAAT DIT TOCH GEWOON OP PIXELS STAAN DA KAN GEEN KWAAD. NU ZIET HET ER ZO DERP UIT ALS U SCHERM HOGER IS. STOP ME MIJN WERKT TE VERANDEREN EN DOE DE TRELLO CARDS!*/
+
 /* WE GERAKEN NERGENS ALS GE ALTIJD DUBBEL WERK DOET */
 /* blijf hier af en doe nuttige dingen */
 .progress-container {
@@ -232,7 +245,7 @@ section {
 }
 .progress {
     width: calc(100% / var(--global-slides-amount));     /* Change depending on slides */
-    height: 15px;
+    height: 15px; /* dit in % zetten is echt cursed */
     margin: 0 1.25%;
     position: relative;
 
