@@ -203,6 +203,9 @@ section {
 }
 
 /* Progress bar */
+/* LAAT DIT TOCH GEWOON OP PIXELS STAAN DA KAN GEEN KWAAD. NU ZIET HET ER ZO DERP UIT ALS U SCHERM HOGER IS. STOP ME MIJN WERKT TE VERANDEREN EN DOE DE TRELLO CARDS!*/
+/* WE GERAKEN NERGENS ALS GE ALTIJD DUBBEL WERK DOET */
+/* blijf hier af en doe nuttige dingen */
 .progress-container {
     grid-row: 2 / 3;
     display: flex;
@@ -210,14 +213,14 @@ section {
 }
 .progress {
     width: calc(100% / var(--global-slides-amount));     /* Change depending on slides */
-    height: 50%;
+    height: 15px;
     margin: 0 1.25%;
     position: relative;
 }
 .progress-base {
     position: absolute;
     width: 100%;
-    height: 50%;
+    height: 100%;
     top: 25%;
 
     background-color: var(--global-color-alpha-);
@@ -226,7 +229,7 @@ section {
 .progress-done {
     position: absolute;
     width: 0%;
-    height: 50%;
+    height: 100%;
     top: 25%;
 
     background-color: var(--global-color-beta);
