@@ -5,13 +5,13 @@ from flask_cors import CORS
 from flask_socketio import SocketIO, send, emit
 from flask import Flask, jsonify, request
 from repositories.CosmosRepository import CosmosRepository
-from repositories.MqttDatabase import MqttDatabase
+from repositories.Mqtt import Mqtt
 from repositories.InfluxRepository import InfluxRepository
 import sys
 import datetime
 
 config = configparser.ConfigParser()
-config.read(f'{sys.path[0]}/config.ini')
+config.read(f'{sys.path[0]}/config/config.ini')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = config['app']['key']
@@ -23,11 +23,15 @@ CORS(app)
 
 
 def socketio_run():
-    socketio.run(app, debug=False, host='0.0.0.0')
+    if config.has_option('app', 'port'):
+        port = config['app']['port']
+    else:
+        port = 5000
+    socketio.run(app, debug=False, host='0.0.0.0', port=port)
 
 
 def thread_function():
-    MqttDatabase.open_mqtt_connection_and_write_to_db()
+    Mqtt.open_mqtt_connection_and_write_to_db()
 
 
 def thread_timer():
@@ -47,7 +51,7 @@ def thread_timer():
 thread1 = threading.Timer(0, socketio_run)
 thread2 = threading.Timer(0, thread_timer)
 thread3 = threading.Timer(
-    0, MqttDatabase.open_mqtt_connection_realtime, args=(socketio,))
+    0, Mqtt.open_mqtt_connection_realtime, args=(socketio,))
 thread1.start()
 thread2.start()
 thread3.start()
@@ -105,17 +109,18 @@ def weetjes(typeweetje):
     elif request.method == 'POST':
         data = CosmosRepository.json_or_formdata(request)
         if typeweetje == 'weetje':
-            result = CosmosRepository.create_weetje(data['fact'])
+            result = CosmosRepository.create_weetje(
+                data['fact'], data['location'])
             return jsonify(result=result), 201
 
         elif typeweetje == 'vergelijking':
             result = CosmosRepository.create_vergelijking(
-                data['name'], data['amount'], data['time'])
+                data['name'], data['amount'], data['time'], data['location'])
             return jsonify(result=result), 201
 
         elif typeweetje == 'meerkeuze':
             result = CosmosRepository.create_meerkeuze(
-                data['question'], data['options'], data['answer'])
+                data['question'], data['options'], data['answer'], data['location'])
             return jsonify(result=result), 201
 
 
@@ -134,23 +139,9 @@ def weetje(id):
         result = CosmosRepository.delete_item(id)
         return jsonify(result=result), 201
 
-
-@ app.route(endpoint + '/TEST1', methods=['GET'])
-def TEST1():
-    if request.method == 'GET':
-        config = configparser.ConfigParser()
-        config.read('Backend\config.ini')
-        bucket = config['mqtt']['bucket']
-        return jsonify(data=MqttDatabase.get_db_data(f'from(bucket: \"{bucket}\") |> range(start: -1mo) ')), 200
-
 # SOCKET IO
 
 
 @ socketio.on('connect')
 def connect():
     print('A new client connects')
-
-
-# RUN
-# if __name__ == '__main__':
-#     socketio.run(app, debug=False, host='0.0.0.0')  # default port is 5000

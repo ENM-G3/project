@@ -41,6 +41,7 @@ export default class Timer {
         }
 
         this.current = 1;
+        this.last = this.num_items;
         
         this.slides.forEach((element, index) => {
             element.style.order = this.order[index];
@@ -79,6 +80,11 @@ export default class Timer {
         } else {
             this.current++;
         }
+        if (this.current == 2) {
+            this.last = 1;
+        } else {
+            this.last++;
+        }
 
         this.order.unshift(this.order[this.order.length - 1]);
         this.order.pop();
@@ -91,8 +97,7 @@ export default class Timer {
     }
 
     slideIndicator() {
-        //document.querySelector(`#progress-${this.order[2]} #progress-show`).classList.remove("progress-show");
-        // document.querySelector(`#progress-${this.order[0]} #progress-show`).classList.add("progress-show");
+        document.querySelector(`#progress-${this.last} #progress-show`).classList.remove("progress-show");
         document.querySelector(`#progress-${this.current} #progress-done`).classList.add("progress-done-animation");
     }
 
@@ -100,6 +105,10 @@ export default class Timer {
         for (const order of this.order) {
             document.querySelector(`#progress-${order} #progress-done`).classList.remove("progress-done-animation");
         }
+    }
+
+    isQuestion() {
+        document.querySelector(`#progress-${this.current} #progress-show`).classList.add("progress-show");
     }
 
     getTemplate() {
@@ -173,6 +182,9 @@ export default class Timer {
         section1.id = 'section1';
         section1.classList.add('grid-top-left');
 
+        let question = await this.addQuestion();
+        section1.appendChild(question);
+
         temp.appendChild(section1);
 
         return temp;
@@ -198,5 +210,49 @@ export default class Timer {
     }
 
 
+    async addQuestion() {
+        let section_question = document.createElement('div');
+        section_question.classList.add('section-question');
 
+        let question_icon = document.createElement('img');
+        question_icon.classList.add('question-icon');
+        let question_header = document.createElement('h2');
+        question_header.classList.add('question-header');
+        question_header.innerText = 'Vraag!';
+// TODO: Add question text
+        let question_text = document.createElement('p');
+        question_text.classList.add('question-text');
+        question_text.innerText = 'Question';
+// END
+// TODO: Get amount of options
+        let options_amount = 3;
+        document.documentElement.style.setProperty('--global-questions-options', options_amount);
+// END
+        let question_options = document.createElement('div');
+        question_options.classList.add('question-options');
+
+        for (let i = 1; i <= options_amount; i++) {
+// TODO: Depending if option is correct or incorrect
+            let option = document.createElement('div');
+            option.classList.add('option');
+            // option.classList.add('correct');
+            // option.classList.add('incorrect');
+// END
+            let img = document.createElement('img');
+// TODO: Get options from influx
+            let p = document.createElement('p');
+            p.innerText = 'Option';
+// END
+            option.appendChild(img);
+            option.appendChild(p);
+            question_options.appendChild(option);
+        }
+        
+        section_question.appendChild(question_icon);
+        section_question.appendChild(question_header);
+        section_question.appendChild(question_text);
+        section_question.appendChild(question_options);
+
+        return section_question;
+    }
 }

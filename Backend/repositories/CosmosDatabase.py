@@ -9,7 +9,7 @@ import azure.cosmos.exceptions as exceptions
 from azure.cosmos.partition_key import PartitionKey
 
 config = configparser.ConfigParser()
-config.read(f'{sys.path[0]}/config.ini')
+config.read(f'{sys.path[0]}/config/config.ini')
 
 HOST = config['cosmos']['url']
 MASTER_KEY = config['cosmos']['key']
@@ -88,63 +88,3 @@ class CosmosDatabase:
             result = None
         finally:
             return result
-
-
-if __name__ == '__main__':
-    guid1 = str(uuid.uuid4())
-    Weetje = {
-        'id': guid1,
-        'type': 'weetje',
-        'fact': 'Dit is een test weetje'
-    }
-
-    guid2 = str(uuid.uuid4())
-    Vergelijking = {
-        'id': guid2,
-        'type': 'vergelijking',
-        'name': 'GSM opladen',
-        'amount': 10,
-        'time': 365 * 24 * 60 * 60
-    }
-
-    guid3 = str(uuid.uuid4())
-    Question = {
-        'id': guid3,
-        'type': 'meerkeuze',
-        'question': 'Is dit een vraag?',
-        'options': {'A': 'Nee', 'B': 'Ja', 'C': 'Misschien'},
-        'answer': 'B'
-    }
-
-    CosmosDatabase.create_item(Weetje)
-    CosmosDatabase.create_item(Vergelijking)
-    CosmosDatabase.create_item(Question)
-
-    print('\nAll items:')
-    items = CosmosDatabase.read_items()
-    for item in items:
-        print(item)
-
-    print('\nQuery items:')
-    typeweetje = 'meerkeuze'
-    sql = 'SELECT * FROM c WHERE c.type=@type'
-    params = [{"name": "@type", 'value': typeweetje}]
-    items = CosmosDatabase.query_items(sql, params)
-    print(items)
-
-    Question = {
-        'id': guid3,
-        'type': 'meerkeuze',
-        'question': 'Is dit replaced?',
-        'options': {'A': 'Nee', 'B': 'Ja', 'C': 'Misschien'},
-        'answer': 'B'
-    }
-    print(CosmosDatabase.replace_item(Question))
-    print('\nAll items 2:')
-    items = CosmosDatabase.read_items()
-    for item in items:
-        print(item)
-
-    CosmosDatabase.delete_item(guid1)
-    CosmosDatabase.delete_item(guid2)
-    CosmosDatabase.delete_item(guid3)

@@ -7,13 +7,12 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 
 config = configparser.ConfigParser()
 config.read(f'{sys.path[0]}/config/config.ini')
-token = config['influx']['token']
-url = config['influx']['url']
-org = config['influx']['org']
-bucket = config['influx']['bucket']
+token = config['duiktank']['token']
+url = config['duiktank']['url']
+org = config['duiktank']['org']
 
 
-class InfluxDatabase:
+class DuiktankDatabase:
 
     @staticmethod
     def __open_connection():
@@ -28,7 +27,7 @@ class InfluxDatabase:
     @staticmethod
     def get_data(query):
         # Get data from query (example query below)
-        client = InfluxDatabase.__open_connection()
+        client = DuiktankDatabase.__open_connection()
 
         try:
             tables = client.query_api().query(query, org=org)
@@ -41,13 +40,3 @@ class InfluxDatabase:
             results = None
         finally:
             return results
-
-    @staticmethod
-    def write_data(data):
-        client = InfluxDatabase.__open_connection()
-        try:
-            write_api = client.write_api(write_options=SYNCHRONOUS)
-            write_api.write(bucket, org, data)
-        except Exception as error:
-            print(error)
-            return

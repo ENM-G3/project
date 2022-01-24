@@ -1,10 +1,11 @@
 import configparser
 from .InfluxDatabase import InfluxDatabase
+from .DuiktankDatabase import DuiktankDatabase
 import sys
 
 ### GET BUCKET FROM CONFIG ###
 config = configparser.ConfigParser()
-config.read(f'{sys.path[0]}/config.ini')
+config.read(f'{sys.path[0]}/config/config.ini')
 bucket = config['influx']['bucket']
 
 
@@ -25,7 +26,10 @@ class InfluxRepository:
     @staticmethod
     def read_last_data_from_device(measurement, device):
         query = f'from(bucket: \"{bucket}\") |> range(start: -1h) |> last() |> filter(fn: (r) => r._measurement == "{measurement}") |> filter(fn: (r) => r._field == "{device}")'
-        results = InfluxDatabase.get_data(query)
+        if measurement == 'Duiktank':
+            results = DuiktankDatabase.get_data(query)
+        else:
+            results = InfluxDatabase.get_data(query)
         return results
 
     @staticmethod
@@ -41,8 +45,8 @@ class InfluxRepository:
         results = InfluxDatabase.get_data(query)
         return results
 
-# ### TESTING ###
-# if __name__ == '__main__':
-
-#     for i in InfluxRepository.read_all_net_year():
-#         print(i)
+    @staticmethod
+    def write_mqtt_data(dict_data):
+        for key, value in dict_data.items():
+            data = f"{key},meter=Smappee TotaalNet={value}"
+            InfluxDatabase.write_data(data)

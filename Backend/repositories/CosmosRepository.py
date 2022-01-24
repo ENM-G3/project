@@ -13,13 +13,14 @@ class CosmosRepository:
         return gegevens
 
     @staticmethod
-    def create_weetje(fact):
+    def create_weetje(fact, location='general'):
 
         guid = str(uuid.uuid4())
         weetje = {
             'id': guid,
             'type': 'weetje',
-            'fact': fact
+            'fact': fact,
+            'location': location
         }
 
         result = CosmosDatabase.create_item(weetje)
@@ -27,7 +28,7 @@ class CosmosRepository:
         return result
 
     @staticmethod
-    def create_vergelijking(name, amount, time):
+    def create_vergelijking(name, amount, time, location='general'):
 
         guid = str(uuid.uuid4())
         vergelijking = {
@@ -35,7 +36,8 @@ class CosmosRepository:
             'type': 'vergelijking',
             'name': name,
             'amount': amount,
-            'time': time
+            'time': time,
+            'location': location
         }
 
         result = CosmosDatabase.create_item(vergelijking)
@@ -43,7 +45,7 @@ class CosmosRepository:
         return result
 
     @staticmethod
-    def create_meerkeuze(question, options, answer):
+    def create_meerkeuze(question, options, answer, location='general'):
 
         guid = str(uuid.uuid4())
         vraag = {
@@ -51,7 +53,8 @@ class CosmosRepository:
             'type': 'meerkeuze',
             'question': question,
             'options': options,
-            'answer': answer
+            'answer': answer,
+            'location': location
         }
 
         result = CosmosDatabase.create_item(vraag)

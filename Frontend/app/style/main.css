@@ -1,17 +1,23 @@
 :root {
+    /* Huisstijl */
     --global-color-alpha: #FFFFFF;
     --global-color-alpha-: #E9E9E9;
     --global-color-alpha--: #949494;
     --global-color-alpha---: #575757;
-    --global-color-charlie: #71C3B3;
+    --global-color-alpha----: #010001;
+    --global-color-beta: #ff0000;
 
+    /* Progress bar & slides */
     --global-progress-show: 80%;
     --global-progress-duration: 5s;
     --global-slides-amount: 3;
 
-    --global-section-shadow: 0px 3px 8px -2px rgba(133, 77, 77, 0.2);
+    /* Questions */
+    --global-questions-options: 3;
 
-    --global-background-gradient: linear-gradient(190deg, rgba(255,255,255,1) 0%, rgba(232,253,232,1) 100%);
+    /* Extra */    
+    --global-section-shadow: 0px 3px 8px -2px rgba(133, 77, 77, 0.2);
+    --global-background-gradient: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,0,0,0.1) 100%);
 }
 
 * {
@@ -129,6 +135,73 @@ section {
 
 /* Vertical section */
 /* Images */
+/* Question */
+.section-question {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 10% 15% 2% 1fr 10%;
+    grid-template-rows: 5% 1fr 2% 1fr 5% 4fr 5%;
+}
+.question-icon {
+    grid-column: 2 / 3;
+    grid-row: 2 / 5;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    height: 80%;
+    width: 80%;
+    content: url("../svg/question.svg");
+}
+.question-header {
+    grid-column: 4 / 5;
+    grid-row: 2 / 3;
+    display: flex;
+    align-items: flex-end;
+}
+.question-text {
+    grid-column: 4 / 5;
+    grid-row: 4 / 5;
+}
+.question-options {
+    grid-column: 2 / 5;
+    grid-row: 6 / 7;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8%;
+}
+.option {
+    display: flex;
+    align-items: center;
+    height: calc(80% / var(--global-questions-options));
+    width: 100%;
+    background-color: var(--global-color-alpha-);
+    border-radius: 5px;
+    position: relative;
+}
+.option p {
+    padding-left: 2%;
+    width: 70%;
+}
+.option img {
+    position: absolute;
+    height: 70%;
+    right: 2%;
+}
+.correct {
+    border: lightgreen 1px solid;
+}
+.correct img {
+    content: url("../svg/check.svg");
+}
+.incorrect {
+    border: red 1px solid;
+}
+.incorrect img {
+    content: url("../svg/cross.svg");
+}
+
 /* Progress bar */
 .progress-container {
     grid-row: 2 / 3;
@@ -156,7 +229,7 @@ section {
     height: 50%;
     top: 25%;
 
-    background-color: var(--global-color-charlie);
+    background-color: var(--global-color-beta);
     border-radius: 20px;
 }
 .progress-done-animation {
@@ -169,12 +242,12 @@ section {
     position: absolute;
     right: calc(100% - var(--global-progress-show));
     height: 0%;
-    width: 1%;
+    width: 4px;
 
-    background-color: var(--global-color-alpha---);
+    background-color: var(--global-color-alpha----);
     border-radius: 20px;
 
-    animation-duration: 0.7s;
+    animation-duration: 1s;
     animation-fill-mode: forwards;
     animation-name: progress-show;
     animation-timing-function: linear;
