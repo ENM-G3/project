@@ -1,7 +1,6 @@
 import configparser
 from dataclasses import dataclass
 from datetime import datetime
-from .InfluxRepository import InfluxRepository
 
 from flask_socketio import SocketIO, send, emit
 
@@ -12,6 +11,10 @@ import sys
 
 config = configparser.ConfigParser()
 config.read(f'{sys.path[0]}/config/smappee.ini')
+topics = [("servicelocation/477d2645-2919-44c3-acf7-cad592ce7cdc/realtime", 0),
+          ("servicelocation/4cfacd1f-914a-44ff-afdb-3671db497d4c/realtime", 0)]
+dict_topics = {}
+pops = []
 
 
 class Mqtt:
@@ -21,38 +24,60 @@ class Mqtt:
     @staticmethod
     def __on_connect(mqttclient, userdata, flags, rc):
         print("Connected with result code "+str(rc))
-        mqttclient.subscribe(
-            "servicelocation/477d2645-2919-44c3-acf7-cad592ce7cdc/realtime")
+        mqttclient.subscribe(topics)
 
     @staticmethod
     def __on_message_realtime(mqttclient, userdata, msg):
 
         try:
-            payload = str(msg.payload.decode("utf8"))
-            payload = json.loads(payload)
+            # stuff to fix it not breaking
+            if msg.topic not in dict_topics.keys():
+                payload = str(msg.payload.decode("utf8"))
+                payload = json.loads(payload)
+                # print(dict_topics.values())
 
-            # print(payload)
+                if len(dict_topics) > 0 and payload['utcTimeStamp'] >= next(iter(dict_topics.values()))['utcTimeStamp']:
 
-            smappee_dicts = {'totalPower': 0}
+                    for key, value in dict_topics.items():
+                        if payload['utcTimeStamp'] > value['utcTimeStamp']:
+                            pops.add(key)
 
-            for i in payload["channelPowers"]:
-                if config.has_option(str(i['serviceLocationId']), str(i['publishIndex'])):
+                    for key in pops:
+                        dict_topics.pop(key, None)
+                    pops.clear()
 
-                    if config[str(i['serviceLocationId'])][str(i['publishIndex'])] not in smappee_dicts.keys():
-                        smappee_dicts[config[str(i['serviceLocationId'])][str(
-                            i['publishIndex'])]] = 0
+                    dict_topics[msg.topic] = payload
+                else:
+                    dict_topics[msg.topic] = payload
 
-                    smappee_dicts[config[str(i['serviceLocationId'])][str(
-                        i['publishIndex'])]] += i['power']
+            if len(dict_topics) == len(topics):
 
-                    smappee_dicts['totalPower'] += i['power']
+                time = datetime.utcfromtimestamp(
+                    int(payload['utcTimeStamp'])/1000)
 
-            # print(smappee_dicts)
+                smappee_dicts = {
+                    'utcTimeStamp': time, 'totalPower': 0}
 
-            # Broadcast realtime data
-            socketio.emit('B2F_realtime', {'data': smappee_dicts})
+                for payload in dict_topics.values():
 
-            # print(smappee_dicts)
+                    for i in payload["channelPowers"]:
+                        # print(i)
+                        if config.has_option(str(i['serviceLocationId']), str(i['publishIndex'])):
+
+                            if config[str(i['serviceLocationId'])][str(i['publishIndex'])] not in smappee_dicts.keys():
+                                smappee_dicts[config[str(i['serviceLocationId'])][str(
+                                    i['publishIndex'])]] = 0
+
+                            smappee_dicts[config[str(i['serviceLocationId'])][str(
+                                i['publishIndex'])]] += i['power']
+
+                            smappee_dicts['totalPower'] += i['power']
+
+                # Broadcast realtime data
+                socketio.emit('B2F_realtime', {'data': smappee_dicts})
+
+                print(smappee_dicts)
+                dict_topics.clear()
         except Exception as error:
             print(error)
             return
