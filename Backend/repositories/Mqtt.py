@@ -49,10 +49,10 @@ class Mqtt:
 
                 smappee_dicts[location] += power
 
-            duiktank = InfluxRepository.read_last_data_from_device(
-                'Duiktank', 'TotaalNet')[0]
+            # duiktank = InfluxRepository.read_last_data_from_device(
+            #     'Duiktank', 'TotaalNet')[0]
 
-            smappee_dicts[duiktank["_measurement"]] = duiktank["_value"]
+            # smappee_dicts[duiktank["_measurement"]] = duiktank["_value"]
 
             InfluxRepository.write_mqtt_data(smappee_dicts)
 
@@ -87,10 +87,10 @@ class Mqtt:
 
                 smappee_dicts[location] += power
 
-            duiktank = InfluxRepository.read_last_data_from_device(
-                'Duiktank', 'TotaalNet')[0]
+            # duiktank = InfluxRepository.read_last_data_from_device(
+            #     'Duiktank', 'TotaalNet')[0]
 
-            smappee_dicts[duiktank["_measurement"]] = duiktank["_value"]
+            # smappee_dicts[duiktank["_measurement"]] = duiktank["_value"]
 
             # Broadcast realtime data
             socketio.emit('B2F_realtime', {'data': smappee_dicts})
