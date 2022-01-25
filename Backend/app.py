@@ -30,31 +30,11 @@ def socketio_run():
     socketio.run(app, debug=False, host='0.0.0.0', port=port)
 
 
-def thread_function():
-    Mqtt.open_mqtt_connection_and_write_to_db()
-
-
-def thread_timer():
-    now = datetime.datetime.now()
-    delta = datetime.timedelta(minutes=5)
-    # print(now)
-    # print(now + (now.min - now) % delta)
-    # print((now.min - now) % delta)
-    # print(((now.min - now) % delta).total_seconds())
-
-    threading.Timer(((now.min - now) % delta).total_seconds(),
-                    thread_function).start()
-    threading.Timer(((now.min - now) % delta).total_seconds(),
-                    thread_timer).start()
-
-
 thread1 = threading.Timer(0, socketio_run)
-thread2 = threading.Timer(0, thread_timer)
-thread3 = threading.Timer(
+thread2 = threading.Timer(
     0, Mqtt.open_mqtt_connection_realtime, args=(socketio,))
 thread1.start()
 thread2.start()
-thread3.start()
 
 
 # Custom endpoint

@@ -11,7 +11,7 @@ import time
 import sys
 
 config = configparser.ConfigParser()
-config.read(f'{sys.path[0]}/config/config.ini')
+config.read(f'{sys.path[0]}/config/smappee.ini')
 
 
 class Mqtt:
@@ -24,45 +24,6 @@ class Mqtt:
         mqttclient.subscribe(
             "servicelocation/477d2645-2919-44c3-acf7-cad592ce7cdc/realtime")
 
-    # The callback for when a PUBLISH message is received from the server.
-    @staticmethod
-    def __on_message_db(mqttclient, userdata, msg):
-
-        try:
-            payload = str(msg.payload.decode("utf8"))
-            payload = json.loads(payload)
-
-            smappee_dicts = {}
-
-            for i in payload["channelPowers"]:
-                location, power = '', ''
-                for key, value in i.items():
-                    if key == "serviceLocationId":
-                        location = config["smappeeLocationId"][str(value)]
-                    if key == "apparentPower":
-                        power = value
-
-                # print(i)
-
-                if location not in smappee_dicts.keys():
-                    smappee_dicts[location] = 0
-
-                smappee_dicts[location] += power
-
-            # duiktank = InfluxRepository.read_last_data_from_device(
-            #     'Duiktank', 'TotaalNet')[0]
-
-            # smappee_dicts[duiktank["_measurement"]] = duiktank["_value"]
-
-            InfluxRepository.write_mqtt_data(smappee_dicts)
-
-            # print(smappee_dicts)
-
-            mqttclient.loop_stop()
-        except Exception as error:
-            print(error)
-            return
-
     @staticmethod
     def __on_message_realtime(mqttclient, userdata, msg):
 
@@ -70,27 +31,36 @@ class Mqtt:
             payload = str(msg.payload.decode("utf8"))
             payload = json.loads(payload)
 
-            smappee_dicts = {}
+            # print(payload)
+
+            smappee_dicts = {'totalPower': 0}
+
+            # for i in payload["channelPowers"]:
+            #     location, power = '', ''
+            #     for key, value in i.items():
+            #         if key == "serviceLocationId":
+            #             location = config["smappeeLocationId"][str(value)]
+            #         if key == "apparentPower":
+            #             power = value
+
+            # if location not in smappee_dicts.keys():
+            #     smappee_dicts[location] = 0
+
+            # smappee_dicts[location] += power
 
             for i in payload["channelPowers"]:
-                location, power = '', ''
-                for key, value in i.items():
-                    if key == "serviceLocationId":
-                        location = config["smappeeLocationId"][str(value)]
-                    if key == "apparentPower":
-                        power = value
+                if config.has_option(str(i['serviceLocationId']), str(i['publishIndex'])):
 
-                # print(i)
+                    if config[str(i['serviceLocationId'])][str(i['publishIndex'])] not in smappee_dicts.keys():
+                        smappee_dicts[config[str(i['serviceLocationId'])][str(
+                            i['publishIndex'])]] = 0
 
-                if location not in smappee_dicts.keys():
-                    smappee_dicts[location] = 0
+                    smappee_dicts[config[str(i['serviceLocationId'])][str(
+                        i['publishIndex'])]] += i['power']
 
-                smappee_dicts[location] += power
+                    smappee_dicts['totalPower'] += i['power']
 
-            # duiktank = InfluxRepository.read_last_data_from_device(
-            #     'Duiktank', 'TotaalNet')[0]
-
-            # smappee_dicts[duiktank["_measurement"]] = duiktank["_value"]
+            print(smappee_dicts)
 
             # Broadcast realtime data
             socketio.emit('B2F_realtime', {'data': smappee_dicts})
@@ -100,19 +70,7 @@ class Mqtt:
             print(error)
             return
 
-    @staticmethod
-    def open_mqtt_connection_and_write_to_db():
-        # open connection with mqtt
-        mqttclient = mqtt.Client()
-        mqttclient.on_connect = Mqtt.__on_connect
-        mqttclient.on_message = Mqtt.__on_message_db
-
-        mqttclient.connect(
-            "howest-energy-monitoring.westeurope.cloudapp.azure.com", 1883, 60)
-
-        mqttclient.loop_start()
-
-    @staticmethod
+    @ staticmethod
     def open_mqtt_connection_realtime(socket):
         global socketio
         socketio = socket
