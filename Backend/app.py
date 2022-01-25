@@ -47,35 +47,35 @@ def hello():
     return "Server is running."
 
 
-@app.route(endpoint + '/history/<measurement>/<timespan>', methods=['GET'])
-def get_history(measurement, timespan):
+@app.route(endpoint + '/history/<timespan>', methods=['GET'])
+def get_history(timespan):
     if request.method == 'GET':
-        data = InfluxRepository.read_data(measurement, timespan)
+        data = InfluxRepository.read_data(timespan)
         return jsonify(data=data), 200
 
 
-@app.route(endpoint + '/history/<measurement>/<timespan>/<device>', methods=['GET'])
-def get_history_device(measurement, timespan, device):
+@app.route(endpoint + '/history/<timespan>/<device>', methods=['GET'])
+def get_history_device(timespan, device):
     if request.method == 'GET':
         data = InfluxRepository.read_data_from_device(
-            measurement, timespan, device)
+            timespan, device)
         return jsonify(data=data), 200
 
 
-# example http://localhost:5000/api/v1/watthour/Duiktank/1w/TotaalNet/1d
-@app.route(endpoint + '/watthour/<measurement>/<timespan>/<device>/<pertime>', methods=['GET'])
-def get_watthour_device(measurement, timespan, device, pertime):
+# example http://localhost:5000/api/v1/watthour/1w/TotaalNet/1d
+@app.route(endpoint + '/watthour/<timespan>/<device>/<pertime>', methods=['GET'])
+def get_watthour_device(timespan, device, pertime):
     if request.method == 'GET':
         data = InfluxRepository.read_watthour_from_device(
-            measurement, timespan, device, pertime)
+            timespan, device, pertime)
         return jsonify(data=data), 200
 
 
-@app.route(endpoint + '/daynight/<measurement>/<timespan>/<device>', methods=['GET'])
-def get_daynight_device(measurement, timespan, device):
+@app.route(endpoint + '/daynight/<timespan>/<device>', methods=['GET'])
+def get_daynight_device(timespan, device):
     if request.method == 'GET':
         data = InfluxRepository.read_day_night_from_device(
-            measurement, timespan, device)
+            timespan, device)
         return jsonify(data=data), 200
 
 

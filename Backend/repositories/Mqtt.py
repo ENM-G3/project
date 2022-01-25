@@ -35,19 +35,6 @@ class Mqtt:
 
             smappee_dicts = {'totalPower': 0}
 
-            # for i in payload["channelPowers"]:
-            #     location, power = '', ''
-            #     for key, value in i.items():
-            #         if key == "serviceLocationId":
-            #             location = config["smappeeLocationId"][str(value)]
-            #         if key == "apparentPower":
-            #             power = value
-
-            # if location not in smappee_dicts.keys():
-            #     smappee_dicts[location] = 0
-
-            # smappee_dicts[location] += power
-
             for i in payload["channelPowers"]:
                 if config.has_option(str(i['serviceLocationId']), str(i['publishIndex'])):
 
@@ -60,7 +47,7 @@ class Mqtt:
 
                     smappee_dicts['totalPower'] += i['power']
 
-            print(smappee_dicts)
+            # print(smappee_dicts)
 
             # Broadcast realtime data
             socketio.emit('B2F_realtime', {'data': smappee_dicts})
