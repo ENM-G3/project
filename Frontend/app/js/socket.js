@@ -30,7 +30,7 @@ export default class SOCKET {
 
     handleRealtime(data) {
         this.endElapsed();
-        console.log(data);
+        console.log('realtime');
         this.startElapsed();
     }
 

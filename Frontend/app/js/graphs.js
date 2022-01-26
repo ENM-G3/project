@@ -5,9 +5,9 @@ export default class Graphs {
     constructor (app) {
         this.app = app;
         this.chartContainer = document.querySelector('#testChart');
-        //this.ctx = this.chartContainer.getContext('2d');
+        this.ctx = this.chartContainer.getContext('2d');
 
-        //this.init();
+        this.init();
     }
 
     init() {
