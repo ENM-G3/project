@@ -21,8 +21,6 @@ export default class Timer {
         this.slider = document.querySelector(".slider");
         this.slides = document.querySelectorAll(".slide");
 
-        console.log(this.slides);
-
         this.num_items = this.slides.length;
 
         document.documentElement.style.setProperty('--js-progress-amount', this.num_items);

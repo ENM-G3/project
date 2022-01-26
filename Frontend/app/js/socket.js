@@ -20,7 +20,7 @@ export default class SOCKET {
         var timeDiff = this.end - this.start;
 
         //timeDiff /= 1000;
-        console.log(`Time since last data: ${Math.round(timeDiff)}`);
+        //console.log(`Time since last data: ${Math.round(timeDiff)}`);
     }
 
     addHandlers() {

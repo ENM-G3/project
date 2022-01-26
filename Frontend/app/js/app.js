@@ -80,7 +80,6 @@ export default class App {
     }
 
     fillWeetjes(slideNumber, weetjes) {
-        console.log(weetjes);
         document.querySelector(`#slide-${slideNumber} #weetje-1`).innerHTML = weetjes[0].fact;
         document.querySelector(`#slide-${slideNumber} #weetje-2`).innerHTML = weetjes[1].fact;
     }
