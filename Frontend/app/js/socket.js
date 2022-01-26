@@ -36,7 +36,9 @@ export default class SOCKET {
 
     handleConnect(data){
         this.endElapsed();
+        console.log(data);
         this.app.timer.interval = parseInt(data.timer);
+        this.app.devices = data.devices;
         this.startElapsed();
     }
 
