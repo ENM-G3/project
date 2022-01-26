@@ -30,13 +30,15 @@ export default class SOCKET {
 
     handleRealtime(data) {
         this.endElapsed();
-        console.log(data);
+        console.log('realtime');
         this.startElapsed();
     }
 
     handleConnect(data){
         this.endElapsed();
         console.log(data);
+        this.app.timer.interval = parseInt(data.timer);
+        this.app.devices = data.devices;
         this.startElapsed();
     }
 

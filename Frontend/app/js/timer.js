@@ -8,33 +8,34 @@ export default class Timer {
 
         
 
-        
         this.order = [];
         Object.assign(this, Data);
+
+        this.slideObjects = [];
     }
 
 
     async init() {
         document.documentElement.style.setProperty('--global-progress-duration', `${this.interval}s`);
-        
-        await this.getSlides();
 
         this.slider = document.querySelector(".slider");
         this.slides = document.querySelectorAll(".slide");
+
+        console.log(this.slides);
 
         this.num_items = this.slides.length;
 
         document.documentElement.style.setProperty('--global-slides-amount', this.num_items);
 
-        let progressContainer = document.querySelector('div.progress-container');
+        let progressContainer = document.querySelector('footer.progress');
 
         for (let i = 1; i <= this.num_items; i++) {
             this.order.push(i);
 
-            let progress = `<div id="progress-${i}" class="progress">
-            <div id="progress-base" class="progress-base"></div>
-            <div id="progress-done" class="progress-done"></div>
-            <div id="progress-show"></div>
+            let progress = `<div id="progress-${i}">
+            <span class="progress-base"></span>
+            <span class="progress-done"></span>
+            <span></span>
             </div>`;
 
             progressContainer.innerHTML += progress;
@@ -75,7 +76,7 @@ export default class Timer {
             el.offsetHeight; /* trigger reflow */
             el.style.animation = null; 
         }
-        this.slideIndicator();
+        //this.slideIndicator();
 
     }
 
@@ -100,21 +101,20 @@ export default class Timer {
         this.order.pop();
 
         if (this.order[0] == 1) {
-            this.removeIndicatorAnimations();
+            //this.removeIndicatorAnimations();
         }
 
         this.changeOrder();
-        this.app.randomFacts();
     }
 
     slideIndicator() {
-        document.querySelector(`#progress-${this.last} #progress-show`).classList.remove("progress-show");
-        document.querySelector(`#progress-${this.current} #progress-done`).classList.add("progress-done-animation");
+        //document.querySelector(`#progress-${this.last} #progress-show`).classList.remove("progress-show");
+        document.querySelector(`#progress-${this.current} .progress-done`).classList.add("progress-done-animation");
     }
 
     removeIndicatorAnimations() {
         for (const order of this.order) {
-            document.querySelector(`#progress-${order} #progress-done`).classList.remove("progress-done-animation");
+            document.querySelector(`#progress-${order} .progress-done`).classList.remove("progress-done-animation");
         }
     }
 

@@ -75,4 +75,26 @@ export default class Facts {
         const errorBody = await res.json();
         return errorBody;
     }
+
+    async getRandomQuestion() {
+        let random =  Math.floor(Math.random() * this.meerkeuze.length);
+        return this.meerkeuze[random];
+    }
+
+    async getRandomFacts(){
+
+        let returnWeetjes = [];
+
+        let random = Math.floor(Math.random() * this.weetjes.length);
+        returnWeetjes.push(this.weetjes[random]);
+
+        let random2 = Math.floor(Math.random() * this.weetjes.length);
+        while (random == random2) {
+            random2 = Math.floor(Math.random() * this.weetjes.length);
+        }
+        returnWeetjes.push(this.weetjes[random2]);
+
+
+        return returnWeetjes;
+    }
 }
