@@ -13,9 +13,9 @@ export default class History {
         return this.api.host + "/watthour";
     }
 
-    async get(measurement, timespan, device, pertime) {
+    async get(timespan, device, pertime) {
 
-        let url = this.base + `/${measurement}/${timespan}/${device}/${pertime}`;
+        let url = this.base + `/${timespan}/${device}/${pertime}`;
 
         // this.api.get komt uit de ./js/util/Data.js file
         const res = await this.api.get(url);
@@ -33,8 +33,8 @@ export default class History {
         return `${res.status} - ${errorBody.status}`;
     }
 
-    async getHistory(measurement, timespan) {
-        let url = this.api.host + "/history" + `/${measurement}/${timespan}`;
+    async getHistory(device, timespan) {
+        let url = this.api.host + "/history" + `/${timespan}/${device}`;
 
         // this.api.get komt uit de ./js/util/Data.js file
         const res = await this.api.get(url);
