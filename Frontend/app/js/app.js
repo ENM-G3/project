@@ -10,12 +10,13 @@ export default class App {
 
     constructor() {
         this.hostname = "enmg3backend.westeurope.azurecontainer.io:5000";
+        
         this.io = io(this.hostname);
         
         this.api = new API(this);
         this.timer = new Timer(this);
         this.graph = new Graphs(this);
-        this.Socket = new Socket(this);
+        this.socket = new Socket(this);
 
         this.init();
     }
@@ -33,7 +34,7 @@ export default class App {
     // function for starting async functions to see if all elements are loaded.
     async waitForLoad() {
         try {
-            
+            console.log(await this.api.history.get('1w', 'TotaalNet', '1d'));
             return true;
         } catch(e) {
             console.log(e);

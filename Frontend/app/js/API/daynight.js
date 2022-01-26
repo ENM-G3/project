@@ -1,7 +1,3 @@
-/*
-    Dit is de class die gebruikt wordt voor elke endpoint. Hier zet je alle get, post, put en deletes.
-*/
-
 export default class DayNight {
 
     constructor(api) {
@@ -15,9 +11,9 @@ export default class DayNight {
         return this.api.host + "/daynight";
     }
 
-    async get(measurement, device, timespan) {
+    async get(device, timespan) {
 
-        let url = this.base + `/${measurement}/${timespan}/${device}`;
+        let url = this.base + `/${timespan}/${device}`;
 
         // this.api.get komt uit de ./js/util/Data.js file
         const res = await this.api.get(url);
