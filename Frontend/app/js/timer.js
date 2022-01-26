@@ -56,7 +56,7 @@ export default class Timer {
     }
 
     startInterval() {
-        // setInterval(this.gotoNext.bind(this), this.interval * 1000);
+        setInterval(this.gotoNext.bind(this), this.interval * 1000);
     }
 
     changeOrder() {
@@ -76,7 +76,7 @@ export default class Timer {
             el.offsetHeight; /* trigger reflow */
             el.style.animation = null; 
         }
-        //this.slideIndicator();
+        this.slideIndicator();
 
     }
 
@@ -101,7 +101,7 @@ export default class Timer {
         this.order.pop();
 
         if (this.order[0] == 1) {
-            //this.removeIndicatorAnimations();
+            this.removeIndicatorAnimations();
         }
 
         this.changeOrder();

@@ -75,6 +75,8 @@ export default class App {
             </div>`;
             count++;
         }
+        
+        document.documentElement.style.setProperty('--js-question-options', count);
     }
 
     fillWeetjes(slideNumber, weetjes) {

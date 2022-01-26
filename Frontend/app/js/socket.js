@@ -36,7 +36,7 @@ export default class SOCKET {
 
     handleConnect(data){
         this.endElapsed();
-        console.log(data);
+        document.documentElement.style.setProperty('--global-progress-duration', `${data.timer}s`);
         this.app.timer.interval = parseInt(data.timer);
         this.app.devices = data.devices;
         this.startElapsed();
