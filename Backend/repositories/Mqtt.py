@@ -75,6 +75,7 @@ class Mqtt:
 
                 # Broadcast realtime data
                 socketio.emit('B2F_realtime', {'data': smappee_dicts})
+
                 # print(smappee_dicts)
                 dict_topics.clear()
         except Exception as error:
