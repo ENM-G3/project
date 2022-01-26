@@ -20,7 +20,7 @@ export default class SOCKET {
         var timeDiff = this.end - this.start;
 
         //timeDiff /= 1000;
-        console.log(`Time since last data: ${Math.round(timeDiff)}`);
+        //console.log(`Time since last data: ${Math.round(timeDiff)}`);
     }
 
     addHandlers() {
@@ -36,7 +36,7 @@ export default class SOCKET {
 
     handleConnect(data){
         this.endElapsed();
-        console.log(data);
+        document.documentElement.style.setProperty('--global-progress-duration', `${data.timer}s`);
         this.app.timer.interval = parseInt(data.timer);
         this.app.devices = data.devices;
         this.startElapsed();

@@ -75,10 +75,11 @@ export default class App {
             </div>`;
             count++;
         }
+        
+        document.documentElement.style.setProperty('--js-question-options', count);
     }
 
     fillWeetjes(slideNumber, weetjes) {
-        console.log(weetjes);
         document.querySelector(`#slide-${slideNumber} #weetje-1`).innerHTML = weetjes[0].fact;
         document.querySelector(`#slide-${slideNumber} #weetje-2`).innerHTML = weetjes[1].fact;
     }
