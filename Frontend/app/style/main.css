@@ -83,7 +83,7 @@ html, body {
 section {
     border-radius: 0.5vw;
     background-color: var(--global-color-alpha);
-    box-shadow: 0px 3px 8px -2px rgba(133, 77, 77, 0.2);
+    box-shadow: 0 0.4vw 0.8vw -0.4vw rgba(133, 77, 77, 0.2);
     min-height: 100% !important;
 }
 
@@ -158,6 +158,71 @@ canvas {
     width: 100%;
     height: 100%;
 }
-}
+
 /* Vertical */
 /* Progress */
+.progress {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    display: flex;
+    padding: 0 1.25vw;
+}
+.progress > div {
+    width: calc(100% / var(--js-progress-amount));
+    height: 2.5vh;
+    margin: 0 1.25vw;
+    position: relative;
+}
+.progress-base {
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    top: 25%;
+
+    background-color: var(--global-color-alpha-);
+    border-radius: 1.2vw;
+}
+.progress-done {
+    position: absolute;
+    width: 0%;
+    height: 50%;
+    top: 25%;
+    background-color: var(--global-color-beta);
+    border-radius: 1.2vw;
+}
+.progress-done-animation {
+    animation-duration: var(--global-progress-duration);
+    animation-fill-mode: forwards;
+    animation-name: progress-done-fill;
+    animation-timing-function: linear;
+}
+.progress-show {
+    position: absolute;
+    right: calc(100% - var(--js-progress-show));
+    height: 0%;
+    width: 0.2vw;
+
+    background-color: var(--global-color-alpha---);
+    border-radius: 1.2vw;
+
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-name: progress-show;
+    animation-timing-function: linear;
+}
+@keyframes progress-done-fill {
+    from {
+        width: 0%;
+    }
+    to {
+        width: 100%;
+    }
+}
+@keyframes progress-show {
+    from {
+        height: 0%;
+    }
+    to {
+        height: 100%;
+    }
+}

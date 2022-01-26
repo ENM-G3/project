@@ -35,8 +35,8 @@ export default class App {
     async waitForLoad() {
         try {
             await this.api.facts.init();
-            this.fillQuestion(await this.api.facts.getRandomQuestion());
-            this.fillWeetjes(await this.api.facts.getRandomFacts());
+            this.fillQuestion(1, await this.api.facts.getRandomQuestion());
+            this.fillWeetjes(1, await this.api.facts.getRandomFacts());
             await this.timer.init();
             
             return true;
@@ -46,10 +46,10 @@ export default class App {
         }
     }
     
-    fillQuestion(question) {
+    fillQuestion(slideNumber, question) {
         let correct = question.answer;
-        let optionsContainer = document.querySelector('.question-options');
-        let questionText = document.querySelector('#question-statement');
+        let optionsContainer = document.querySelector(`#slide-${slideNumber} .question-options`);
+        let questionText = document.querySelector(`#slide-${slideNumber} #question-statement`);
 
         questionText.innerHTML = question.question;
 
@@ -77,10 +77,10 @@ export default class App {
         }
     }
 
-    fillWeetjes(weetjes) {
+    fillWeetjes(slideNumber, weetjes) {
         console.log(weetjes);
-        document.querySelector('#weetje-1').innerHTML = weetjes[0].fact;
-        document.querySelector('#weetje-2').innerHTML = weetjes[1].fact;
+        document.querySelector(`#slide-${slideNumber} #weetje-1`).innerHTML = weetjes[0].fact;
+        document.querySelector(`#slide-${slideNumber} #weetje-2`).innerHTML = weetjes[1].fact;
     }
 
     domReady(e) {
