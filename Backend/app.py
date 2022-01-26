@@ -9,6 +9,7 @@ from repositories.Mqtt import Mqtt
 from repositories.InfluxRepository import InfluxRepository
 import sys
 import datetime
+import json
 
 config = configparser.ConfigParser()
 config.read(f'{sys.path[0]}/config/config.ini')
@@ -125,3 +126,15 @@ def weetje(id):
 @ socketio.on('connect')
 def connect():
     print('A new client connects')
+
+    emit('B2F_connected', jsonify(get_config()))
+
+
+def get_config():
+    dict_devices = {}
+    devices = json.loads(config['frontend']['devices'])
+    displaynames = json.loads(config['frontend']['displaynames'])
+    for i in range(min(len(devices), len(displaynames))):
+        dict_devices[displaynames[i]] = devices[i]
+    timer = config['frontend']['timer']
+    return {'timer': timer, 'devices': dict_devices}
