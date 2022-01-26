@@ -25,7 +25,7 @@ export default class Timer {
 
         this.num_items = this.slides.length;
 
-        document.documentElement.style.setProperty('--global-slides-amount', this.num_items);
+        document.documentElement.style.setProperty('--js-progress-amount', this.num_items);
 
         let progressContainer = document.querySelector('footer.progress');
 
@@ -56,7 +56,7 @@ export default class Timer {
     }
 
     startInterval() {
-        setInterval(this.gotoNext.bind(this), this.interval * 1000);
+        // setInterval(this.gotoNext.bind(this), this.interval * 1000);
     }
 
     changeOrder() {
