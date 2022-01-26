@@ -127,7 +127,7 @@ def weetje(id):
 def connect():
     print('A new client connects')
 
-    emit('B2F_connected', jsonify(get_config()))
+    emit('B2F_connected', get_config())
 
 
 def get_config():
