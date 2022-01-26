@@ -63,9 +63,9 @@ export default class Timer {
         for (let i = 0; i < this.num_items; i++) {
             this.slides[i].style.order = this.order[i];
             if (this.slides[i].style.order != 1) {
-                this.slides[i].classList.add('hidden-slide');
+                this.slides[i].classList.add('invisible');
             } else {
-                this.slides[i].classList.remove('hidden-slide');
+                this.slides[i].classList.remove('invisible');
             }
         }
 
