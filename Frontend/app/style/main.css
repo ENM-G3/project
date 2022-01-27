@@ -3,7 +3,7 @@
     --global-color-alpha-: #E9E9E9;
     --global-color-alpha--: #949494;
     --global-color-alpha---: #010001;
-    --global-color-beta: #FF0000;
+    --global-color-beta: #ed193a;
 
     --js-progress-amount: 3;
     --js-progress-duration: 5s;
@@ -79,6 +79,10 @@ html, body {
     grid-column: 4 / 5;
     grid-row: 2 / 4;
 }
+.grid-t {
+    grid-column: 2 / 4;
+    grid-row: 2 / 3;
+}
 
 section {
     border-radius: 0.5vw;
@@ -87,6 +91,17 @@ section {
     min-height: 100% !important;
 }
 
+
+/* Banner */
+.banner {
+    background-color: var(--global-color-beta);
+}
+.banner > img {
+    display: block;
+    margin: auto;
+    height: 100%;
+    content: url("../img/map.png");
+}
 
 /* Map */
 .map {
@@ -111,7 +126,7 @@ section {
 
     height: 100%;
     width: 100%;
-    content: url("../svg/question.svg");
+    content: url("../img/svg/question.svg");
 }
 .question > h2 {
     grid-column: 4 / 5;
@@ -151,10 +166,10 @@ section {
     width: 70%;
 }
 .correct img {
-    content: url("../svg/check.svg");
+    content: url("../img/svg/check.svg");
 }
 .incorrect img {
-    content: url("../svg/cross.svg");
+    content: url("../img/svg/cross.svg");
 }
 
 /* Graph */
@@ -170,6 +185,45 @@ canvas {
 }
 
 /* Vertical */
+.vertical {
+    display: grid;
+    grid-template-columns: 1vw 1fr 1vw;
+    grid-template-rows: 0.2vw 1fr 2.5fr 2.5fr 0.2vw;
+    grid-row-gap: 1vw;
+}
+.vertical > img {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    display: block;
+    margin: auto;
+    width: 70%;
+    height: auto;
+    content: url("../img/logo.png");
+}
+.vertical-t {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+}
+.vertical-b {
+    grid-column: 2 / 3;
+    grid-row: 4 / 5;
+}
+.vertical-div {
+    margin-top: 0.8vw;
+}
+.vertical-div > img {
+    display: block;
+    margin: auto;
+    height: 4vw;
+    content: url("../img/svg/question.svg");
+}
+.vertical-div > h2 {
+    margin-top: 0.8vw;
+}
+.vertical-div > p {
+    margin-top: 0.5vw;
+}
+
 /* Progress */
 .progress {
     grid-column: 1 / 2;

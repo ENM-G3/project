@@ -34,17 +34,18 @@ export default class App {
     // function for starting async functions to see if all elements are loaded.
     async waitForLoad() {
         try {
-            await this.graph.getAllAveragesChart();
             await this.graph.getDayNightChart();
+            await this.graph.getAllAveragesChart();
+
+            
             await this.api.facts.init();
-            this.fillQuestion(1, await this.api.facts.getRandomQuestion());
             this.fillWeetjes(1, await this.api.facts.getRandomFacts());
+            this.fillQuestion(2, await this.api.facts.getRandomQuestion());
             this.fillWeetjes(2, await this.api.facts.getRandomFacts());
             await this.timer.init();
             
             return true;
         } catch(e) {
-            console.log(e);
             throw e;
         }
     }
