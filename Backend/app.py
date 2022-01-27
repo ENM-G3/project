@@ -63,6 +63,14 @@ def get_history_device(timespan, device):
         return jsonify(data=data), 200
 
 
+@app.route(endpoint + '/average/<timespan>/<device>', methods=['GET'])
+def get_average_device(timespan, device):
+    if request.method == 'GET':
+        data = InfluxRepository.read_average_watt_from_device(
+            timespan, device)
+        return jsonify(data=data), 200
+
+
 # example http://localhost:5000/api/v1/watthour/1w/TotaalNet/1d
 @app.route(endpoint + '/watthour/<timespan>/<device>/<pertime>', methods=['GET'])
 def get_watthour_device(timespan, device, pertime):

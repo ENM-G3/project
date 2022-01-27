@@ -36,6 +36,12 @@ class InfluxRepository:
         return results
 
     @staticmethod
+    def read_average_watt_from_device(time, device):
+        query = f'from(bucket: \"{bucket}\") |> range(start: -{time}) |> filter(fn: (r) => r._field == "{device}") |> mean()'
+        results = InfluxDatabase.get_data(query)
+        return results
+
+    @staticmethod
     def read_day_night_from_device(time, device):
         query = f'import "date" from(bucket: \"{bucket}\") |> range(start: -{time}) |> filter(fn: (r) => r._field == "{device}") |> map(fn: (r) => ({{r with day: if date.hour(t: r._time) >= 7 and date.hour(t: r._time) < 22 then true else false}})) |> group(columns: ["day"]) |> mean()'
         results = InfluxDatabase.get_data(query)
