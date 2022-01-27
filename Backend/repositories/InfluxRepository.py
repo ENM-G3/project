@@ -36,8 +36,21 @@ class InfluxRepository:
         return results
 
     @staticmethod
+    def read_total_watthour(time, pertime):
+        pertime_dict = {'1h': 1, '1d': 24, '1w': 24*7}
+        query = f'from(bucket: \"{bucket}\") |> range(start: -{time}) |> filter(fn: (r) => r._field == "TotaalNet" or r._field == "Totaal" or r._field == "Totaal_EB2") |> truncateTimeColumn(unit: {pertime}) |> group(columns: ["_time", "_field"]) |> mean() |> group(columns: ["_time"]) |> sum() |> map(fn: (r) => ({{ r with _value: r._value * {pertime_dict[pertime]}.0 }}))'
+        results = InfluxDatabase.get_data(query)
+        return results
+
+    @staticmethod
     def read_average_watt_from_device(time, device):
         query = f'from(bucket: \"{bucket}\") |> range(start: -{time}) |> filter(fn: (r) => r._field == "{device}") |> mean()'
+        results = InfluxDatabase.get_data(query)
+        return results
+
+    @staticmethod
+    def read_total_average_watt(time):
+        query = f'from(bucket: \"{bucket}\") |> range(start: -{time}) |> filter(fn: (r) => r._field == "TotaalNet" or r._field == "Totaal" or r._field == "Totaal_EB2") |> group(columns: ["_field"]) |> mean() |> group() |> sum()'
         results = InfluxDatabase.get_data(query)
         return results
 
