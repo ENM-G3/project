@@ -6,8 +6,6 @@ export default class Timer {
         this.app = app;
         this.interval = 2;
 
-        
-
         this.order = [];
         Object.assign(this, Data);
 
