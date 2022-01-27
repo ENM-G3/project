@@ -11,7 +11,11 @@ export default class Graphs {
             },
             slide2: {
                 realtime: null,
-                dayNightDuiktank: null,
+                daynight: null,
+            },
+            slide3: {
+                realtime: null,
+                daynight: null,
             }
             
             
@@ -34,7 +38,7 @@ export default class Graphs {
 
         for (const device in this.app.devices) {
             labels.push(device);
-            let average = await this.app.api.average.get( this.app.devices[device], '1w');
+            let average = await this.app.api.average.get( this.app.devices[device], '1d');
             dataset.push(average.data[0]._value);
         }
 
@@ -78,9 +82,9 @@ export default class Graphs {
         })
     }
 
-    async getDayNightChart() {
+    async getDayNightChart(slide, location) {
         
-        let chartContainer2 = document.querySelector('#slide-2 #lb-chart');
+        let chartContainer2 = document.querySelector(`#slide-${slide} #lb-chart`);
         let ctx = chartContainer2.getContext('2d');
 
         let data = {
@@ -103,7 +107,7 @@ export default class Graphs {
         }
 
         
-        let daynight = await this.app.api.daynight.get(this.app.devices['Duiktank'], '1w');
+        let daynight = await this.app.api.daynight.get(this.app.devices[location], '1d');
 
         for (let i = 0; i < daynight.data.length; i++) {
             const element = daynight.data[i];
@@ -133,20 +137,19 @@ export default class Graphs {
           };
         
 
-        if (this.charts.slide2.dayNightDuiktank != null) {
-            this.charts.slide2.dayNightDuiktank.destroy();
+        if (this.charts[`slide${slide}`].daynight != null) {
+            this.charts[`slide${slide}`].daynight.destroy();
         }
-        this.charts.slide2.dayNightDuiktank = new Chart( ctx , config );
+        this.charts[`slide${slide}`].daynight = new Chart( ctx , config );
     }
 
     async getRealtimeChart(slide, location, value, max) {
+        this.charts[`slide${slide}`].realtime = null;
 
-        let chartContainer2 = document.querySelector(`#slide-${slide} #rb-chart`);
+        let chartContainer = document.querySelector(`#slide-${slide} #rb-chart`);
 
         let percentage = value / max * 100;
         let maxPercentage = 100 - percentage;
-
-        console.log(percentage, maxPercentage);
 
         const config = {
             type: 'doughnut',
@@ -163,6 +166,7 @@ export default class Graphs {
                 }]
             },
             options: {
+                responsive: true,
                 plugins: {
                     legend: {
                         position: 'center',
@@ -183,7 +187,7 @@ export default class Graphs {
         if (this.charts[`slide${slide}`].realtime != null) {
             this.charts[`slide${slide}`].realtime.destroy();
         }
-        this.charts[`slide${slide}`].realtime = new Chart( chartContainer2 , config );
+        this.charts[`slide${slide}`].realtime = new Chart( chartContainer , config );
     }
 
     async updateRealtimeChart(slide, location, value, max) {

@@ -35,7 +35,7 @@ export default class SOCKET {
 
 
         for (const device in this.app.devices) {
-            if (i == 2) {
+            if (i == 2 || i == 3) {
                 if (this.app.graph.charts[`slide${i}`].realtime != null) {
                     await this.app.graph.updateRealtimeChart(i, device, data.data[this.app.devices[device]], data.data['totalPower']);
                 } else {
@@ -52,6 +52,7 @@ export default class SOCKET {
 
     async handleConnect(data){
         this.endElapsed();
+        console.log(data);
 
         document.documentElement.style.setProperty('--global-progress-duration', `${data.timer}s`);
         this.app.timer.interval = parseInt(data.timer);
