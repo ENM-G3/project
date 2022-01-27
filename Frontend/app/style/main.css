@@ -89,6 +89,16 @@ section {
 
 
 /* Map */
+.map {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.map img {
+    max-width: 100%;
+}
+
+
 /* Question */
 .question {
     display: grid;
