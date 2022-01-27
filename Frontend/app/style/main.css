@@ -3,7 +3,7 @@
     --global-color-alpha-: #E9E9E9;
     --global-color-alpha--: #949494;
     --global-color-alpha---: #010001;
-    --global-color-beta: #FF0000;
+    --global-color-beta: #ed193a;
 
     --js-progress-amount: 3;
     --js-progress-duration: 5s;
@@ -104,6 +104,16 @@ section {
 }
 
 /* Map */
+.map {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.map img {
+    max-width: 100%;
+}
+
+
 /* Question */
 .question {
     display: grid;
