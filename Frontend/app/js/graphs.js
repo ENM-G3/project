@@ -1,7 +1,6 @@
 import * as C from './lib/chart.min.js';
 
 export default class Graphs {
-
     constructor (app) {
         this.app = app;
 
@@ -176,6 +175,7 @@ export default class Graphs {
                         enabled: true
                     },
                 },
+                cutout: '80%'
             },
           };
         

@@ -40,7 +40,7 @@ class Mqtt:
 
                     for key, value in dict_topics.items():
                         if payload['utcTimeStamp'] > value['utcTimeStamp']:
-                            pops.add(key)
+                            pops.append(key)
 
                     for key in pops:
                         dict_topics.pop(key, None)
