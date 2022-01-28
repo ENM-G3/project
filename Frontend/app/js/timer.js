@@ -5,7 +5,7 @@ export default class Timer {
     constructor(app) {
         this.app = app;
         this.interval = 2;
-        this.updateInterval = 20; // Time between updated of data
+        this.updateInterval = 60 * 5; // Time between updated of data
 
         this.order = [];
         Object.assign(this, Data);
