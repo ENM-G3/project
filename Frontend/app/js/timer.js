@@ -5,6 +5,7 @@ export default class Timer {
     constructor(app) {
         this.app = app;
         this.interval = 2;
+        this.updateInterval = 20; // Time between updated of data
 
         this.order = [];
         Object.assign(this, Data);
@@ -49,10 +50,15 @@ export default class Timer {
 
         this.slideIndicator();
         this.startInterval();
+        this.startUpdateInterval();
     }
 
     startInterval() {
         setInterval(this.gotoNext.bind(this), this.interval * 1000);
+    }
+
+    startUpdateInterval() {
+        setInterval(this.app.updateData.bind(this.app), this.updateInterval * 1000);
     }
 
     changeOrder() {

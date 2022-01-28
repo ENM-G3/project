@@ -25,7 +25,7 @@ export default class App {
     async init() {
 
         // hier komen de listeners, structuur nog uit te zoeken
-    
+        
         
         //this.removeLoader();
 
@@ -35,12 +35,14 @@ export default class App {
     // function for starting async functions to see if all elements are loaded.
     async waitForLoad() {
         try {
+            
             await this.graph.getDayNightChart(2, 'Duiktank');
             await this.graph.getDayNightChart(3, 'Fuifzaal');
             await this.graph.getAllAveragesChart();
 
             
             await this.api.facts.init();
+            this.socket.init();
             this.fillWeetjes(1, await this.api.facts.getRandomFacts());
             this.fillQuestion(2, await this.api.facts.getRandomQuestion());
             this.fillWeetjes(2, await this.api.facts.getRandomFacts());
@@ -91,6 +93,10 @@ export default class App {
     fillWeetjes(slideNumber, weetjes) {
         document.querySelector(`#slide-${slideNumber} #weetje-1`).innerHTML = weetjes[0].fact;
         document.querySelector(`#slide-${slideNumber} #weetje-2`).innerHTML = weetjes[1].fact;
+    }
+
+    async updateData() {
+        await this.graph.updateAllAveragesChart();
     }
 
 

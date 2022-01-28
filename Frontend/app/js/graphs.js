@@ -82,6 +82,22 @@ export default class Graphs {
         })
     }
 
+    async updateAllAveragesChart() {
+        //get data
+
+        let labels = [], dataset = [];
+
+        for (const device in this.app.devices) {
+            labels.push(device);
+            let average = await this.app.api.average.get( this.app.devices[device], '1d');
+            dataset.push(average.data[0]._value);
+        }
+
+        this.charts.slide1.allAverage.data.labels = labels;
+        this.charts.slide1.allAverage.data.datasets[0].data = dataset;
+        this.charts.slide1.allAverage.update();
+    }
+
     async getDayNightChart(slide, location) {
         
         let chartContainer2 = document.querySelector(`#slide-${slide} #lb-chart`);
