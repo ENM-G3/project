@@ -14,7 +14,7 @@ export default class DayNight {
     async get(device, timespan) {
 
         let url = this.base + `/${timespan}/${device}`;
-        console.log(url);
+        //console.log(url);
 
         // this.api.get komt uit de ./js/util/Data.js file
         const res = await this.api.get(url);
