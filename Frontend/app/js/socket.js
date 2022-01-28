@@ -6,6 +6,11 @@ export default class SOCKET {
         this.app = app;
         this.socketio = this.app.io;
 
+        
+        this.socketio.on('B2F_connected', this.handleConnect.bind(this));
+    }
+
+    init() {
         this.startElapsed();
         this.addHandlers();
     }
@@ -25,22 +30,34 @@ export default class SOCKET {
 
     addHandlers() {
         this.socketio.on('B2F_realtime', this.handleRealtime.bind(this));
-        this.socketio.on('B2F_connected', this.handleConnect.bind(this));
     }
 
     async handleRealtime(data) {
         this.endElapsed();
-        console.log(data);
         let i = 2;
 
 
         for (const device in this.app.devices) {
-            if (i == 2) {
+            if (i == 2 || i == 3) {
                 if (this.app.graph.charts[`slide${i}`].realtime != null) {
                     await this.app.graph.updateRealtimeChart(i, device, data.data[this.app.devices[device]], data.data['totalPower']);
                 } else {
                     await this.app.graph.getRealtimeChart(i, device, data.data[this.app.devices[device]], data.data['totalPower']);
                 }
+
+                let random =  Math.floor(Math.random() * this.app.api.facts.vergelijkingen.length);
+
+                let watthours = data.data[this.app.devices[device]] * 1;
+
+                let value = this.app.api.facts.vergelijkingen[random].time / 60;
+                let amount = this.app.api.facts.vergelijkingen[random].amount / value;
+
+                console.log(data.data[this.app.devices[device]],this.app.api.facts.vergelijkingen[random].amount, this.app.api.facts.vergelijkingen[random].time, value, amount)
+
+
+                //console.log(this.app.api.facts.vergelijkingen);
+
+                //console.log(this.app.api.facts.vergelijkingen[random], latest, data.data[this.app.devices[device]]);
                 
             }
 
@@ -52,6 +69,7 @@ export default class SOCKET {
 
     async handleConnect(data){
         this.endElapsed();
+        console.log(data);
 
         document.documentElement.style.setProperty('--global-progress-duration', `${data.timer}s`);
         this.app.timer.interval = parseInt(data.timer);
