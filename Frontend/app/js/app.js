@@ -54,7 +54,13 @@ export default class App {
             return true;
         } catch(e) {
             throw e;
+        } finally {
+            this.removeSpinner();
         }
+    }
+
+    removeSpinner() {
+        document.querySelector('.spinning-loader').classList.add('invisible');
     }
     
     fillQuestion(slideNumber, question) {
