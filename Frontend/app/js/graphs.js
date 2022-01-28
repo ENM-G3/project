@@ -77,7 +77,19 @@ export default class Graphs {
                     y: {
                         beginAtZero: true
                     }
-                }
+                },
+                plugins: {
+                    datalabels: {
+                      font: function(context) {
+                        var width = context.chart.width;
+                        var size = Math.round(width / 32);
+                         return {
+                           size: size,
+                          weight: 600
+                        };
+                      }
+                    }
+                  }
             }
         })
     }
@@ -147,7 +159,17 @@ export default class Graphs {
                 title: {
                   display: true,
                   text: 'Dag en nacht'
-                }
+                },
+                datalabels: {
+                    font: function(context) {
+                      var width = context.chart.width;
+                      var size = Math.round(width / 32);
+                       return {
+                         size: size,
+                        weight: 600
+                      };
+                    }
+                  }
               }
             },
           };
@@ -194,6 +216,16 @@ export default class Graphs {
                     tooltip: {
                         enabled: true
                     },
+                    datalabels: {
+                        font: function(context) {
+                          var width = context.chart.width;
+                          var size = Math.round(width / 32);
+                           return {
+                             size: size,
+                            weight: 600
+                          };
+                        }
+                      }
                 },
                 cutout: '80%'
             },

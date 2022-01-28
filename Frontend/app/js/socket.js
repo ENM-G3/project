@@ -50,15 +50,16 @@ export default class SOCKET {
                 let watthours = data.data[this.app.devices[device]] * 1;
 
                 let value = this.app.api.facts.vergelijkingen[random].time / 60;
-                let amount = this.app.api.facts.vergelijkingen[random].amount / value;
+                let powerOverOneHour = this.app.api.facts.vergelijkingen[random].amount / value;
+                let timesVergelijkingInRealtime =  watthours / powerOverOneHour;
 
-                console.log(data.data[this.app.devices[device]],this.app.api.facts.vergelijkingen[random].amount, this.app.api.facts.vergelijkingen[random].time, value, amount)
-
-
-                //console.log(this.app.api.facts.vergelijkingen);
-
-                //console.log(this.app.api.facts.vergelijkingen[random], latest, data.data[this.app.devices[device]]);
-                
+                //console.log(data.data[this.app.devices[device]],this.app.api.facts.vergelijkingen[random].amount, this.app.api.facts.vergelijkingen[random].time, value, powerOverOneHour, timeRealtimeInPowerOverOneHour, device, this.app.api.facts.vergelijkingen[random].name )
+                if (timesVergelijkingInRealtime < 1) {
+                    timesVergelijkingInRealtime = powerOverOneHour / watthours;
+                    document.querySelector(`#slide-${i} .vergelijking`).innerText = `${device} kan ${Math.round(timesVergelijkingInRealtime)} in ${this.app.api.facts.vergelijkingen[random].name}`;
+                } else {
+                    document.querySelector(`#slide-${i} .vergelijking`).innerText = `${this.app.api.facts.vergelijkingen[random].name} kan ${Math.round(timesVergelijkingInRealtime)} in ${device}`;
+                }
             }
 
             i++;
