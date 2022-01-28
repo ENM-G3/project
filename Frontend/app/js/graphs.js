@@ -38,7 +38,7 @@ export default class Graphs {
 
         for (const device in this.app.devices) {
             labels.push(device);
-            let average = await this.app.api.average.get( this.app.devices[device], '1d');
+            let average = await this.app.api.average.get( this.app.devices[device], '1w');
             dataset.push(average.data[0]._value);
         }
 
