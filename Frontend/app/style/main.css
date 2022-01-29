@@ -173,7 +173,7 @@ section {
 }
 
 /* Graph */
-.graph {
+/* .graph {
     padding: 0.8vw;
 
     display: flex;
@@ -181,8 +181,6 @@ section {
     align-items: center;
 
     flex-direction: column;
-
-    
 }
 canvas {
     width: 100%;
@@ -208,6 +206,15 @@ canvas {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+} */
+.graph {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.graph > div {
+    height: 90%;
+    width: 90%;
 }
 
 /* Vertical */

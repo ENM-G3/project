@@ -31,15 +31,26 @@ export default class Graphs {
         //await this.getDayNightChart();
     }
 
+    labels() {
+        var width = context.chart.width;
+        var size = Math.round(width / 42);
+        return size;
+    }
+
     async getAllAveragesChart() {
-        let chartContainer1 = document.querySelector('#slide-1 .graph #lb-graph');
+        let chartContainer1 = document.querySelector('#slide-1 .graph #graph-bl');
         let ctx = chartContainer1.getContext('2d');
         let labels = [], dataset = [];
 
         for (const device in this.app.devices) {
             labels.push(device);
             let average = await this.app.api.average.get( this.app.devices[device], '1w');
-            dataset.push(average.data[0]._value);
+            console.log(average.data[0]._value);
+            // dataset.push(average.data[0]._value);
+
+            let wattHours = average.data[0]._value / 1000 * 168;
+            let families = wattHours / 58;
+            dataset.push(families);
         }
 
         //let highestToLowest = data.sort((a, b) => b - a);
@@ -54,28 +65,39 @@ export default class Graphs {
             data: {
                 labels,
                 datasets: [{
-                    label: 'Gemiddeld verbruik op 1 week van belangrijkste locaties',
+                    // label: 'Gemiddeld verbruik op 1 week van belangrijkste locaties',
+                    label: 'Verbruik tegenover het aantal gezinnen.',
                     data: dataset,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
+                        // 'rgba(255, 99, 132, 0.2)',
+                        // 'rgba(54, 162, 235, 0.2)',
+                        // 'rgba(255, 206, 86, 0.2)',
+                        // 'rgba(75, 192, 192, 0.2)',
+                        // 'rgba(153, 102, 255, 0.2)',
+                        'rgba(109, 207, 246, 0.2)',
+                        'rgba(237, 25, 58, 0.2)',
+                        'rgba(128, 130, 133, 0.2)',
+                        'rgba(87, 87, 90, 0.2)',
+                        'rgba(170, 224, 249, 0.2)',
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
+                        // 'rgba(255, 99, 132, 1)',
+                        // 'rgba(54, 162, 235, 1)',
+                        // 'rgba(255, 206, 86, 1)',
+                        // 'rgba(75, 192, 192, 1)',
+                        // 'rgba(153, 102, 255, 1)',
+                        'rgba(109, 207, 246, 1)',
+                        'rgba(237, 25, 58, 1)',
+                        'rgba(128, 130, 133, 1)',
+                        'rgba(87, 87, 90, 1)',
+                        'rgba(170, 224, 249, 1)',
                     ],
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
 
                 scales: {
                     x: {
@@ -110,24 +132,23 @@ export default class Graphs {
                                 var width = context.chart.width;
                                 var size = Math.round(width / 42);
                                 return {
-                                    size: size
+                                    size: size,
+                                    weight: 600
                                 };
                             }
                        }
-                    }
-                },
-                plugins: {
+                    },
                     datalabels: {
-                      font: function(context) {
-                        var width = context.chart.width;
-                        var size = Math.round(width / 32);
-                         return {
-                           size: size,
-                          weight: 600
-                        };
-                      }
+                        font: function(context) {
+                            var width = context.chart.width;
+                            var size = Math.round(width / 32);
+                            return {
+                                size: size,
+                                weight: 600
+                            };
+                        }
                     }
-                  }
+                }
             }
         })
     }
@@ -189,12 +210,22 @@ export default class Graphs {
             type: 'doughnut',
             data: data,
             options: {
+                maintainAspectRatio: false,
                 responsive: true,
                 plugins: {
                     rotation: 180,
                     legend: {
                         position: 'left',
                         align: 'center',
+                        labels: {
+                            font: function(context) {
+                                var width = context.chart.width;
+                                var size = Math.round(width / 42);
+                                return {
+                                    size: size
+                                };
+                            }
+                       }
                     },
                     title: {
                         display: true,
