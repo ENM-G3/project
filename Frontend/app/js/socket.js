@@ -44,6 +44,7 @@ export default class SOCKET {
                 } else {
                     await this.app.graph.getRealtimeChart(i, device, data.data[this.app.devices[device]], data.data['totalPower']);
                 }
+                document.querySelector(`#slide-${i} .realtime-text-container #value`).innerText = Math.round(data.data[this.app.devices[device]] / 100) / 10;
             }
             i++;
         }

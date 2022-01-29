@@ -50,10 +50,11 @@ export default class Graphs {
 
         this.charts.slide1.allAverage = new Chart( ctx , {
             type: 'bar',
+            height: '100%',
             data: {
                 labels,
                 datasets: [{
-                    label: 'Gemiddeld verbruik op 1 week',
+                    label: 'Gemiddeld verbruik op 1 week van belangrijkste locaties',
                     data: dataset,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -73,7 +74,9 @@ export default class Graphs {
                 }]
             },
             options: {
-                maintainAspectRatio: false,
+                responsive: true,
+                maintainAspectRatio: true,
+
                 scales: {
                     x: {
                         ticks: {
@@ -186,15 +189,16 @@ export default class Graphs {
             type: 'doughnut',
             data: data,
             options: {
-                maintainAspectRatio: false,
                 responsive: true,
                 plugins: {
+                    rotation: 180,
                     legend: {
-                        position: 'center',
+                        position: 'left',
+                        align: 'center',
                     },
                     title: {
                         display: true,
-                        text: 'Dag en nacht'
+                        text: 'Dag en nacht verbruik'
                     },
                     datalabels: {
                         font: function(context) {
@@ -248,7 +252,7 @@ export default class Graphs {
                     },
                     title: {
                         display: true,
-                        text: 'Realtime'
+                        text: 'Huidige waarde t.o.v. totaal verbruik van site'
                     },
                     tooltip: {
                         enabled: true

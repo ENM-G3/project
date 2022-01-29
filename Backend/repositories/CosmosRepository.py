@@ -28,13 +28,14 @@ class CosmosRepository:
         return result
 
     @staticmethod
-    def create_vergelijking(name, amount, time, location='general'):
+    def create_vergelijking(name, names, amount, time, location='general'):
 
         guid = str(uuid.uuid4())
         vergelijking = {
             'id': guid,
             'type': 'vergelijking',
             'name': name,
+            'names': names,
             'amount': amount,
             'time': time,
             'location': location
