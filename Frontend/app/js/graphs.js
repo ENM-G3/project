@@ -73,9 +73,44 @@ export default class Graphs {
                 }]
             },
             options: {
+                maintainAspectRatio: false,
                 scales: {
+                    x: {
+                        ticks: {
+                            font: function(context) {
+                                var width = context.chart.width;
+                                var size = Math.round(width / 42);
+                                return {
+                                    size: size
+                                };
+                            }
+                        }
+                    },
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            font: function(context) {
+                                var width = context.chart.width;
+                                var size = Math.round(width / 42);
+                                return {
+                                    size: size
+                                };
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: function(context) {
+                                var width = context.chart.width;
+                                var size = Math.round(width / 42);
+                                return {
+                                    size: size
+                                };
+                            }
+                       }
                     }
                 }
             }
