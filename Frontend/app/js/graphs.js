@@ -38,7 +38,7 @@ export default class Graphs {
 
         for (const device in this.app.devices) {
             labels.push(device);
-            let average = await this.app.api.average.get( this.app.devices[device], '1d');
+            let average = await this.app.api.average.get( this.app.devices[device], '1w');
             dataset.push(average.data[0]._value);
         }
 
@@ -112,7 +112,19 @@ export default class Graphs {
                             }
                        }
                     }
-                }
+                },
+                plugins: {
+                    datalabels: {
+                      font: function(context) {
+                        var width = context.chart.width;
+                        var size = Math.round(width / 32);
+                         return {
+                           size: size,
+                          weight: 600
+                        };
+                      }
+                    }
+                  }
             }
         })
     }
@@ -182,7 +194,17 @@ export default class Graphs {
                 title: {
                   display: true,
                   text: 'Dag en nacht'
-                }
+                },
+                datalabels: {
+                    font: function(context) {
+                      var width = context.chart.width;
+                      var size = Math.round(width / 32);
+                       return {
+                         size: size,
+                        weight: 600
+                      };
+                    }
+                  }
               }
             },
           };
@@ -229,6 +251,16 @@ export default class Graphs {
                     tooltip: {
                         enabled: true
                     },
+                    datalabels: {
+                        font: function(context) {
+                          var width = context.chart.width;
+                          var size = Math.round(width / 32);
+                           return {
+                             size: size,
+                            weight: 600
+                          };
+                        }
+                      }
                 },
                 cutout: '80%'
             },

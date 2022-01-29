@@ -44,26 +44,9 @@ export default class SOCKET {
                 } else {
                     await this.app.graph.getRealtimeChart(i, device, data.data[this.app.devices[device]], data.data['totalPower']);
                 }
-
-                let random =  Math.floor(Math.random() * this.app.api.facts.vergelijkingen.length);
-
-                let watthours = data.data[this.app.devices[device]] * 1;
-
-                let value = this.app.api.facts.vergelijkingen[random].time / 60;
-                let amount = this.app.api.facts.vergelijkingen[random].amount / value;
-
-                console.log(data.data[this.app.devices[device]],this.app.api.facts.vergelijkingen[random].amount, this.app.api.facts.vergelijkingen[random].time, value, amount)
-
-
-                //console.log(this.app.api.facts.vergelijkingen);
-
-                //console.log(this.app.api.facts.vergelijkingen[random], latest, data.data[this.app.devices[device]]);
-                
             }
-
             i++;
         }
-        //await this.app.graph.getRealtimeChart(2, 'Duiktank', 10, 200);
         this.startElapsed();
     }
 

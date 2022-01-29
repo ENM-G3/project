@@ -49,6 +49,9 @@ export default class App {
 
             this.fillQuestion(3, await this.api.facts.getRandomQuestion());
             this.fillWeetjes(3, await this.api.facts.getRandomFacts());
+
+            this.fillVergelijking(2, 'Duiktank');
+            this.fillVergelijking(3, 'Fuifzaal');
             await this.timer.init();
             
             return true;
@@ -66,6 +69,8 @@ export default class App {
     fillQuestion(slideNumber, question) {
         let correct = question.answer;
         let optionsContainer = document.querySelector(`#slide-${slideNumber} .question-options`);
+        
+        optionsContainer.innerHTML = "";
         let questionText = document.querySelector(`#slide-${slideNumber} #question-statement`);
 
         questionText.innerHTML = question.question;
@@ -98,11 +103,72 @@ export default class App {
 
     fillWeetjes(slideNumber, weetjes) {
         document.querySelector(`#slide-${slideNumber} #weetje-1`).innerHTML = weetjes[0].fact;
-        document.querySelector(`#slide-${slideNumber} #weetje-2`).innerHTML = weetjes[1].fact;
+    }
+
+    async fillVergelijking(slideNumber, device) {
+        // zoeken naar best geschikte vergelijking.
+        
+
+        let average = (await this.api.average.get( this.devices[device], '1w')).data[0]._value;
+        let timesVergelijkingInRealtime;
+
+        let i = 0;
+        let dichtste = {
+            index: 0,
+            laagsteWaarde: 0,
+            uitkomst: 0
+        };
+        for (const vergelijking of this.api.facts.vergelijkingen) {
+
+            timesVergelijkingInRealtime =  average / vergelijking.amount;
+            let rounded = Math.round(timesVergelijkingInRealtime);
+            let abs = Math.abs(rounded - timesVergelijkingInRealtime);
+
+            if (i == 0) {
+                dichtste.index = i;
+                dichtste.laagsteWaarde = abs;
+                dichtste.uitkomst = timesVergelijkingInRealtime;
+            } else if (dichtste.laagsteWaarde > abs && average > vergelijking.amount) {
+                dichtste.index = i;
+                dichtste.laagsteWaarde = abs;
+                dichtste.uitkomst = timesVergelijkingInRealtime;
+            }
+
+            i++;
+        }
+        let randomWeetje = this.api.facts.vergelijkingen[dichtste.index];
+
+        let string;
+        if (dichtste.uitkomst < 1) {
+            dichtste.uitkomst =  randomWeetje.amount / average;
+            string = `${device} verbruikte in de voorbije ${Math.round(dichtste.uitkomst)} uur evenveel als een ${randomWeetje.name} op ${randomWeetje.time}`;
+
+        } else {
+            if ( Math.round(dichtste.uitkomst) > 1) {
+                // meervoud
+                string = `${device} verbruikte in het voorbije uur evenveel als ${Math.round(dichtste.uitkomst)} ${randomWeetje.names} op ${randomWeetje.time}`;
+            } else {
+                // enkelvoud
+                string = `${device} verbruikte in het voorbije uur evenveel als ${Math.round(dichtste.uitkomst)} keer een ${randomWeetje.name} op ${randomWeetje.time}`;
+            }
+            
+        }
+        document.querySelector(`#slide-${slideNumber} #weetje-2`).innerHTML = string;
+
+        
     }
 
     async updateData() {
         await this.graph.updateAllAveragesChart();
+
+        await this.api.facts.init();
+
+        this.fillWeetjes(1, await this.api.facts.getRandomFacts());
+        this.fillQuestion(2, await this.api.facts.getRandomQuestion());
+        this.fillWeetjes(2, await this.api.facts.getRandomFacts());
+
+        this.fillQuestion(3, await this.api.facts.getRandomQuestion());
+        this.fillWeetjes(3, await this.api.facts.getRandomFacts());
     }
 
 
