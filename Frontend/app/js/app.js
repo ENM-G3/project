@@ -43,12 +43,14 @@ export default class App {
             
             await this.api.facts.init();
             this.socket.init();
-            this.fillWeetjes(1, await this.api.facts.getRandomFacts());
+            this.fillWeetjes(1, 'general');
+            this.fillWeetjes(1, 'general', 2);
+
             this.fillQuestion(2, await this.api.facts.getRandomQuestion());
-            this.fillWeetjes(2, await this.api.facts.getRandomFacts());
+            this.fillWeetjes(2, 'Duiktank');
 
             this.fillQuestion(3, await this.api.facts.getRandomQuestion());
-            this.fillWeetjes(3, await this.api.facts.getRandomFacts());
+            this.fillWeetjes(3, 'Fuifzaal');
 
             this.fillVergelijking(2, 'Duiktank');
             this.fillVergelijking(3, 'Fuifzaal');
@@ -101,8 +103,20 @@ export default class App {
         document.documentElement.style.setProperty('--js-question-options', count);
     }
 
-    fillWeetjes(slideNumber, weetjes) {
-        document.querySelector(`#slide-${slideNumber} #weetje-1`).innerHTML = weetjes[0].fact;
+    fillWeetjes(slideNumber, locatie, weetjeNummer = 1) {
+        let locatieWeetjes = [];
+        for (const weetje of this.api.facts.weetjes) {
+            if ( weetje.location == locatie) {
+                locatieWeetjes.push(weetje);
+            }
+        }
+        if (locatieWeetjes.length == 0) {
+            this.fillWeetjes(slideNumber, 'general', weetjeNummer);
+        } else {
+            const random = Math.floor(Math.random() * locatieWeetjes.length);
+            document.querySelector(`#slide-${slideNumber} #weetje-${weetjeNummer}`).innerHTML = locatieWeetjes[random].fact;
+        }
+
     }
 
     async fillVergelijking(slideNumber, device) {
