@@ -186,28 +186,29 @@ export default class Graphs {
             type: 'doughnut',
             data: data,
             options: {
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: 'center',
-                },
-                title: {
-                  display: true,
-                  text: 'Dag en nacht'
-                },
-                datalabels: {
-                    font: function(context) {
-                      var width = context.chart.width;
-                      var size = Math.round(width / 32);
-                       return {
-                         size: size,
-                        weight: 600
-                      };
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'center',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Dag en nacht'
+                    },
+                    datalabels: {
+                        font: function(context) {
+                            var width = context.chart.width;
+                            var size = Math.round(width / 32);
+                            return {
+                                size: size,
+                                weight: 600
+                            };
+                        }
                     }
-                  }
-              }
+                }
             },
-          };
+        };
         
 
         if (this.charts[`slide${slide}`].daynight != null) {
@@ -239,6 +240,7 @@ export default class Graphs {
                 }]
             },
             options: {
+                maintainAspectRatio: false,
                 responsive: true,
                 plugins: {
                     legend: {
@@ -253,14 +255,14 @@ export default class Graphs {
                     },
                     datalabels: {
                         font: function(context) {
-                          var width = context.chart.width;
-                          var size = Math.round(width / 32);
-                           return {
-                             size: size,
-                            weight: 600
-                          };
+                            var width = context.chart.width;
+                            var size = Math.round(width / 32);
+                            return {
+                                size: size,
+                                weight: 600
+                            };
                         }
-                      }
+                    }
                 },
                 cutout: '80%'
             },
