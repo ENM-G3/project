@@ -22,21 +22,8 @@ export default class Timer {
 
         this.num_items = this.slides.length;
 
-        document.documentElement.style.setProperty('--js-progress-amount', this.num_items);
-
-        let progressContainer = document.querySelector('footer.progress');
-
         for (let i = 1; i <= this.num_items; i++) {
             this.order.push(i);
-
-            let progress = `<div id="progress-${i}">
-            <span class="progress-base"></span>
-            <span class="progress-done"></span>
-            <span></span>
-            </div>`;
-
-            progressContainer.innerHTML += progress;
-            
         }
 
         this.current = 1;
@@ -45,8 +32,6 @@ export default class Timer {
         this.slides.forEach((element, index) => {
             element.style.order = this.order[index];
         });
-
-        this.addEvents();
 
         this.slideIndicator();
         this.startInterval();
@@ -62,7 +47,6 @@ export default class Timer {
     }
 
     changeOrder() {
-
         for (let i = 0; i < this.num_items; i++) {
             this.slides[i].style.order = this.order[i];
             if (this.slides[i].style.order != 1) {
@@ -72,22 +56,15 @@ export default class Timer {
             }
         }
 
-        if (this.order[0] == 1) {
-            let el = document.querySelector(`#progress-1 .progress-done`);
-            el.style.animation = 'none';
-            el.offsetHeight; /* trigger reflow */
-            el.style.animation = null; 
-        }
+        let el = document.querySelector(`#progress .progress-done`);
+        el.style.animation = 'none';
+        el.offsetHeight; /* trigger reflow */
+        el.style.animation = null; 
+
         this.slideIndicator();
-
-    }
-
-    addEvents() {
-        //document.querySelector(".slider").addEventListener('transitionend', this.changeOrder.bind(this));
     }
 
     gotoNext () {
-        
         if (this.order.length == this.current) {
             this.current = 1;
         } else {
@@ -102,21 +79,15 @@ export default class Timer {
         this.order.unshift(this.order[this.order.length - 1]);
         this.order.pop();
 
-        if (this.order[0] == 1) {
-            this.removeIndicatorAnimations();
-        }
-
+        this.removeIndicatorAnimations();
         this.changeOrder();
     }
 
     slideIndicator() {
-        //document.querySelector(`#progress-${this.last} #progress-show`).classList.remove("progress-show");
-        document.querySelector(`#progress-${this.current} .progress-done`).classList.add("progress-done-animation");
+        document.querySelector(`#progress .progress-done`).classList.add("progress-done-animation");
     }
 
     removeIndicatorAnimations() {
-        for (const order of this.order) {
-            document.querySelector(`#progress-${order} .progress-done`).classList.remove("progress-done-animation");
-        }
+        document.querySelector(`#progress .progress-done`).classList.remove("progress-done-animation");
     }
 }
