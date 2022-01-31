@@ -83,10 +83,10 @@ export default class Timer {
         let questionInterval = test[0];
 
         if (document.querySelector(`#slide-${this.current} .question`)) {
-            document.querySelector('.progress-show').classList.remove('invisible');
+            document.querySelector('.progress-show').classList.add('progress-show-animation');
             setTimeout(this.showAnswers.bind(this), this.interval * 1000 / 100 * parseInt(questionInterval));
         } else {
-            document.querySelector('.progress-show').classList.add('invisible');
+            document.querySelector('.progress-show').classList.remove('progress-show-animation');
         }
         
 

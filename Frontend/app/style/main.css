@@ -140,7 +140,11 @@ section {
 }
 .map img {
     grid-row: 2 / 3;
-    max-width: 100%;
+    justify-content: center;
+    align-content: center;
+    width: 90%;
+    height: 90%;
+    border-radius: 1vw;
 }
 
 #slide-2 .map img {
@@ -271,7 +275,7 @@ section {
 
 .graph {
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 50% 50%;
     grid-template-rows: 15% 1fr;
 }
 .graph > h3 {
@@ -280,7 +284,7 @@ section {
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
 }
 .graph > div {
     grid-column: 1 / 2;
@@ -293,6 +297,7 @@ section {
     grid-column: 2 / 3;
     grid-row: 2 / 3;
 
+    padding: 0 1vw;
     align-self: center;
 }
 .graph > div > canvas {
@@ -399,7 +404,8 @@ section {
 
     background-color: var(--global-color-alpha---);
     border-radius: 1.2vw;
-
+}
+.progress-show-animation {
     animation-duration: 1s;
     animation-fill-mode: forwards;
     animation-name: progress-show;
