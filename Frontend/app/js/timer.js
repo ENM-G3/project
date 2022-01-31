@@ -119,8 +119,4 @@ export default class Timer {
             document.querySelector(`#progress-${order} .progress-done`).classList.remove("progress-done-animation");
         }
     }
-
-
-
-
 }
