@@ -184,6 +184,40 @@ section {
 }
 
 
+/* Info slide 1 */
+.info {
+    display: grid;
+    grid-template-columns: 2vw 1fr 1fr 1fr 2vw;
+    grid-template-rows: 0.8vw 2fr 1fr 0.2vw;
+}
+
+.info .text {
+    grid-row: 2 / 3;
+    grid-column: 2 / 5 ;
+}
+.info .text p {
+    margin-top: 1vw;
+}
+
+.info div {
+    padding: .8vw;
+}
+
+.info .left {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+}
+.info .center {
+    grid-column: 3 / 4 ;
+    grid-row: 3 / 4;
+}
+.info .right {
+    grid-column: 4 / 5 ;
+    grid-row: 3 / 4;
+}
+
+
+
 
 /* Graphs */
 .graph-full {
