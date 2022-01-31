@@ -73,23 +73,23 @@
                 </div>
             </section>
 
-            <section class="graph grid-bl">   <!-- Graph -->
+            <section id="graph-average" class="graph grid-bl">   <!-- Graph -->
                 <h3>Verbruik overdag tegenover s'nachts.</h3>
                 <div>
                     <canvas id="graph-bl"></canvas>
                 </div>
-                <p>Something</p> <!-- Bereken percentage verbruik overdag is -->
+                <p></p>
             </section>
 
-            <section class="graph grid-br">   <!-- Graph -->
+            <section id="graph-real" class="graph grid-br">   <!-- Graph -->
                 <h3>Verbruik van de duiktank tegenover volledige site.</h3>
                 <div>
                     <canvas id="graph-br"></canvas>
                     <div class="graph-realtime">
-                        <p id="graph-realtime">Something</p> <!-- Bereken percentage verbruik duiktank is -->
+                        <p id="graph-realtime"></p> <!-- Bereken percentage verbruik duiktank is -->
                     </div>
                 </div>
-                <p>Something</p> <!-- De site gebruikt ...kW waarvan ..% door de duiktank is -->
+                <p id="graph-text"></p> <!-- De site gebruikt ...kW waarvan ..% door de duiktank is -->
             </section>
 
             <section class="vertical grid-vt">   <!-- Vertical -->
@@ -122,24 +122,23 @@
                 </div>
             </section>
 
-            <section class="graph grid-bl">   <!-- Graph -->
-                <h3>Something</h3>
+            <section id="graph-average" class="graph grid-bl">   <!-- Graph -->
+                <h3>Verbruik overdag tegenover s'nachts.</h3>
                 <div>
                     <canvas id="graph-bl"></canvas>
                 </div>
-                <p>Something</p> <!-- Bereken percentage verbruik overdag is -->
+                <p></p>
             </section>
 
-            <!-- --------------------------------------------- FIX --------------------------------------------------- -->
-            <section class="graph grid-br">   <!-- Graph -->
-                <h3>Verbruik van de duiktank tegenover volledige site.</h3>
+            <section id="graph-real" class="graph grid-br">   <!-- Graph -->
+                <h3>Verbruik van de fuifzaal tegenover volledige site.</h3>
                 <div>
                     <canvas id="graph-br"></canvas>
                     <div class="graph-realtime">
-                        <p id="graph-realtime">Something</p> <!-- Bereken percentage verbruik duiktank is -->
+                        <p id="graph-realtime"></p>
                     </div>
                 </div>
-                <p>Something</p> <!-- De site gebruikt ...kW waarvan ..% door de duiktank is -->
+                <p id="graph-text"></p>
             </section>
 
             <section class="vertical grid-vt">   <!-- Vertical -->
@@ -163,7 +162,7 @@
         <div id="progress">
             <span class="progress-base"></span>
             <span class="progress-done"></span>
-            <span class="progress-show invisible"></span>
+            <span class="progress-show"></span>
         </div>
     </footer>
 

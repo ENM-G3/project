@@ -10,9 +10,15 @@ import time
 import sys
 
 config = configparser.ConfigParser()
-config.read(f'{sys.path[0]}/config/smappee.ini')
-topics = [("servicelocation/477d2645-2919-44c3-acf7-cad592ce7cdc/realtime", 0),
-          ("servicelocation/4cfacd1f-914a-44ff-afdb-3671db497d4c/realtime", 0)]
+config.read(f'{sys.path[0]}/config/config.ini')
+smappee_config = configparser.ConfigParser()
+smappee_config.read(f'{sys.path[0]}/config/smappee.ini')
+
+topics = []
+
+for topic in json.loads(config['mqtt']['topics']):
+    topics.append((topic, 0))
+
 dict_topics = {}
 pops = []
 
@@ -62,13 +68,13 @@ class Mqtt:
 
                     for i in payload["channelPowers"]:
                         # print(i)
-                        if config.has_option(str(i['serviceLocationId']), str(i['publishIndex'])):
+                        if smappee_config.has_option(str(i['serviceLocationId']), str(i['publishIndex'])):
 
-                            if config[str(i['serviceLocationId'])][str(i['publishIndex'])] not in smappee_dicts.keys():
-                                smappee_dicts[config[str(i['serviceLocationId'])][str(
+                            if smappee_config[str(i['serviceLocationId'])][str(i['publishIndex'])] not in smappee_dicts.keys():
+                                smappee_dicts[smappee_config[str(i['serviceLocationId'])][str(
                                     i['publishIndex'])]] = 0
 
-                            smappee_dicts[config[str(i['serviceLocationId'])][str(
+                            smappee_dicts[smappee_config[str(i['serviceLocationId'])][str(
                                 i['publishIndex'])]] += i['power']
 
                             smappee_dicts['totalPower'] += i['power']
@@ -76,7 +82,7 @@ class Mqtt:
                 # Broadcast realtime data
                 socketio.emit('B2F_realtime', {'data': smappee_dicts})
 
-                # print(smappee_dicts)
+                print(smappee_dicts)
                 dict_topics.clear()
         except Exception as error:
             print(error)
@@ -93,6 +99,6 @@ class Mqtt:
         mqttclient.on_disconnect = Mqtt.open_mqtt_connection_realtime
 
         mqttclient.connect(
-            "howest-energy-monitoring.westeurope.cloudapp.azure.com", 1883, 60)
+            config['mqtt']['url'], int(config['mqtt']['port']), 60)
 
         mqttclient.loop_forever()
