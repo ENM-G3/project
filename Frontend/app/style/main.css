@@ -176,10 +176,10 @@ section {
     padding-left: 0.8vw;
     width: 70%;
 }
-.correct img {
+.correct-show img {
     content: url("../img/svg/check.svg");
 }
-.incorrect img {
+.incorrect-show img {
     content: url("../img/svg/cross.svg");
 }
 
