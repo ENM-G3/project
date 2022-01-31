@@ -11,6 +11,7 @@ export default class Timer {
         Object.assign(this, Data);
 
         this.slideObjects = [];
+        this.timer = 0;
     }
 
 
@@ -76,6 +77,13 @@ export default class Timer {
             this.last++;
         }
 
+        const styles = getComputedStyle(document.documentElement);
+        let questionIntervalStyle = styles.getPropertyValue('--js-progress-show').trim();
+        let test = questionIntervalStyle.split('%');
+        let questionInterval = test[0];
+
+        setTimeout(this.showAnswers.bind(this), this.interval * 1000 / 100 * parseInt(questionInterval));
+
         this.order.unshift(this.order[this.order.length - 1]);
         this.order.pop();
 
@@ -89,5 +97,19 @@ export default class Timer {
 
     removeIndicatorAnimations() {
         document.querySelector(`#progress .progress-done`).classList.remove("progress-done-animation");
+    }
+
+    showAnswers() {
+        for (const element of document.querySelectorAll(`#slide-${this.current} .question-option`)) {
+            for (const classItem of element.classList) {
+                if ( classItem =='incorrect' ) {
+                    element.classList.add('incorrect-show');
+                } else if ( classItem == 'correct') {
+                    element.classList.add('correct-show');
+                }
+            }
+
+        }
+        console.log('test', this.current);
     }
 }
