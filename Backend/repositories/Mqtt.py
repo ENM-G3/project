@@ -99,6 +99,6 @@ class Mqtt:
         mqttclient.on_disconnect = Mqtt.open_mqtt_connection_realtime
 
         mqttclient.connect(
-            "howest-energy-monitoring.westeurope.cloudapp.azure.com", 1883, 60)
+            config['mqtt']['url'], int(config['mqtt']['port']), 60)
 
         mqttclient.loop_forever()
