@@ -120,7 +120,7 @@ def weetjes(typeweetje):
 
         elif typeweetje == 'vergelijking':
             result = CosmosRepository.create_vergelijking(
-                data['name'], data['amount'], data['time'], data['location'])
+                data['name'], data['names'], data['amount'], data['time'], data['location'])
             return jsonify(result=result), 201
 
         elif typeweetje == 'meerkeuze':
