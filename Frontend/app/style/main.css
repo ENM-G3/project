@@ -1,3 +1,25 @@
+/*------------------------------------*\
+#FONTS
+\*------------------------------------*/
+@font-face {
+    font-family: "Roboto";
+    font-weight: 200;
+    src: url("../fonts/RobotoCondensed-Light.ttf") format("truetype")
+}
+
+@font-face {
+    font-family: "Roboto";
+    font-weight: 400;
+    src: url("../fonts/RobotoCondensed-Regular.ttf") format("truetype")
+}
+
+@font-face {
+    font-family: "Roboto";
+    font-weight: 600;
+    src: url("../fonts/RobotoCondensed-Bold.ttf") format("truetype")
+}
+
+
 :root {
     --global-color-alpha: #FFFFFF;
     --global-color-alpha-: #E9E9E9;
@@ -20,7 +42,7 @@
 html, body {
     background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,0,0,0.1) 100%);
     color: var(--global-color-alpha--);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Roboto', sans-serif;
     height: 100%;
     font-size: 1vw;
 }
@@ -117,7 +139,7 @@ section {
     grid-row: 2 / 3;
     max-width: 100%;
 }
-/* ------------------------------------- FIX ------------------------------------------------- */
+
 #slide-2 .map img {
     content: url("../img/map-Duiktank.png");
 }
