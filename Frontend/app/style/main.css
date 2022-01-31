@@ -197,6 +197,7 @@ section {
     background-color: var(--global-color-alpha-);
     border-radius: 0.8vw;
     position: relative;
+    border: solid .1vw var(--global-color-alpha-);
 }
 .question-option > img {
     position: absolute;
@@ -209,14 +210,14 @@ section {
 }
 
 .correct-show {
-    border: solid .1vw var(--global-color-charlie)
+    border-color: var(--global-color-charlie);
 }
 .correct-show img {
     content: url("../img/svg/check.svg");
 }
 
 .incorrect-show {
-    border: solid .1vw var(--global-color-beta)
+    border-color: var(--global-color-beta);
 }
 .incorrect-show img {
     content: url("../img/svg/cross.svg");
