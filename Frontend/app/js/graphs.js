@@ -189,7 +189,7 @@ export default class Graphs {
 
         total = Math.round(total);
         let percentage_day = Math.round(total_day / total * 100);
-        let text = `De ${location} verbruikt overdag gemiddeld ${percentage_day}% van de ${total}kW die dagelijks verbruikt wordt.`;
+        let text = `De ${location} verbruikt overdag gemiddeld ${percentage_day}% van de ${total}W die dagelijks verbruikt wordt.`;
         p.innerHTML = text;
 
         const config = {
@@ -226,7 +226,7 @@ export default class Graphs {
         let maxPercentage = 100 - percentage;
 
         realtime.innerHTML = `${Math.round(percentage)}%`;
-        let text = `De site gebruikt op dit moment ${Math.round(max)}kW, waarvan de ${location} ${Math.round(value)}kW gebruikt.<br> Dit is ${Math.round(percentage)}% van het totale verbruik`;
+        let text = `De site gebruikt op dit moment ${Math.round(max)}W, waarvan de ${location} ${Math.round(value)}W gebruikt.<br> Dit is ${Math.round(percentage)}% van het totale verbruik`;
         p.innerHTML = text;
 
 
