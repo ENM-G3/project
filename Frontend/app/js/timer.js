@@ -82,6 +82,11 @@ export default class Timer {
         let test = questionIntervalStyle.split('%');
         let questionInterval = test[0];
 
+        let options = document.querySelectorAll(`#slide-${this.current} .question-option`);
+        if (options.length != 0) {
+            document.documentElement.style.setProperty('--js-question-options', options.length);
+        }
+
         if (document.querySelector(`#slide-${this.current} .question`)) {
             document.querySelector('.progress-show').classList.add('progress-show-animation');
             setTimeout(this.showAnswers.bind(this), this.interval * 1000 / 100 * parseInt(questionInterval));
