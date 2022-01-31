@@ -118,8 +118,11 @@ section {
     max-width: 100%;
 }
 /* ------------------------------------- FIX ------------------------------------------------- */
-.map img {
-    content: url("../img/map.png");
+#slide-2 .map img {
+    content: url("../img/map-Duiktank.png");
+}
+#slide-3 .map img {
+    content: url("../img/map-Fuifzaal.png");
 }
 
 
