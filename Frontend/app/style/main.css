@@ -26,6 +26,8 @@
     --global-color-alpha--: #949494;
     --global-color-alpha---: #010001;
     --global-color-beta: #ed193a;
+    --global-color-charlie: #A5EB78;
+    
 
     --js-progress-duration: 5s;
     --js-progress-show: 80%;
@@ -44,7 +46,7 @@ html, body {
     color: var(--global-color-alpha--);
     font-family: 'Roboto', sans-serif;
     height: 100%;
-    font-size: 1vw;
+    font-size: 1.1vw;
 }
 
 .container {
@@ -131,6 +133,7 @@ section {
     align-items: center;
     justify-items: center;
     background-color: var(--global-color-beta);
+    overflow: hidden;
 }
 .map h1 {
     color: var(--global-color-alpha);
@@ -200,8 +203,16 @@ section {
     padding-left: 0.8vw;
     width: 70%;
 }
+
+.correct-show {
+    border: solid .1vw var(--global-color-charlie)
+}
 .correct-show img {
     content: url("../img/svg/check.svg");
+}
+
+.incorrect-show {
+    border: solid .1vw var(--global-color-beta)
 }
 .incorrect-show img {
     content: url("../img/svg/cross.svg");
@@ -225,6 +236,10 @@ section {
 
 .info div {
     padding: .8vw;
+}
+
+.info div img {
+    width: 100%;
 }
 
 .info .left {
