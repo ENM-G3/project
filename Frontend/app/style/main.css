@@ -5,7 +5,6 @@
     --global-color-alpha---: #010001;
     --global-color-beta: #ed193a;
 
-    --js-progress-amount: 3;
     --js-progress-duration: 5s;
     --js-progress-show: 80%;
 
@@ -176,10 +175,10 @@ section {
     padding-left: 0.8vw;
     width: 70%;
 }
-.correct img {
+.correct-show img {
     content: url("../img/svg/check.svg");
 }
-.incorrect img {
+.incorrect-show img {
     content: url("../img/svg/cross.svg");
 }
 
@@ -229,6 +228,7 @@ section {
     height: 90%;
     width: 90%;
 }
+
 .graph {
     display: grid;
     grid-template-columns: 60% 40%;
@@ -320,9 +320,10 @@ section {
     grid-row: 2 / 3;
     display: flex;
     padding: 0 1.25vw;
+    justify-content: center;
 }
 .progress > div {
-    width: calc(100% / var(--js-progress-amount));
+    width: 40%;
     height: 2.5vh;
     margin: 0 1.25vw;
     position: relative;
