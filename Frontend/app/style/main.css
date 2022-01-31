@@ -173,7 +173,7 @@ section {
 }
 
 /* Graph */
-.graph {
+/* .graph {
     padding: 0.8vw;
 
     display: flex;
@@ -181,8 +181,6 @@ section {
     align-items: center;
 
     flex-direction: column;
-
-    
 }
 canvas {
     width: 100%;
@@ -208,12 +206,21 @@ canvas {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+} */
+.graph {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.graph > div {
+    height: 90%;
+    width: 90%;
 }
 
 /* Vertical */
 .vertical {
     display: grid;
-    grid-template-columns: 1vw 1fr 1vw;
+    grid-template-columns: 2vw 1fr 2vw;
     grid-template-rows: 0.2vw 1fr 2.5fr 2.5fr 0.2vw;
     grid-row-gap: 1vw;
 }
@@ -333,7 +340,6 @@ canvas {
     display: none;
     visibility: hidden;
 }
-
 .spinning-loader .spinner-container {
     opacity: 1;
     width: 200px;
@@ -343,7 +349,6 @@ canvas {
 
     background-color: var(--global-color-alpha);
 }
-
 .spinning-loader .spinner-container .spinner {
     animation: rotate 2s linear infinite;
     z-index: 2;
@@ -354,9 +359,27 @@ canvas {
     width: 50px;
     height: 50px;
 }
-
 .spinning-loader .spinner-container .spinner .path {
     stroke: var(--global-color-alpha--);
     stroke-linecap: round;
     animation: dash 1.5s ease-in-out infinite;
 }
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
+  }
