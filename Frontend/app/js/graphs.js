@@ -26,30 +26,20 @@ export default class Graphs {
     }
 
     async init() {
-        
-
         //await this.getDayNightChart();
     }
 
-    labels() {
-        var width = context.chart.width;
-        var size = Math.round(width / 42);
-        return size;
-    }
-
     async getAllAveragesChart() {
-        let chartContainer1 = document.querySelector('#slide-1 .graph #graph-bl');
-        let ctx = chartContainer1.getContext('2d');
+        let chartContainer = document.querySelector('#slide-1 #graph-bl');
+        let ctx = chartContainer.getContext('2d');
         let labels = [], dataset = [];
 
         for (const device in this.app.devices) {
             labels.push(device);
             let average = await this.app.api.average.get( this.app.devices[device], '1w');
-            console.log(average.data[0]._value);
-            // dataset.push(average.data[0]._value);
 
-            let wattHours = average.data[0]._value / 1000 * 168;
-            let families = wattHours / 58;
+            let watt_hours = average.data[0]._value / 1000 * 168;
+            let families = watt_hours / 58;
             dataset.push(families);
         }
 
@@ -65,40 +55,23 @@ export default class Graphs {
             data: {
                 labels,
                 datasets: [{
-                    // label: 'Gemiddeld verbruik op 1 week van belangrijkste locaties',
-                    label: 'Verbruik tegenover het aantal gezinnen.',
                     data: dataset,
                     backgroundColor: [
-                        // 'rgba(255, 99, 132, 0.2)',
-                        // 'rgba(54, 162, 235, 0.2)',
-                        // 'rgba(255, 206, 86, 0.2)',
-                        // 'rgba(75, 192, 192, 0.2)',
-                        // 'rgba(153, 102, 255, 0.2)',
                         'rgba(109, 207, 246, 0.2)',
                         'rgba(237, 25, 58, 0.2)',
                         'rgba(128, 130, 133, 0.2)',
-                        'rgba(87, 87, 90, 0.2)',
-                        'rgba(170, 224, 249, 0.2)',
                     ],
                     borderColor: [
-                        // 'rgba(255, 99, 132, 1)',
-                        // 'rgba(54, 162, 235, 1)',
-                        // 'rgba(255, 206, 86, 1)',
-                        // 'rgba(75, 192, 192, 1)',
-                        // 'rgba(153, 102, 255, 1)',
                         'rgba(109, 207, 246, 1)',
                         'rgba(237, 25, 58, 1)',
                         'rgba(128, 130, 133, 1)',
-                        'rgba(87, 87, 90, 1)',
-                        'rgba(170, 224, 249, 1)',
                     ],
-                    borderWidth: 1
+                    borderWidth: 2
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-
                 scales: {
                     x: {
                         ticks: {
@@ -121,27 +94,31 @@ export default class Graphs {
                                     size: size
                                 };
                             }
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
+                        },
+                        title: {
+                            display: true,
+                            text: 'Gezinnen',
                             font: function(context) {
                                 var width = context.chart.width;
-                                var size = Math.round(width / 42);
+                                var size = Math.round(width / 48);
                                 return {
                                     size: size,
                                     weight: 600
                                 };
                             }
-                       }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false,
                     },
-                    datalabels: {
+                    title: {
+                        display: true,
+                        text: 'Verbruik vergeleken met het aantal gemiddelde gezinnen.',
                         font: function(context) {
                             var width = context.chart.width;
-                            var size = Math.round(width / 32);
+                            var size = Math.round(width / 42);
                             return {
                                 size: size,
                                 weight: 600
@@ -161,7 +138,9 @@ export default class Graphs {
         for (const device in this.app.devices) {
             labels.push(device);
             let average = await this.app.api.average.get( this.app.devices[device], '1d');
-            dataset.push(average.data[0]._value);
+            let watt_hours = average.data[0]._value / 1000 * 168;
+            let families = watt_hours / 58;
+            dataset.push(families);
         }
 
         this.charts.slide1.allAverage.data.labels = labels;
@@ -170,41 +149,34 @@ export default class Graphs {
     }
 
     async getDayNightChart(slide, location) {
-        
-        let chartContainer2 = document.querySelector(`#slide-${slide} #lb-chart`);
-        let ctx = chartContainer2.getContext('2d');
+        let container = document.querySelector(`#slide-${slide} .graph`);
+        let chartContainer = document.querySelector(`#slide-${slide} #graph-bl`);
 
         let data = {
             labels: [],
-            datasets: [
-                {
-                    label: 'Dataset 1',
-                    data: [],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                    ],
-                }
-                
-            ]
+            datasets: [{
+                label: 'Dataset 1',
+                data: [],
+                backgroundColor: [
+                    'rgba(237, 25, 58, 0.2)',
+                    'rgba(128, 130, 133, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(237, 25, 58, 1)',
+                    'rgba(128, 130, 133, 1)',
+                ],
+                borderWidth: 2,
+            }],
         }
 
         
         let daynight = await this.app.api.daynight.get(this.app.devices[location], '1d');
 
-        for (let i = 0; i < daynight.data.length; i++) {
+        for (let i = daynight.data.length - 1; i >= 0; i--) {
             const element = daynight.data[i];
             data.datasets[0].data.push(element._value);
-            
-
-            if(element.day) data.labels.push('Dag'); else data.labels.push('Nacht');
-            
+            if (element.day) data.labels.push('Dag'); else data.labels.push('Nacht');
         }
-
 
         const config = {
             type: 'doughnut',
@@ -212,35 +184,12 @@ export default class Graphs {
             options: {
                 maintainAspectRatio: false,
                 responsive: true,
+                radius: '80%',
+                cutout: '60%',
                 plugins: {
-                    rotation: 180,
                     legend: {
-                        position: 'left',
-                        align: 'center',
-                        labels: {
-                            font: function(context) {
-                                var width = context.chart.width;
-                                var size = Math.round(width / 42);
-                                return {
-                                    size: size
-                                };
-                            }
-                       }
+                        display: false,
                     },
-                    title: {
-                        display: true,
-                        text: 'Dag en nacht verbruik'
-                    },
-                    datalabels: {
-                        font: function(context) {
-                            var width = context.chart.width;
-                            var size = Math.round(width / 32);
-                            return {
-                                size: size,
-                                weight: 600
-                            };
-                        }
-                    }
                 }
             },
         };
@@ -249,13 +198,13 @@ export default class Graphs {
         if (this.charts[`slide${slide}`].daynight != null) {
             this.charts[`slide${slide}`].daynight.destroy();
         }
-        this.charts[`slide${slide}`].daynight = new Chart( ctx , config );
+        this.charts[`slide${slide}`].daynight = new Chart( chartContainer , config );
     }
 
     async getRealtimeChart(slide, location, value, max) {
         this.charts[`slide${slide}`].realtime = null;
 
-        let chartContainer = document.querySelector(`#slide-${slide} #rb-chart`);
+        let chartContainer = document.querySelector(`#slide-${slide} #graph-br`);
 
         let percentage = value / max * 100;
         let maxPercentage = 100 - percentage;
@@ -268,8 +217,12 @@ export default class Graphs {
                     label: `Huidige waarde ${location}`,
                     data: [percentage, maxPercentage],
                     backgroundColor: [
-                       '#ed193a',
-                       'rgba(200, 200, 200, 1)'
+                        'rgba(109, 207, 246, 0.4)',
+                        'rgba(128, 130, 133, 0.4)',
+                    ],
+                    borderColor: [
+                        'rgba(109, 207, 246, 1)',
+                        'rgba(128, 130, 133, 1)',
                     ],
                     borderWidth: 2
                 }]
@@ -277,29 +230,13 @@ export default class Graphs {
             options: {
                 maintainAspectRatio: false,
                 responsive: true,
+                radius: '80%',
+                cutout: '60%',
                 plugins: {
                     legend: {
-                        position: 'center',
+                        display: false,
                     },
-                    title: {
-                        display: true,
-                        text: 'Huidige waarde t.o.v. totaal verbruik van site'
-                    },
-                    tooltip: {
-                        enabled: true
-                    },
-                    datalabels: {
-                        font: function(context) {
-                            var width = context.chart.width;
-                            var size = Math.round(width / 32);
-                            return {
-                                size: size,
-                                weight: 600
-                            };
-                        }
-                    }
                 },
-                cutout: '80%'
             },
           };
         
