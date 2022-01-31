@@ -82,13 +82,20 @@ export default class Timer {
         let test = questionIntervalStyle.split('%');
         let questionInterval = test[0];
 
-        setTimeout(this.showAnswers.bind(this), this.interval * 1000 / 100 * parseInt(questionInterval));
+        if (document.querySelector(`#slide-${this.current} .question`)) {
+            document.querySelector('.progress-show').classList.remove('invisible');
+            setTimeout(this.showAnswers.bind(this), this.interval * 1000 / 100 * parseInt(questionInterval));
+        } else {
+            document.querySelector('.progress-show').classList.add('invisible');
+        }
+        
 
         this.order.unshift(this.order[this.order.length - 1]);
         this.order.pop();
 
         this.removeIndicatorAnimations();
         this.changeOrder();
+        this.removeAnswers();
     }
 
     slideIndicator() {
@@ -108,8 +115,13 @@ export default class Timer {
                     element.classList.add('correct-show');
                 }
             }
-
         }
-        console.log('test', this.current);
+    }
+
+    removeAnswers() {
+        for (const element of document.querySelectorAll(`#slide-${this.current} .question-option`)) {
+            element.classList.remove('incorrect-show');
+            element.classList.remove('correct-show');
+        }
     }
 }
