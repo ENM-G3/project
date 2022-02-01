@@ -6,6 +6,8 @@ export default class SOCKET {
         this.app = app;
         this.socketio = this.app.io;
 
+        this.first = false;
+        
         
         this.socketio.on('B2F_connected', this.handleConnect.bind(this));
     }
@@ -51,7 +53,22 @@ export default class SOCKET {
         this.startElapsed();
     }
 
-    async handleConnect(data){
+
+    async handleConnect(data) {
+        if (this.first) {
+            await this.handleUpdate(data);
+        } else {
+            await this.handleFirstConnect(data);
+        }
+    }
+
+    async handleUpdate(data) {
+        window.location.reload();
+        await this.handleFirstConnect(data);
+    }
+
+    async handleFirstConnect(data){
+        this.first = true;
         this.endElapsed();
 
         document.documentElement.style.setProperty('--global-progress-duration', `${data.timer}s`);
