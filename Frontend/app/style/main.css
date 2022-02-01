@@ -233,7 +233,7 @@ section {
 
 .info .text {
     grid-row: 2 / 3;
-    grid-column: 2 / 8;
+    grid-column: 2 / 7;
 }
 .info .text p {
     margin-top: 1vw;
