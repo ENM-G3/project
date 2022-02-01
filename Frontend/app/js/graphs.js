@@ -149,9 +149,9 @@ export default class Graphs {
     }
 
     async getDayNightChart(slide, location) {
-        let container = document.querySelector(`#slide-${slide} .graph`);
         let chartContainer = document.querySelector(`#slide-${slide} #graph-bl`);
-        let p = document.querySelector(`#slide-${slide} #graph-average p`);
+        let realtime = document.querySelector(`#slide-${slide} #graph-avg #graph-realtime`);
+        let p = document.querySelector(`#slide-${slide} #graph-avg #graph-text`);
 
         let data = {
             labels: [],
@@ -189,6 +189,7 @@ export default class Graphs {
 
         total = Math.round(total);
         let percentage_day = Math.round(total_day / total * 100);
+        realtime.innerHTML = `${percentage_day}%`;
         let text = `De ${location} verbruikt overdag gemiddeld ${percentage_day}% van de ${total}W die dagelijks verbruikt wordt.`;
         p.innerHTML = text;
 
@@ -219,8 +220,8 @@ export default class Graphs {
         this.charts[`slide${slide}`].realtime = null;
 
         let chartContainer = document.querySelector(`#slide-${slide} #graph-br`);
-        let realtime = document.querySelector(`#slide-${slide} #graph-realtime`);
-        let p = document.querySelector(`#slide-${slide} #graph-text`);
+        let realtime = document.querySelector(`#slide-${slide} #graph-real #graph-realtime`);
+        let p = document.querySelector(`#slide-${slide} #graph-real #graph-text`);
 
         let percentage = value / max * 100;
         let maxPercentage = 100 - percentage;
