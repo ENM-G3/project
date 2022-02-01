@@ -66,7 +66,7 @@ export default class Graphs {
                         'rgba(237, 25, 58, 1)',
                         'rgba(128, 130, 133, 1)',
                     ],
-                    borderWidth: 2
+                    borderWidth: 1.2
                 }]
             },
             options: {
@@ -159,14 +159,14 @@ export default class Graphs {
                 label: 'Dataset 1',
                 data: [],
                 backgroundColor: [
-                    'rgba(237, 25, 58, 0.2)',
+                    'rgba(237, 25, 58, 0.4)',
                     'rgba(128, 130, 133, 0.2)',
                 ],
                 borderColor: [
                     'rgba(237, 25, 58, 1)',
                     'rgba(128, 130, 133, 1)',
                 ],
-                borderWidth: 2,
+                borderWidth: 1.2,
             }],
         }
 
@@ -240,13 +240,13 @@ export default class Graphs {
                     data: [percentage, maxPercentage],
                     backgroundColor: [
                         'rgba(109, 207, 246, 0.4)',
-                        'rgba(128, 130, 133, 0.4)',
+                        'rgba(128, 130, 133, 0.2)',
                     ],
                     borderColor: [
                         'rgba(109, 207, 246, 1)',
                         'rgba(128, 130, 133, 1)',
                     ],
-                    borderWidth: 2
+                    borderWidth: 1.2
                 }]
             },
             options: {
