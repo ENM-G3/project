@@ -154,12 +154,16 @@ def settings():
         data = json_or_formdata(request)
         devices = []
         displaynames = []
-        for device, displayname in data['devices'].items():
+        for displayname, device in data['devices'].items():
             devices.append(device)
-            displaynames.append(displaynames)
+            displaynames.append(displayname)
         config['frontend']['timer'] = data['timer']
-        config['frontend']['devices'] = str(devices)
-        config['frontend']['displaynames'] = str(displaynames)
+        config['frontend']['devices'] = str(devices).replace("'", '"')
+        config['frontend']['displaynames'] = str(
+            displaynames).replace("'", '"')
+        with open(f'{sys.path[0]}/config/config.ini', 'w') as configfile:
+            config.write(configfile)
+        socketio.emit('B2F_connected', get_config())
         return jsonify(result=True), 201
 
     # SOCKET IO
