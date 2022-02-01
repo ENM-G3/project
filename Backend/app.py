@@ -144,10 +144,28 @@ def weetje(id):
         result = CosmosRepository.delete_item(id)
         return jsonify(result=result), 201
 
-# SOCKET IO
+
+@app.route(endpoint + '/config', methods=['GET', 'PUT'])
+def settings():
+    if request.method == 'GET':
+        data = get_config()
+        return jsonify(data=data)
+    elif request.method == 'PUT':
+        data = json_or_formdata(request)
+        devices = []
+        displaynames = []
+        for device, displayname in data['devices'].items():
+            devices.append(device)
+            displaynames.append(displaynames)
+        config['frontend']['timer'] = data['timer']
+        config['frontend']['devices'] = str(devices)
+        config['frontend']['displaynames'] = str(displaynames)
+        return jsonify(result=True), 201
+
+    # SOCKET IO
 
 
-@ socketio.on('connect')
+@socketio.on('connect')
 def connect():
     print('A new client connects')
 
@@ -162,3 +180,11 @@ def get_config():
         dict_devices[displaynames[i]] = devices[i]
     timer = config['frontend']['timer']
     return {'timer': timer, 'devices': dict_devices}
+
+
+def json_or_formdata(request):
+    if request.content_type == 'application/json':
+        gegevens = request.get_json()
+    else:
+        gegevens = request.form.to_dict()
+    return gegevens
